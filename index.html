@@ -1,0 +1,2363 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>갈래 · 밸런스 게임</title>
+<meta name="description" content="둘 중 하나만 고르는 밸런스 게임. 9개 주제 540문제를 풀면 내 선택이 지하철 노선도로 그려져요.">
+<meta name="theme-color" content="#F2F3F0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1113" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://godrazy7174.github.io/galae/">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="갈래">
+<meta property="og:title" content="갈래 · 둘 중 하나, 어느 쪽으로 갈래?">
+<meta property="og:description" content="9개 주제 540문제 밸런스 게임. 고를 때마다 내 노선이 휘어요.">
+<meta property="og:url" content="https://godrazy7174.github.io/galae/">
+<meta property="og:image" content="https://godrazy7174.github.io/galae/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="갈래 밸런스 게임. 둘 중 하나, 어느 쪽으로 갈래?">
+<meta property="og:locale" content="ko_KR">
+<meta name="twitter:card" content="summary_large_image">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<style>
+:root{
+  /* Layout: hub = plain-language intro beside a worked example result, a three-stop how-to track, today's question,
+     then the nine topic lines (six rounds each). Ride = progress strip, question, A/B doors under a fork.
+     Result = running topic verdict and hidden-axis reveal beside this round's route diagram. */
+  --bg:#F2F3F0;
+  --surface:#FFFFFF;
+  --ink:#14161A;
+  --ink-2:#565B63;
+  --ink-3:#868C93;
+  --rule:#DADDD7;
+  --tint:rgba(20,22,26,.045);
+  --scrim:rgba(14,16,18,.48);
+  --shadow:0 12px 32px rgba(20,22,26,.14);
+  --on-light:#FFFFFF;
+  --on-dark:#14161A;
+  --l1:#2E5BBA; --l2:#158446; --l3:#EE7D21; --l4:#1FA5D6; --l5:#8C5BBE;
+  --l6:#A3672F; --l7:#6B7614; --l8:#D23A70; --l9:#B49A4C;
+  --line:var(--l1);
+  --on-line:var(--on-light);
+  --font-display:"Hahmlet","Noto Serif KR","AppleMyungjo","Batang",serif;
+  --font-body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono","IBM Plex Sans KR",ui-monospace,"SFMono-Regular",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1113; --surface:#181B1F; --ink:#ECEDE9; --ink-2:#A8ADB4; --ink-3:#7A8087; --rule:#2B2F35;
+    --tint:rgba(236,237,233,.06); --scrim:rgba(0,0,0,.62); --shadow:0 12px 32px rgba(0,0,0,.5);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1113; --surface:#181B1F; --ink:#ECEDE9; --ink-2:#A8ADB4; --ink-3:#7A8087; --rule:#2B2F35;
+  --tint:rgba(236,237,233,.06); --scrim:rgba(0,0,0,.62); --shadow:0 12px 32px rgba(0,0,0,.5);
+  color-scheme:dark;
+}
+
+html,body{height:100%}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:16px;
+  line-height:1.6;
+  word-break:keep-all;
+  overflow-wrap:break-word;
+  -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color:transparent;
+}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.app{
+  max-width:1180px;
+  min-height:100%;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+  padding-block:4px 32px;
+}
+main{flex:1}
+.num{font-family:var(--font-mono);font-weight:500;font-variant-numeric:tabular-nums}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+
+/* header */
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:12px;border-bottom:1px solid var(--rule)}
+.brand{display:inline-flex;align-items:baseline;gap:10px;padding:2px 0;background:none;border:0;cursor:pointer;color:var(--ink)}
+.brand b{font-family:var(--font-display);font-weight:700;font-size:26px;line-height:1;letter-spacing:-.03em}
+.brand small{font-size:12.5px;font-weight:500;color:var(--ink-2)}
+.top-meta{margin:0;font-size:12.5px;color:var(--ink-2)}
+.top-meta b{font-family:var(--font-mono);font-weight:500;color:var(--ink)}
+
+.badge{flex:none;width:30px;height:30px;border-radius:50%;display:inline-grid;place-items:center;background:var(--lc, var(--line));color:var(--lon, var(--on-line));font-family:var(--font-body);font-size:14px;font-weight:700;line-height:1}
+.badge.sm{width:22px;height:22px;font-size:11.5px}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:50px;padding:12px 18px;border:1px solid var(--rule);border-radius:14px;background:var(--surface);color:var(--ink);font-size:15px;font-weight:600;line-height:1.3;cursor:pointer;transition:border-color .15s ease,transform .12s ease}
+@media (hover:hover){ .btn:hover{border-color:var(--ink-3)} }
+.btn:active{transform:scale(.99)}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.btn.big{min-height:56px;padding:14px 24px;border-radius:16px;font-size:16px}
+.btn .sub{font-family:var(--font-mono);font-size:12.5px;font-weight:500;opacity:.72}
+.btn.text{min-height:44px;padding:8px 2px;border-color:transparent;background:none;color:var(--ink-2);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:4px}
+@media (hover:hover){ .btn.text:hover{color:var(--ink)} }
+
+/* intro */
+.intro{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"copy" "how" "sample";gap:44px;padding-block:28px 8px}
+.hero-copy{grid-area:copy;min-width:0}
+.sample{grid-area:sample;min-width:0}
+.how{grid-area:how;min-width:0}
+@media (min-width:900px){
+  .intro{grid-template-columns:minmax(0,1fr) minmax(0,400px);grid-template-areas:"copy sample" "how how";column-gap:64px;row-gap:60px;align-items:center;padding-block:48px 8px}
+}
+.kicker{margin:0 0 14px;font-size:13px;font-weight:600;letter-spacing:.03em;color:var(--ink-2)}
+.hero-copy h1{margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(33px,9.2vw,76px);line-height:1.12;letter-spacing:-.045em}
+.hero-copy h1 span{display:block}
+.lede{margin:18px 0 0;max-width:40ch;font-size:clamp(15.5px,4vw,18px);line-height:1.75;color:var(--ink-2);text-wrap:pretty}
+.lede b{font-weight:600;color:var(--ink)}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.cta .btn{flex:1 1 auto}
+@media (min-width:560px){ .cta .btn{flex:0 0 auto} }
+.trust{margin:14px 0 0;font-size:13px;color:var(--ink-2)}
+
+.sample{margin:0;padding:18px 16px 16px;background:var(--surface);border:1px solid var(--rule);border-radius:22px}
+.sample-tag{display:inline-flex;padding:3px 10px;border:1px dashed var(--ink-3);border-radius:999px;font-size:12px;font-weight:600;color:var(--ink-2)}
+.sample-verdict{margin:12px 0 0;font-family:var(--font-display);font-weight:700;font-size:28px;line-height:1.2;letter-spacing:-.03em}
+.sample-route svg{display:block;width:100%;height:auto;max-height:300px;margin:6px auto 0;overflow:visible}
+@media (min-width:900px){ .sample-route svg{max-height:390px} }
+.sample-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:12px 0 0;padding-top:12px;border-top:1px solid var(--rule)}
+.sample-stats div{display:grid;gap:2px;min-width:0}
+.sample-stats dt{font-size:11.5px;color:var(--ink-2)}
+.sample-stats dd{margin:0;font-family:var(--font-mono);font-size:15px;font-weight:500;font-variant-numeric:tabular-nums}
+.sample-cap{margin-top:12px;font-size:12.5px;line-height:1.6;color:var(--ink-2)}
+
+.sec-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px}
+.sec-h{margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(24px,6vw,32px);letter-spacing:-.03em}
+.sec-sub{margin:0;max-width:60ch;font-size:14.5px;color:var(--ink-2)}
+
+.steps{display:grid;gap:22px;margin:20px 0 0;padding:0;list-style:none}
+.steps li{position:relative;display:grid;grid-template-columns:34px minmax(0,1fr);column-gap:14px;align-items:start}
+.st-no{position:relative;z-index:1;grid-row:1 / span 2;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--bg);border:3px solid var(--ink);font-family:var(--font-mono);font-size:13px;font-weight:500;line-height:1}
+.steps b{padding-top:5px;font-size:16.5px;font-weight:700;line-height:1.4}
+.steps p{margin:3px 0 0;max-width:34em;font-size:14.5px;line-height:1.65;color:var(--ink-2)}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:15.5px;top:17px;bottom:-39px;width:3px;background:var(--ink)}
+@media (min-width:760px){
+  .steps{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
+  .steps li{grid-template-columns:minmax(0,1fr);row-gap:12px}
+  .st-no{grid-row:auto}
+  .steps b{padding-top:0}
+  .steps li:not(:last-child)::after{left:17px;right:-45px;top:15.5px;bottom:auto;width:auto;height:3px}
+}
+
+/* today */
+.daily{display:grid;gap:12px;margin-top:52px;padding:20px 18px 16px;background:var(--surface);border:1px solid var(--rule);border-radius:20px}
+@media (min-width:760px){ .daily{padding:24px 26px 18px} }
+.daily-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:4px 12px}
+.daily-title{margin:0;font-size:15px;font-weight:700}
+.daily-date{font-size:12.5px;color:var(--ink-2)}
+.daily-line{display:flex;align-items:center;gap:8px;margin:0;font-size:13px;color:var(--ink-2)}
+.daily-q{margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(21px,5.4vw,30px);line-height:1.35;letter-spacing:-.025em;text-wrap:balance}
+.daily-opts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.dopt{position:relative;display:flex;align-items:center;justify-content:center;min-height:96px;padding:30px 12px 16px;border:1px solid var(--rule);border-radius:14px;background:var(--bg);color:var(--ink);font-size:15px;font-weight:600;line-height:1.45;text-align:center;cursor:pointer;transition:background-color .2s ease,border-color .2s ease,color .2s ease,opacity .2s ease}
+.dopt .dir{position:absolute;top:9px;left:12px;font-family:var(--font-mono);font-size:11.5px;font-weight:500;color:var(--ink-2)}
+#dailyR .dir{left:auto;right:12px}
+@media (hover:hover){ .dopt:not(:disabled):hover{border-color:var(--lc)} }
+.dopt:disabled{cursor:default}
+.dopt.won{background:var(--lc);border-color:var(--lc);color:var(--lon)}
+.dopt.won .dir{color:inherit;opacity:.75}
+.dopt.lost{opacity:.4}
+.daily-foot{margin:0;font-size:14px;color:var(--ink-2)}
+.daily-foot b{color:var(--ink);font-weight:600}
+
+/* topic lines */
+.lines{display:grid;gap:12px;margin-top:52px}
+.line-list{display:grid;grid-template-columns:minmax(0,1fr);margin:6px 0 0;padding:0;list-style:none;border-top:1px solid var(--rule)}
+@media (min-width:860px){ .line-list{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:32px} }
+.line-row{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:14px;min-height:88px;padding:14px 2px;background:none;border:0;border-bottom:1px solid var(--rule);color:var(--ink);text-align:left;cursor:pointer}
+.lr-main{display:grid;gap:3px;min-width:0}
+.lr-name{font-size:17px;font-weight:700;line-height:1.3}
+.lr-teaser{font-size:13.5px;line-height:1.5;color:var(--ink-2)}
+.lr-side{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-2);text-align:right}
+.lr-go{display:inline-flex;align-items:center;padding:6px 12px;border:1px solid var(--rule);border-radius:999px;font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;transition:border-color .15s ease}
+@media (hover:hover){ .line-row:hover .lr-go{border-color:var(--lc)} }
+.lr-done{max-width:6.5em;font-weight:600;line-height:1.35;color:var(--ink)}
+.lr-done small{display:block;margin-top:2px;font-size:11.5px;font-weight:600;color:var(--ink-2)}
+.pips{display:inline-flex;flex:none;gap:3px}
+.pips i{width:7px;height:7px;border-radius:50%;background:var(--rule)}
+.pips i.on{background:var(--lc)}
+.mini{flex:none;width:20px;height:42px}
+.mini path{fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.mini circle{fill:var(--surface);stroke-width:1.6}
+
+/* my map */
+.mymap{display:grid;gap:14px;margin-top:52px;padding-top:28px;border-top:1px solid var(--rule)}
+.mm-meta{margin:0;font-size:14px;color:var(--ink-2)}
+.mm-grid{display:grid;gap:28px;margin-top:6px}
+@media (min-width:860px){ .mm-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px} }
+.sliders{display:grid;gap:6px}
+.sl{width:100%;display:grid;grid-template-columns:22px 3.6em minmax(0,1fr) 3.6em;align-items:center;gap:10px;min-height:36px;padding:2px 0;background:none;border:0;color:var(--ink);text-align:left;cursor:pointer}
+.sl .pl,.sl .pr{font-size:13px;color:var(--ink-2);white-space:nowrap}
+.sl .pl{text-align:right}
+.sl .win{color:var(--ink);font-weight:700}
+.track{position:relative;height:2px;background:var(--rule)}
+.track::after{content:"";position:absolute;left:50%;top:-4px;width:1px;height:10px;background:var(--ink-3)}
+.track i{position:absolute;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--lc);border:2px solid var(--surface);box-shadow:0 0 0 1px var(--lc)}
+.sl.empty .pl,.sl.empty .pr,.sl.empty .badge{opacity:.4}
+.mm-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+
+.facts{display:grid;margin:0}
+.fact{display:grid;grid-template-columns:minmax(6.5em,9em) minmax(0,1fr);gap:14px;padding:12px 0;border-bottom:1px solid var(--rule)}
+.fact:first-child{border-top:1px solid var(--rule)}
+.fact dt{padding-top:2px;font-size:13px;color:var(--ink-2)}
+.fact dd{margin:0;font-size:15px;line-height:1.55}
+.fact b{font-weight:600}
+
+/* ride */
+.stage{width:100%;max-width:880px;margin:0 auto}
+.ride-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:12px 2px}
+.back{display:inline-flex;align-items:center;min-height:40px;padding:6px 2px;background:none;border:0;font-size:14px;font-weight:600;color:var(--ink-2);cursor:pointer}
+@media (hover:hover){ .back:not(:disabled):hover{color:var(--ink)} }
+.back:disabled{opacity:.35;cursor:default}
+.ride-line{display:flex;align-items:center;gap:9px;margin:0;min-width:0;font-size:15px;font-weight:700}
+.friend-note{margin:10px 0 0;padding:12px 14px;border:1px dashed var(--ink-3);border-radius:14px;font-size:14px;line-height:1.6;color:var(--ink-2)}
+.friend-note b{font-weight:600;color:var(--ink)}
+.strip{position:relative;display:grid;grid-template-columns:repeat(10,minmax(0,1fr));align-items:center;height:24px;margin-top:18px}
+.strip::before{content:"";position:absolute;left:5%;right:5%;top:50%;height:3px;margin-top:-1.5px;border-radius:2px;background:var(--rule)}
+.strip-fill{position:absolute;left:5%;top:50%;width:0;height:3px;margin-top:-1.5px;border-radius:2px;background:var(--line);transition:width .45s ease}
+.strip i{position:relative;z-index:1;justify-self:center;width:10px;height:10px;border-radius:50%;background:var(--surface);border:2px solid var(--rule);transition:width .25s ease,height .25s ease,background-color .25s ease,border-color .25s ease}
+.strip i.done{background:var(--line);border-color:var(--line)}
+.strip i.now{width:16px;height:16px;border:3px solid var(--line);background:var(--surface)}
+.strip-meta{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:6px;font-size:13px;color:var(--ink-2)}
+.strip-meta b{font-weight:600;color:var(--ink)}
+.ask{display:flex;align-items:center;justify-content:center;min-height:2.6em;margin:24px 0 0;font-family:var(--font-display);font-weight:600;font-size:clamp(23px,6.2vw,42px);line-height:1.3;letter-spacing:-.03em;text-align:center;text-wrap:balance}
+.howto{margin:8px 0 0;font-size:14px;font-weight:500;color:var(--ink-2);text-align:center}
+.seal-row{display:flex;justify-content:center;margin-top:12px}
+.seal{display:inline-flex;align-items:center;gap:7px;margin:0;padding:6px 12px;border:1px solid var(--rule);border-radius:999px;background:var(--surface);font-size:13px;color:var(--ink-2);transition:border-color .2s ease,color .2s ease}
+.seal svg{width:14px;height:14px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.seal .i-hit,.seal .i-miss{display:none}
+.seal.hit .i-lock,.seal.miss .i-lock{display:none}
+.seal.hit .i-hit,.seal.miss .i-miss{display:block}
+.seal.hit{border-color:var(--line);color:var(--ink);font-weight:600}
+.seal.miss{border-color:var(--ink-3);color:var(--ink);font-weight:600}
+.seal-help{margin:8px auto 0;max-width:30em;font-size:12.5px;line-height:1.55;color:var(--ink-2);text-align:center}
+.fork-wrap{position:relative;height:clamp(48px,8vh,80px);margin-top:8px}
+.fork{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.fork path{fill:none;vector-effect:non-scaling-stroke;stroke-linecap:round}
+.fork .stem{stroke:var(--line);stroke-width:4}
+.fork .br{stroke:var(--ink-3);stroke-width:2;stroke-dasharray:3 6;transition:stroke .25s ease,stroke-width .25s ease,opacity .25s ease}
+.fork .br.on{stroke:var(--line);stroke-width:4;stroke-dasharray:none}
+.fork .br.off{opacity:.12}
+.node{position:absolute;left:50%;top:44%;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;background:var(--surface);border:3px solid var(--line)}
+.train{position:absolute;left:50%;top:44%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--line);box-shadow:0 0 0 3px var(--surface);opacity:0;transition:left .5s cubic-bezier(.45,0,.2,1),top .5s cubic-bezier(.45,0,.2,1),opacity .15s ease}
+.fork-wrap.go-l .train{left:25%;top:100%;opacity:1}
+.fork-wrap.go-r .train{left:75%;top:100%;opacity:1}
+.doors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.door{position:relative;display:flex;align-items:center;justify-content:center;min-height:clamp(160px,27vh,270px);padding:46px 14px 34px;border:1.5px solid var(--rule);border-radius:20px;background:var(--surface);color:var(--ink);text-align:center;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;transition:background-color .25s ease,color .25s ease,border-color .2s ease,opacity .25s ease,transform .2s ease}
+.door .dir{position:absolute;top:12px;left:12px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--rule);font-family:var(--font-mono);font-size:13px;font-weight:500;line-height:1;color:var(--ink-2)}
+.door-r .dir{left:auto;right:12px}
+.dtxt{max-width:14em;font-size:clamp(16px,4.3vw,22px);font-weight:600;line-height:1.45;letter-spacing:-.015em;text-wrap:balance}
+@media (hover:hover){ .doors:not(.revealing) .door:hover{border-color:var(--line);transform:translateY(-2px)} }
+.doors:not(.revealing) .door:active{transform:scale(.985)}
+.door:focus-visible{outline:2px solid var(--line);outline-offset:3px}
+.doors.revealing .door.won{background:var(--line);border-color:var(--line);color:var(--on-line)}
+.doors.revealing .door.won .dir{border-color:currentColor;color:inherit}
+.doors.revealing .door.lost{opacity:.32}
+.ftag{position:absolute;bottom:10px;left:50%;padding:2px 9px;border-radius:999px;background:var(--ink);color:var(--surface);font-size:11px;font-weight:600;white-space:nowrap;opacity:0;transform:translate(-50%,4px);transition:opacity .2s ease,transform .2s ease;pointer-events:none}
+.doors.revealing .door.friend .ftag{opacity:1;transform:translate(-50%,0)}
+.doors.enter .door{animation:door-in .32s ease both}
+.doors.enter .door-r{animation-delay:.04s}
+@keyframes door-in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.fnote{margin:14px 0 0;font-size:14px;font-weight:600;text-align:center}
+.ride-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:44px;margin-top:8px}
+.kbd{display:none;margin:0;font-size:12.5px;color:var(--ink-2)}
+@media (hover:hover) and (pointer:fine){ .kbd{display:block} }
+kbd{padding:1px 6px;border:1px solid var(--rule);border-radius:5px;background:var(--surface);font-family:var(--font-mono);font-size:11px;color:var(--ink-2)}
+
+/* result */
+.res-grid{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"head" "fig" "body";gap:24px;padding-top:16px}
+.res-head{grid-area:head;min-width:0}
+.routefig{grid-area:fig;min-width:0}
+.res-body{grid-area:body;display:grid;gap:22px;min-width:0}
+@media (min-width:920px){
+  .res-grid{grid-template-columns:minmax(0,1fr) minmax(0,440px);grid-template-areas:"head fig" "body fig";column-gap:64px;row-gap:28px;align-items:start;padding-top:28px}
+  .routefig{position:sticky;top:calc(16px + env(safe-area-inset-top, 0px))}
+}
+.eyebrow{margin:0;font-size:13px;font-weight:600;color:var(--ink-2)}
+.verdict{margin:8px 0 0;font-family:var(--font-display);font-weight:700;font-size:clamp(38px,10.5vw,74px);line-height:1.08;letter-spacing:-.045em;text-wrap:balance}
+.verdict-d{margin:14px 0 0;max-width:38ch;font-size:clamp(15px,4vw,18px);line-height:1.7;color:var(--ink-2)}
+.verdict-note{margin:10px 0 0;max-width:44ch;font-size:14px;line-height:1.6;color:var(--ink-2)}
+.verdict-note b{font-weight:600;color:var(--ink)}
+.rounds{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.rchip{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:6px 14px;border:1px solid var(--rule);border-radius:999px;background:var(--surface);font-size:13.5px;font-weight:600;color:var(--ink);cursor:pointer;transition:border-color .15s ease}
+.rchip .dot{width:8px;height:8px;border-radius:50%;background:var(--rule)}
+.rchip.done .dot{background:var(--line)}
+.rchip.cur{border-color:var(--line);box-shadow:inset 0 0 0 1px var(--line)}
+.rchip.todo{border-style:dashed;color:var(--ink-2)}
+@media (hover:hover){ .rchip:hover{border-color:var(--line)} }
+.routefig{margin:0;padding:14px 12px 14px;background:var(--surface);border:1px solid var(--rule);border-radius:22px}
+.fig-title{margin:0 0 4px;padding-inline:6px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.route-svg svg{display:block;width:100%;height:auto;max-height:76vh;margin:0 auto;overflow:visible}
+.rt-path{fill:none;stroke-width:6;stroke-linecap:round;stroke-linejoin:round}
+.rt-fpath{fill:none;stroke:var(--ink-3);stroke-width:2.5;stroke-dasharray:5 6;stroke-linecap:round;stroke-linejoin:round}
+.rt-fnode{fill:var(--ink-3)}
+.rt-node{fill:var(--surface);stroke-width:3}
+.rt-node.miss{fill:var(--ink)}
+.rt-node.xfer{stroke-width:3.6}
+.rt-start{fill:var(--ink)}
+.rt-name{font-family:var(--font-body);font-size:13px;font-weight:500;fill:var(--ink)}
+.rt-time{font-family:var(--font-mono);font-size:10.5px;font-weight:400;fill:var(--ink-3)}
+.rt-axis{font-family:var(--font-body);font-size:12px;font-weight:600;fill:var(--ink-2)}
+.rt-small{font-family:var(--font-body);font-size:11px;fill:var(--ink-2)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 14px;margin:10px 0 0;padding-inline:6px;font-size:12px;line-height:1.5;color:var(--ink-2)}
+.block{display:grid;gap:10px}
+.blk-h{margin:0;font-size:15px;font-weight:700}
+.blk-p{margin:0;font-size:15px;line-height:1.65}
+.blk-p b{font-weight:700}
+.lean{display:flex;gap:2px;height:8px}
+.lean i{display:block;min-width:0;height:100%;border-radius:2px;background:var(--rule)}
+.lean i.l{background:var(--line)}
+.lean i.e{background:none;box-shadow:inset 0 0 0 1px var(--rule)}
+.lean-legend{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--ink-2)}
+.lean-legend b{font-family:var(--font-mono);font-weight:500;color:var(--ink)}
+.compat{display:grid;gap:6px;padding:18px;border:1px solid var(--line);border-radius:18px;background:var(--surface)}
+.compat-big{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;margin:4px 0 0}
+.compat-big strong{font-family:var(--font-display);font-weight:700;font-size:clamp(40px,10vw,56px);line-height:1;letter-spacing:-.03em}
+.compat-big span{font-size:15px;color:var(--ink-2)}
+.compat-tier{margin:2px 0 0;font-size:17px;font-weight:700}
+.compat-d{margin:0;font-size:14.5px;color:var(--ink-2)}
+.compat-d b{font-weight:600;color:var(--ink)}
+.compat summary{margin-top:6px;font-size:14px;font-weight:600;cursor:pointer}
+.compat ul{display:grid;gap:10px;margin:10px 0 0;padding:0;list-style:none}
+.compat li{display:grid;gap:2px;font-size:14px}
+.compat li span:first-child{font-weight:600}
+.compat li span:last-child{color:var(--ink-2)}
+.invite{display:grid;gap:10px;padding:18px;border:1px solid var(--rule);border-radius:18px;background:var(--surface)}
+.invite p{margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-2)}
+.actions{display:grid;gap:10px}
+@media (min-width:520px){ .actions{grid-template-columns:repeat(2,minmax(0,1fr))} .actions .btn.text{grid-column:1 / -1;justify-self:start} }
+.recap{border-top:1px solid var(--rule)}
+.recap summary{display:flex;align-items:center;justify-content:space-between;padding:14px 0;list-style:none;font-size:15px;font-weight:600;cursor:pointer}
+.recap summary::-webkit-details-marker{display:none}
+.recap summary::after{content:"+";font-family:var(--font-mono);font-size:18px;color:var(--ink-2)}
+.recap[open] summary::after{content:"−"}
+.recap ol{margin:0;padding:0 0 6px;list-style:none}
+.recap li{display:grid;grid-template-columns:2.2em minmax(0,1fr) auto;gap:10px;align-items:baseline;padding:10px 0;border-top:1px solid var(--rule)}
+.recap .no{font-family:var(--font-mono);font-size:12px;color:var(--ink-3)}
+.recap .rq{margin:0;font-size:13px;color:var(--ink-2)}
+.recap .rp{margin:2px 0 0;font-size:15px;font-weight:600}
+.recap .rf{margin:2px 0 0;font-size:13px;color:var(--ink-2)}
+.recap .tm{font-family:var(--font-mono);font-size:12px;color:var(--ink-2)}
+.more{display:grid;gap:12px;margin-top:44px;padding-top:24px;border-top:1px solid var(--rule)}
+.more .sec-h{font-size:clamp(20px,5vw,24px)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:6px 14px 6px 8px;border:1px solid var(--rule);border-radius:999px;background:var(--surface);font-size:14px;font-weight:600;cursor:pointer;transition:border-color .15s ease}
+.chip small{font-family:var(--font-mono);font-size:11.5px;font-weight:500;color:var(--ink-2)}
+@media (hover:hover){ .chip:hover{border-color:var(--lc)} }
+
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;margin-top:56px;padding-top:16px;border-top:1px solid var(--rule);font-size:12.5px;color:var(--ink-2)}
+.foot p{margin:0}
+
+/* sheets */
+.sheet{position:fixed;inset:0;z-index:50;display:grid;place-items:end center;background:var(--scrim);
+  padding-top:calc(16px + env(safe-area-inset-top, 0px));
+  padding-bottom:calc(16px + env(safe-area-inset-bottom, 0px));
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px))}
+@media (min-width:760px){ .sheet{place-items:center} }
+.sheet-box{position:relative;width:min(100%,460px);max-height:100%;overflow:auto;display:grid;gap:12px;padding:20px 18px 18px;background:var(--surface);color:var(--ink);border:1px solid var(--rule);border-radius:22px;box-shadow:var(--shadow)}
+.sheet-title{margin:0;padding-right:48px;font-family:var(--font-display);font-weight:700;font-size:20px;letter-spacing:-.02em}
+.x{position:absolute;top:12px;right:12px;width:38px;height:38px;display:grid;place-items:center;border:1px solid var(--rule);border-radius:50%;background:var(--surface);color:var(--ink);font-size:20px;line-height:1;cursor:pointer}
+.shot{display:block;width:100%;max-width:100%;height:auto;max-height:60vh;object-fit:contain;border:1px solid var(--rule);border-radius:12px;background:var(--bg)}
+.shot-ph{display:grid;place-items:center;width:100%;max-width:100%;aspect-ratio:4/5;max-height:60vh;padding:16px;border-radius:12px;background:var(--tint);font-size:14px;color:var(--ink-2);text-align:center}
+.sheet-hint{margin:0;font-size:13.5px;color:var(--ink-2);text-align:center}
+.copy-area{width:100%;min-height:130px;resize:vertical;padding:12px;border:1px solid var(--rule);border-radius:12px;background:var(--bg);color:var(--ink);font:inherit;font-size:14.5px;line-height:1.55}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom, 0px));z-index:60;max-width:calc(100% - 32px);padding:12px 18px;border-radius:999px;background:var(--ink);color:var(--bg);font-size:14px;font-weight:600;text-align:center;opacity:0;pointer-events:none;transform:translate(-50%,14px);transition:opacity .2s ease,transform .2s ease}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-delay:0s !important;transition-duration:.01ms !important}
+}
+</style>
+</head>
+<body>
+
+<div class="app" id="app">
+  <header class="top">
+    <button class="brand" id="brandBtn" type="button" aria-label="갈래 처음 화면으로"><b>갈래</b><small>밸런스 게임</small></button>
+    <p class="top-meta" id="topMeta"></p>
+  </header>
+
+  <main>
+    <section id="hub" aria-label="처음 화면">
+      <div class="intro">
+        <div class="hero-copy">
+          <p class="kicker">밸런스 게임 · 9개 주제 · 540문제</p>
+          <h1><span>둘 중 하나,</span><span>어느 쪽으로 갈래?</span></h1>
+          <p class="lede">주제마다 60문제, 한 번에 10문제씩 풀어요. <b>둘 중 더 끌리는 쪽을 누르기만 하면 돼요.</b> 고를 때마다 내 노선이 이쪽저쪽으로 휘고, 다 풀면 나도 몰랐던 선택 기준과 결과 유형이 나와요.</p>
+          <div class="cta">
+            <button class="btn primary big" id="quickBtn" type="button"><span id="quickLabel">바로 시작하기</span><span class="sub" id="quickSub">1분</span></button>
+            <button class="btn big" id="browseBtn" type="button">주제 고르기</button>
+          </div>
+          <p class="trust">회원가입 없이 바로 할 수 있어요. 기록은 이 기기의 브라우저에만 남아요.</p>
+        </div>
+
+        <figure class="sample" aria-label="결과 화면 예시">
+          <span class="sample-tag">결과 예시</span>
+          <p class="sample-verdict">느긋한 모험가</p>
+          <div class="sample-route" id="sampleRoute"></div>
+          <dl class="sample-stats" id="sampleStats"></dl>
+          <figcaption class="sample-cap">예시 화면이에요. 노선은 내가 고른 쪽으로 휘고, 동그라미가 클수록 오래 고민한 질문이에요. 점선은 친구의 노선이에요.</figcaption>
+        </figure>
+
+        <section class="how" aria-labelledby="howTitle">
+          <h2 class="sec-h" id="howTitle">이렇게 놀아요</h2>
+          <ol class="steps">
+            <li><span class="st-no">1</span><b>주제를 골라요</b><p>일, 돈, 연애 같은 9개 주제마다 60문제가 있어요. 주제 하나가 지하철 노선 하나예요.</p></li>
+            <li><span class="st-no">2</span><b>10문제씩 골라요</b><p>한 라운드는 10문제, 1분이면 끝나요. 고르기 전에 사이트가 내 선택을 예측해 두고, 고민한 시간도 재요.</p></li>
+            <li><span class="st-no">3</span><b>결과를 받아요</b><p>라운드마다 숨은 기준과 결과 유형, 내 노선도가 나와요. 6라운드를 다 풀면 그 주제 결과가 확정되고, 링크로 친구와 비교할 수도 있어요.</p></li>
+          </ol>
+        </section>
+      </div>
+
+      <section class="daily" id="daily" aria-labelledby="dailyTitle">
+        <div class="daily-head">
+          <h2 class="daily-title" id="dailyTitle">오늘의 한 문제</h2>
+          <span class="daily-date" id="dailyDate"></span>
+        </div>
+        <p class="daily-line"><span class="badge sm" id="dailyBadge"></span><span id="dailyLine"></span></p>
+        <p class="daily-q" id="dailyQ"></p>
+        <div class="daily-opts">
+          <button class="dopt" id="dailyL" type="button"><span class="dir">A</span><span id="dailyLText"></span></button>
+          <button class="dopt" id="dailyR" type="button"><span class="dir">B</span><span id="dailyRText"></span></button>
+        </div>
+        <p class="daily-foot" id="dailyFoot"></p>
+        <button class="btn text" id="dailyGo" type="button" hidden></button>
+      </section>
+
+      <section class="lines" id="lines" aria-labelledby="linesTitle">
+        <div class="sec-head">
+          <h2 class="sec-h" id="linesTitle">주제 고르기</h2>
+          <button class="btn text" id="randomBtn" type="button">아무거나 시작</button>
+        </div>
+        <p class="sec-sub">주제마다 60문제를 10문제씩 6라운드로 나눠 풀어요. 한 라운드는 1분 정도 걸려요.</p>
+        <ol class="line-list" id="lineList"></ol>
+      </section>
+
+      <section class="mymap" id="myMap" hidden aria-labelledby="myMapTitle">
+        <div class="sec-head">
+          <h2 class="sec-h" id="myMapTitle">나의 노선도</h2>
+          <p class="mm-meta" id="mmMeta"></p>
+        </div>
+        <p class="sec-sub">라운드를 끝낼 때마다 주제별로 내가 어느 쪽으로 기울었는지 여기에 쌓여요. 누르면 그 주제 결과로 가요.</p>
+        <div class="mm-grid">
+          <div class="sliders" id="sliders"></div>
+          <dl class="facts" id="mmStats"></dl>
+        </div>
+        <div class="mm-actions">
+          <button class="btn primary" id="mmImage" type="button">전체 노선도 이미지</button>
+          <button class="btn" id="mmShare" type="button">친구에게 갈래 소개하기</button>
+        </div>
+      </section>
+    </section>
+
+    <section id="play" hidden aria-label="문제 풀기">
+      <div class="stage">
+        <div class="ride-head">
+          <button class="back" id="playBack" type="button">← 주제 목록</button>
+          <p class="ride-line"><span class="badge" id="playBadge"></span><span id="playName"></span></p>
+        </div>
+        <p class="friend-note" id="friendNote" hidden></p>
+        <div class="strip" id="strip" aria-hidden="true">
+          <span class="strip-fill" id="stripFill"></span>
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <div class="strip-meta"><span id="stepNo"></span><span id="lastSt"></span></div>
+        <h2 class="ask" id="ask"></h2>
+        <p class="howto" id="howto">더 끌리는 쪽을 누르세요. 정답은 없어요.</p>
+        <div class="seal-row">
+          <p class="seal" id="seal">
+            <svg class="i-lock" viewBox="0 0 16 16" aria-hidden="true"><rect x="3" y="7" width="10" height="7" rx="1.5"/><path d="M5.5 7V5a2.5 2.5 0 0 1 5 0v2"/></svg>
+            <svg class="i-hit" viewBox="0 0 16 16" aria-hidden="true"><path d="M3 8.5l3.2 3L13 4.5"/></svg>
+            <svg class="i-miss" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8"/></svg>
+            <span id="sealText"></span>
+          </p>
+        </div>
+        <p class="seal-help" id="sealHelp" hidden>고르기 전에 사이트가 내가 고를 쪽을 예측해서 봉인해 둬요. 고르는 순간 맞았는지 공개돼요.</p>
+        <div class="fork-wrap" id="forkWrap" aria-hidden="true">
+          <svg class="fork" viewBox="0 0 400 100" preserveAspectRatio="none">
+            <path class="stem" d="M200 0 V44"/>
+            <path class="br" id="brL" d="M200 44 L100 100"/>
+            <path class="br" id="brR" d="M200 44 L300 100"/>
+          </svg>
+          <span class="node"></span>
+          <span class="train"></span>
+        </div>
+        <div class="doors" id="doors">
+          <button class="door door-l" id="doorL" type="button"><span class="dir" aria-hidden="true">A</span><span class="dtxt" id="doorLText"></span><span class="ftag">친구 선택</span></button>
+          <button class="door door-r" id="doorR" type="button"><span class="dir" aria-hidden="true">B</span><span class="dtxt" id="doorRText"></span><span class="ftag">친구 선택</span></button>
+        </div>
+        <p class="fnote" id="fnote" hidden></p>
+        <div class="ride-foot">
+          <button class="back" id="undoBtn" type="button">← 이전 질문</button>
+          <p class="kbd"><kbd>←</kbd> <kbd>→</kbd> 키로도 고를 수 있어요</p>
+        </div>
+        <p class="sr" id="live" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section id="result" hidden aria-label="결과">
+      <div class="ride-head">
+        <button class="back" id="resBack" type="button">← 주제 목록</button>
+        <p class="ride-line"><span class="badge" id="resBadge"></span><span id="resName"></span></p>
+      </div>
+      <div class="res-grid">
+        <div class="res-head">
+          <p class="eyebrow" id="resEyebrow"></p>
+          <h1 class="verdict" id="verdict"></h1>
+          <p class="verdict-d" id="verdictD"></p>
+          <p class="verdict-note" id="verdictNote"></p>
+          <div class="rounds" id="rounds" aria-label="라운드"></div>
+        </div>
+        <figure class="routefig">
+          <figcaption class="fig-title" id="figTitle"></figcaption>
+          <div class="route-svg" id="routeSvg"></div>
+          <p class="legend" id="legend"></p>
+        </figure>
+        <div class="res-body">
+          <section class="block" aria-labelledby="axisTitle">
+            <h2 class="blk-h" id="axisTitle">숨은 기준 공개</h2>
+            <p class="blk-p" id="axisText"></p>
+            <div class="lean" id="leanBar" aria-hidden="true"></div>
+            <div class="lean-legend" id="leanLegend"></div>
+          </section>
+          <section class="compat" id="compat" hidden aria-labelledby="compatTitle">
+            <h2 class="blk-h" id="compatTitle"></h2>
+            <p class="compat-big"><strong id="xferCount"></strong><span>개 질문에서 친구와 같은 쪽을 골랐어요</span></p>
+            <p class="compat-tier" id="compatTier"></p>
+            <p class="compat-d" id="compatD"></p>
+            <details id="compatDiff">
+              <summary id="compatDiffSum"></summary>
+              <ul id="compatDiffList"></ul>
+            </details>
+          </section>
+          <section class="block" id="factsBlock" aria-labelledby="factsTitle">
+            <h2 class="blk-h" id="factsTitle"></h2>
+            <dl class="facts" id="facts"></dl>
+          </section>
+          <section class="invite" aria-labelledby="inviteTitle">
+            <h2 class="blk-h" id="inviteTitle">친구와 비교하기</h2>
+            <p id="inviteText"></p>
+            <button class="btn primary" id="shareBtn" type="button">친구에게 링크 보내기</button>
+          </section>
+          <div class="actions">
+            <button class="btn" id="posterBtn" type="button">노선도 이미지 만들기</button>
+            <button class="btn" id="nextBtn" type="button"></button>
+            <button class="btn text" id="againBtn" type="button"></button>
+          </div>
+          <details class="recap">
+            <summary id="recapSum"></summary>
+            <ol id="recapList"></ol>
+          </details>
+        </div>
+      </div>
+      <section class="more" aria-labelledby="moreTitle">
+        <h2 class="sec-h" id="moreTitle">다른 주제</h2>
+        <div class="chips" id="moreLines"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>재미로 즐기는 밸런스 게임이에요. 기록은 이 기기의 브라우저에만 남아요.</p>
+    <p>갈래 · 밸런스 게임</p>
+  </footer>
+</div>
+
+<div class="sheet" id="imageSheet" hidden role="dialog" aria-modal="true" aria-labelledby="imageTitle">
+  <div class="sheet-box">
+    <h2 class="sheet-title" id="imageTitle">노선도 이미지</h2>
+    <button class="x" type="button" data-close aria-label="닫기">×</button>
+    <div class="shot-ph" id="shotPh">이미지를 만드는 중…</div>
+    <img class="shot" id="shot" alt="" hidden>
+    <p class="sheet-hint" id="shotHint"></p>
+    <button class="btn primary" id="saveBtn" type="button" hidden>이미지 저장</button>
+  </div>
+</div>
+
+<div class="sheet" id="copySheet" hidden role="dialog" aria-modal="true" aria-labelledby="copyTitle">
+  <div class="sheet-box">
+    <h2 class="sheet-title" id="copyTitle">이 글을 복사해서 보내 주세요</h2>
+    <button class="x" type="button" data-close aria-label="닫기">×</button>
+    <textarea class="copy-area" id="copyArea" readonly></textarea>
+    <p class="sheet-hint">이 브라우저에서는 자동 복사가 안 돼요. 글을 길게 눌러 전체 선택한 뒤 복사해 주세요.</p>
+    <button class="btn" id="copyRetry" type="button">다시 복사하기</button>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+'use strict';
+
+/* A shared result link is this page's address + "#<topic><round>-<code>". */
+const SHARE_BASE = '';
+const N = 10;            // questions per round
+const ROUNDS = 6;        // rounds per topic
+const TOTAL = N * ROUNDS;
+const RLIST = Array.from({ length: ROUNDS }, (_, i) => i + 1);
+const STORE_KEY = 'galae.v2';
+
+/* qs: [질문, L 선택지, L 역 이름, R 선택지, R 역 이름], 10개씩 1~6라운드
+   flip: 1이면 그 질문에서 R 선택지를 A(왼쪽)에 보여 줘요. 숨은 기준이 위치로 드러나지 않게 섞는 장치예요.
+   tiers: L 쪽 비율 90% 이상 / 70% / 40% / 20% / 그 아래 */
+const LINES = [
+  { id:'work', no:1, name:'일·공부', hex:'#2E5BBA', onHex:'#FFFFFF', L:'열정', R:'워라밸',
+    flip:'0110100110' + '1001011001' + '0101100110' + '0110010110' + '1001101001' + '0101011010',
+    teaser:'대표 바로 옆자리 vs 아무도 모르는 구석 자리',
+    qs:[
+      ['입사 첫날, 내 자리가 정해졌다','대표 바로 옆자리. 대신 승진 1순위','대표옆자리','구석 창가 자리. 대신 아무도 나를 모름','구석창가'],
+      ['평생 하나만 고른다면','회의에서 내 의견이 전부 채택된다. 단, 실행도 내가 다 함','의견채택','평생 회의가 없다. 단, 아무도 내 의견을 안 물어봄','회의없음'],
+      ['퇴근 10분 전, 팀장님이 “잠깐 얘기 좀 할까?”','들어 본다. 큰 프로젝트 제안일지도','얘기듣기','못 들은 척 엘리베이터로 간다','엘리베이터'],
+      ['능력 하나를 얻는다면','일 처리 속도 2배. 단, 일도 2배로 들어옴','속도2배','아무리 대충 해도 평가는 늘 ‘보통’','평가보통'],
+      ['동기들 사이에 도는 내 소문, 하나만 고른다면','“걔 곧 팀장 단다더라”','팀장소문','“걔 6시 정각에 증발하더라”','6시증발'],
+      ['조별 과제에 잠수 탄 조원이 있다','내가 다 하고 발표까지 해서 A+','내가다함','나도 딱 내 몫만 하고 B','내몫만'],
+      ['메신저 상태를 평생 하나로 고정해야 한다','‘항상 대화 가능’. 대신 고과 최고 등급','항상온라인','‘자리 비움’. 대신 고과는 늘 보통','자리비움'],
+      ['로또 1등 당첨, 다음 날 아침','출근해서 하던 프로젝트는 끝내고 그만둔다','끝까지출근','눈뜨자마자 사직서 메일','사직서메일'],
+      ['10년 뒤 동창회에서 듣고 싶은 말','“너 뉴스에서 봤어!”','뉴스출연','“너 얼굴이 제일 편해 보인다”','편한얼굴'],
+      ['주 4일제가 됐다. 새로 생긴 금요일에는','부업이나 공부로 몸값 올리기','N잡','금요일은 그냥 노는 날','불금연장'],
+      ['회사가 사옥을 옮긴다','강남 본사. 출퇴근 왕복 3시간, 대신 핵심 부서','강남본사','집 앞 지점. 걸어서 5분, 대신 한직','집앞지점'],
+      ['연봉 협상, 하나만 받을 수 있다','연봉 20% 인상','연봉20%','연차 10일 추가','연차10일'],
+      ['점심시간 1시간을 쓴다면','30분 먹고 30분 공부','점심공부','1시간 꽉 채워 산책과 낮잠','점심낮잠'],
+      ['새벽 2시, 사업 아이디어가 번뜩 떠올랐다','일어나서 바로 기획서를 쓴다','새벽기획서','메모장에 한 줄 적고 다시 잔다','한줄메모'],
+      ['회사에 ‘무제한 휴가’가 생겼다. 단, 아무도 안 쓴다','나도 안 쓴다. 눈치 게임에서 이긴다','눈치승리','내가 첫 번째로 2주 쓴다','첫휴가'],
+      ['전공을 다시 고를 수 있다면','취업률 1위, 공부량도 1위인 과','취업1위','널널하고 재밌는데 진로는 막막한 과','널널학과'],
+      ['팀장 제안이 왔다','바로 수락. 연봉도 책임도 두 배','팀장수락','정중히 거절. 지금 자리가 딱 좋다','팀원유지'],
+      ['평생 하나만 고른다면','내 이름을 건 회사의 대표. 단, 쉬는 날 없음','대표이사','평생 계약직. 단, 매년 두 달 방학','두달방학'],
+      ['퇴근 후 회사 단톡방이 울린다','바로 확인하고 답장','즉답','내일 아침 9시에 몰아서 확인','9시확인'],
+      ['동기가 나보다 먼저 승진했다','자극받아서 자격증 공부 시작','자극받음','진심으로 축하하고 퇴근길에 치킨','축하치킨'],
+      ['시험 기간 주말','도서관 문 열 때 가서 닫을 때 나온다','도서관종일','오후에 일어나 할 만큼만 한다','할만큼만'],
+      ['능력 하나를 고른다면','한 번 읽은 건 다 외우는 머리. 단, 잠이 반으로 줄어듦','천재머리','어디서든 10초 만에 잠드는 능력','10초수면'],
+      ['연말 성과 평가 날','1년 치 성과를 PPT 30장으로 정리','PPT30장','“열심히 했습니다” 한 줄','한줄평가'],
+      ['월요일 아침 알람이 울렸다','이번 주에 끝낼 일 목록부터 본다','할일목록','다음 공휴일부터 검색한다','공휴일검색'],
+      ['재택근무가 가능해졌다','그래도 출근. 일은 사무실에서 해야 잘됨','사무실출근','평생 재택. 회의도 침대에서','침대회의'],
+      ['상사가 “이거 하루 만에 될까?”','“네, 해 보겠습니다”','해보겠습니다','“일주일은 필요합니다”','일주일요'],
+      ['평생 하나만 고른다면','일요일 밤마다 설레는 일','설레는일','월요일이 와도 아무렇지 않은 일','무난한일'],
+      ['친구가 “같이 창업하자”','바로 콜. 안정은 나중에','창업콜','월급 나오는 지금이 좋다','월급유지'],
+      ['인생 첫 월급으로','자기계발 강의부터 결제','강의결제','그동안 못 간 여행부터 예약','여행예약'],
+      ['은퇴 나이를 정할 수 있다면','70살까지 현역. 일이 곧 나','70살현역','45살에 은퇴. 남은 인생은 휴가','45살은퇴'],
+      ['수능 100일 전, 친구들이 축제에 가자고 한다','안 간다. 100일만 참으면 된다','100일참기','간다. 하루 논다고 안 망한다','하루축제'],
+      ['대학 시간표를 짠다면','1교시부터 꽉 채운 월화수목금','풀시간표','오후 수업만, 금요일은 공강','금공강'],
+      ['인턴 두 곳에 합격했다','이름 있는 대기업. 대신 잡무 위주','대기업인턴','작은 회사. 대신 정시 퇴근','정시인턴'],
+      ['면접관이 “10년 뒤 모습은?”이라고 묻는다','“이 회사 임원이요”','임원답변','“일과 삶이 균형 잡힌 사람이요”','균형답변'],
+      ['자격증 시험 전날, 친구 생일 파티가 있다','파티는 다음에. 시험이 먼저','시험먼저','파티 가서 딱 1시간만','1시간파티'],
+      ['회사에서 3년짜리 해외 지사 발령을 제안했다','간다. 커리어에 날개','해외발령','안 간다. 지금 내 생활이 좋다','국내잔류'],
+      ['보고서 완성, 퇴근 시간. 조금만 더 다듬으면 완벽할 텐데','30분 더 붙잡는다','30분더','이 정도면 됐다. 저장하고 퇴근','저장퇴근'],
+      ['평생 하나만 고른다면','매년 연봉이 10% 오르는 회사. 단, 휴가는 연 5일','연봉10%업','연봉이 동결인 회사. 단, 휴가는 연 50일','휴가50일'],
+      ['신입 사원 교육 첫날, 자기소개 시간','회사 비전과 내 목표를 3분 동안','3분비전','이름이랑 MBTI만','MBTI만'],
+      ['회사 동아리에 들어간다면','업무 스터디 모임','업무스터디','점심 산책 모임','산책모임'],
+      ['일하다 꽉 막혔다','풀릴 때까지 붙잡고 있는다','끝까지','일단 퇴근하고 내일 아침에 본다','내일의나'],
+      ['일하는 꿈을 꿨다','오히려 좋다. 아이디어가 떠올랐다','꿈속아이디어','억울하다. 꿈에서까지 일하다니','억울함'],
+      ['대학원 진학을 권유받았다','간다. 공부는 할 수 있을 때','대학원진학','안 간다. 공부는 여기까지','공부졸업'],
+      ['회의가 1시간째 길어지는 중','끝까지 의견을 낸다','끝까지의견','“그럼 그렇게 하시죠”로 마무리한다','그렇게하시죠'],
+      ['출장 일정이 하루 비었다','현지 거래처를 한 곳 더 만난다','거래처추가','혼자 그 도시를 구경한다','도시구경'],
+      ['회사에서 상을 준다면','올해의 성과왕. 상금 300만 원','성과왕','올해의 칼퇴왕. 상품은 휴가 3일','칼퇴왕'],
+      ['업무 메일 서명을 정한다면','“언제든 연락 주세요”','언제든연락','“답장은 근무 시간에 드립니다”','근무시간답장'],
+      ['내 일을 끝냈는데 동료가 “이거 좀 도와줄 수 있어?”','남아서 같이 끝낸다','같이야근','내일 아침에 돕겠다고 한다','내일도움'],
+      ['1년을 돌아볼 때 더 길었으면 하는 목록','올해 이룬 것','이룬것목록','올해 쉰 날','쉰날목록'],
+      ['직업을 고른다면','하루 12시간, 정말 좋아하는 일','좋아하는일','하루 4시간, 그냥 그런 일','4시간근무'],
+      ['휴가지에서 일 생각이 난다','노트북을 챙겨 왔다','휴가노트북','휴대폰 업무 앱을 지웠다','업무앱삭제'],
+      ['인생 목표, 하나만 적는다면','“업계 1등”','업계1등','“매일 저녁 7시에 집밥”','저녁7시'],
+      ['영어 공부를 한다면','매일 아침 6시 전화 영어','6시전화영어','주말에 미드 보면서 천천히','미드공부'],
+      ['회사 옆으로 이사하면 출근 10분. 대신 동네가 심심하다','이사한다. 일하기엔 최고','회사근처','안 한다. 지금 동네가 좋다','지금동네'],
+      ['꿈의 회사에서 연락이 왔다. 단, 연봉은 지금보다 30% 적다','옮긴다. 꿈이 먼저다','꿈의회사','안 옮긴다. 지금 조건이 좋다','지금조건'],
+      ['평생 하나만 고른다면','늘 바쁘지만 세상이 내 일을 알아준다','알아주는일','늘 한가하지만 아무도 내 일을 모른다','한가한일'],
+      ['학교 다닐 때 나는','앞자리에서 손 들고 질문하는 학생','앞자리질문','뒷자리 창가에서 하늘 보는 학생','창가하늘'],
+      ['과제 마감 3일 전','오늘 끝내고 이틀 동안 다듬는다','미리끝냄','마감 전날 밤의 집중력을 믿는다','전날밤'],
+      ['상금 1,000만 원 공모전 마감이 내일이다','오늘 밤을 새운다','밤샘도전','내년에 다시 도전한다','내년에'],
+      ['휴대폰에 가장 많이 깔린 앱','업무·공부 앱','공부앱','게임·OTT 앱','게임앱'],
+    ],
+    tiers:[
+      ['불도저 야망가','멈추는 법보다 달리는 법을 먼저 배웠어요. 목표가 보이면 저녁도 주말도 기꺼이 걸어요.'],
+      ['성장 중독자','쉼도 중요하지만 성장하는 느낌이 더 좋아요. 배울 게 있다면 조금 피곤해도 괜찮아요.'],
+      ['밸런스 장인','일할 땐 확실히, 쉴 땐 확실히. 상황에 따라 기어를 바꿀 줄 알아요.'],
+      ['저녁 수호자','일은 인생의 일부일 뿐이에요. 퇴근 후의 나도 똑같이 소중하다고 믿어요.'],
+      ['칼퇴의 신','정시 퇴근은 양보할 수 없는 원칙이에요. 대신 일하는 시간엔 누구보다 집중해요.'],
+    ] },
+  { id:'money', no:2, name:'돈', hex:'#158446', onHex:'#FFFFFF', L:'쓰기', R:'모으기',
+    flip:'1001011010' + '0110100101' + '1010011001' + '1001100110' + '0110010101' + '1010101001',
+    teaser:'무제한 쇼핑 0원 통장 vs 한 달 50만 원만 쓰는 10억',
+    qs:[
+      ['예고 없던 성과급 300만 원이 들어왔다','오늘 저녁 오마카세부터 예약','오마카세','없던 돈이니 없는 셈 치고 적금','없는셈'],
+      ['평생 하나만 고른다면','사고 싶은 건 다 사는데 통장은 늘 0원','통장0원','통장에 10억이 있는데 한 달에 50만 원만 쓸 수 있음','10억잠금'],
+      ['축의금 봉투에 0을 하나 더 썼다. 5만 원이 50만 원으로','좋은 날이니까 그냥 낸다','통큰축의','화장실 가서 봉투를 새로 쓴다','봉투교체'],
+      ['장바구니 속 100만 원 안마의자가 오늘 자정까지 반값','자정 전에 결제. 내 허리는 소중하니까','자정결제','자정이 지나면 원래 필요 없던 물건','필요없음'],
+      ['평생 받는 용돈, 하나만 고른다면','매달 100만 원. 단, 그달 안에 다 써야 함','매달100','매달 30만 원. 단, 10년 뒤부터 쓸 수 있음','10년뒤'],
+      ['출국 20분 전 면세점, 늘 갖고 싶던 향수가 보인다','지금 아니면 언제 사','면세찬스','안 사는 게 제일 싸다','안사기'],
+      ['생일 선물로 하나를 고른다면','갖고 싶던 명품 지갑. 안은 텅 빔','명품지갑','평범한 지갑. 안에 같은 금액 현금','현금지갑'],
+      ['새벽 1시 막차가 끊겼다. 집까지 택시비 4만 원','탄다. 내 잠은 소중하니까','새벽택시','첫차까지 찜질방에서 버틴다','찜질방'],
+      ['30살의 나에게 남겨 줄 것','5년 동안 다닌 여행 사진 3만 장','사진3만장','5년 동안 모은 통장 잔고 5천만 원','잔고5천'],
+      ['인생 마지막 날의 통장 잔고','0원. 다 쓰고 간다','0원엔딩','넉넉히 남겨서 물려준다','물려주기'],
+      ['친구들과 밥값을 나눌 때 나는','“오늘은 내가 쏠게!”가 먼저 나온다','내가쏜다','100원 단위까지 정확히 나눈다','100원정산'],
+      ['평생 하나만 고른다면','모든 물건을 반값에 산다. 단, 저축은 금지','반값인생','예금 이자가 10%. 단, 10년 동안 못 뺌','이자10%'],
+      ['한 달 동안 마실 커피, 하나만 고른다면','매일 7천 원짜리 시그니처 라떼','시그니처라떼','매일 탕비실 믹스커피','믹스커피'],
+      ['통장에 딱 100만 원 남았다. 월급날은 2주 뒤','그래도 오늘 약속은 간다','약속간다','2주 동안 집밥 모드','집밥모드'],
+      ['쇼핑 앱 장바구니에 담아 둔 물건이 50개','월급날 한 번에 결제','일괄결제','일주일 뒤에도 갖고 싶은 것만 남긴다','일주일숙성'],
+      ['친구 선물을 고를 때 나는','받는 사람이 놀랄 만큼 비싼 걸로','깜짝선물','가성비 좋고 꼭 필요한 걸로','실속선물'],
+      ['친구 생일에 선물 대신 하나를 준다면','같이 갈 비싼 공연 티켓','공연티켓','친구 이름으로 넣어 준 적금 첫 달','적금선물'],
+      ['구독 중인 서비스가 10개다','다 쓸모 있다. 유지','구독유지','오늘 밤 전부 해지','전부해지'],
+      ['보너스로 하나를 고른다면','지금 바로 쓰는 500만 원 여행 상품권','여행상품권','3년 뒤에 찾는 800만 원 적금','800만원적금'],
+      ['갖고 싶던 노트북이 새로 나왔다. 지금 노트북도 멀쩡하다','바꾼다. 새 기계는 새 마음','새노트북','지금 것이 고장 날 때까지 쓴다','고장까지'],
+      ['안 쓰는 물건을 팔아 20만 원이 생겼다','그 돈으로 또 새 물건을 산다','또산다','바로 저금통에 넣는다','저금통'],
+      ['세일 마지막 날, 필요 없는 물건이 70% 할인','이 가격이면 사야 이득','70%할인','안 사면 100% 할인','100%할인'],
+      ['1년 세계 여행을 가자는 친구, 통장엔 딱 그만큼 있다','간다. 돈은 다시 벌면 된다','세계여행','안 간다. 그 돈은 내 집 마련용','내집마련'],
+      ['배달비가 음식값만큼 나온다','그래도 시킨다. 오늘은 나가기 싫다','배달시킴','직접 포장하러 간다','직접포장'],
+      ['통장 잔고 알림을 켤까?','끈다. 잔고를 보면 행복이 줄어든다','알림끔','켠다. 매일 아침 잔고 확인','매일잔고'],
+      ['명절 용돈 30만 원을 받았다','받은 날 다 쓴다','당일소진','30만 원 그대로 통장으로','통장직행'],
+      ['인생에 딱 한 번 사치를 부린다면','1박 300만 원 스위트룸','스위트룸','그 돈으로 주식을 산다','주식매수'],
+      ['통장 이름을 하나만 지을 수 있다면','‘언젠가 떠날 여행’','떠날여행','‘절대 손대지 마’','손대지마'],
+      ['10년 전으로 돌아가 하나를 바꿀 수 있다면','그때 아낀 돈으로 못 해 본 경험을 한다','못해본경험','그때 쓴 돈을 모아서 투자한다','그때투자'],
+      ['복권 3등, 150만 원에 당첨됐다','오늘 사람들 불러서 다 쏜다','다쏜다','아무한테도 말 안 하고 적금','조용히적금'],
+      ['첫 차를 산다면','갖고 싶던 새 차, 할부 5년','새차할부','현금으로 살 수 있는 중고차','중고현금'],
+      ['연말정산 환급금 80만 원이 들어왔다','고생한 나에게 패딩 한 벌','환급패딩','그대로 비상금 통장에','환급저축'],
+      ['비 오는 날 우산이 없다. 편의점 우산은 1만 원','산다. 젖기는 싫다','우산구매','비 그칠 때까지 기다린다','비그침대기'],
+      ['월급에서 저축하고 싶은 비율','10%. 나머지는 지금의 나에게','10%저축','70%. 미래의 나에게','70%저축'],
+      ['헬스장 1년권이 50% 할인 중이다. 운동은 아직 안 한다','등록한다. 이번엔 진짜 간다','1년권등록','운동을 시작하면 그때 산다','시작하면'],
+      ['카페에서 공부할 때','음료 두 잔에 디저트까지','디저트까지','제일 싼 음료 한 잔으로 4시간','한잔4시간'],
+      ['보험, 적금, 투자 중 하나도 안 하고 있다','지금 즐기는 게 남는 거다','지금즐김','이번 달부터 하나씩 시작한다','하나씩시작'],
+      ['여행 숙소를 고를 때','조식 포함 오션뷰 호텔','오션뷰호텔','잠만 자면 되니까 제일 싼 곳','최저가숙소'],
+      ['나의 가계부','없다. 쓰면 쓸수록 우울하다','가계부안씀','10원 단위까지 기록한다','10원가계부'],
+      ['갑자기 1억이 생긴다면 첫 번째로 할 일','차 바꾸고 여행 예약','차와여행','은행에 예금 상담 예약','예금상담'],
+      ['VIP 등급 하나만 달 수 있다면','배달 앱 VIP','배달VIP','은행 VIP','은행VIP'],
+      ['친구들이 여행 계를 만들자고 한다. 매달 10만 원','바로 콜. 여행은 못 참지','여행계콜','그 돈이면 내 적금이 낫다','내적금'],
+      ['인생 첫 명품, 하나만 고른다면','지금 당장 가방 하나','명품가방','10년 뒤 시계 하나. 그때까지 모은다','10년뒤시계'],
+      ['장 보러 간다면','백화점 식품관. 먹는 건 좋은 걸로','백화점식품관','마감 세일 시간 맞춰 동네 마트','마감세일'],
+      ['가계부 앱이 “이번 달 지출 1위는 택시”라고 알려 줬다','택시는 시간을 사는 거다','시간을삼','다음 달부터 버스를 탄다','버스로'],
+      ['내 방을 꾸민다면','당장 예쁜 가구로 싹 바꾼다','가구교체','이사 갈 때까지 지금 그대로','지금그대로'],
+      ['평생 하나만 고른다면','지금 하고 싶은 걸 다 한다. 단, 노후는 모름','노후모름','노후가 확실히 보장된다. 단, 지금은 빠듯','지금빠듯'],
+      ['쇼핑몰에서 “오늘만 무료 배송”','이 김에 필요한 거 다 담는다','무료배송찬스','무료 배송 맞추려고 사는 건 낭비다','낭비거부'],
+      ['한 달에 한 번 나에게 주는 선물','근사한 레스토랑 저녁','레스토랑','그 돈을 모아 1년 뒤 큰 선물','1년뒤큰선물'],
+      ['좋아하는 작가 사인회, 책은 3만 원','산다. 오늘만 받을 수 있는 사인','사인책','도서관에서 빌려 본다','도서관'],
+      ['계절이 바뀌었는데 입을 옷이 없다','새 옷을 산다','새옷','작년 옷을 다시 꺼낸다','작년옷'],
+      ['평생 하나만 고른다면','외식은 평생 공짜. 단, 장보기는 2배 비쌈','외식공짜','장보기는 평생 공짜. 단, 외식은 2배 비쌈','장보기공짜'],
+      ['적금 만기 날, 500만 원이 들어왔다','기다렸던 여행을 간다','만기여행','그대로 다시 적금','재예치'],
+      ['1년째 갖고 싶은 물건이 있다','오늘 산다. 1년이면 충분히 고민했다','오늘구매','1년 더 고민해 본다','1년더'],
+      ['좋아하는 가수의 콘서트, VIP석은 25만 원','VIP석. 평생 남을 추억','VIP석','가장 싼 3층 자리','3층석'],
+      ['돈이 생기면 먼저 드는 생각','“뭘 살까?”','뭘살까','“어디에 넣을까?”','어디넣을까'],
+      ['우리 집에 오는 택배 상자, 일주일에','5개 이상','택배5개','0개','택배0개'],
+      ['포인트가 10만 점 쌓였다','당장 쓴다','포인트사용','계속 모아서 100만 점을 만든다','100만점'],
+      ['한정판 운동화 오픈런 줄이 길다','같이 선다. 오늘 아니면 못 산다','오픈런','그 시간에 늦잠이 낫다','늦잠'],
+      ['가장 기분 좋은 알림','“결제가 완료되었습니다”','결제완료','“적금 만기를 축하드립니다”','만기알림'],
+    ],
+    tiers:[
+      ['오늘만 사는 낭만가','돈은 쓰라고 있는 거라고 믿어요. 경험에 쓴 돈은 절대 아깝지 않아요.'],
+      ['경험 수집가','물건보다 경험, 내일보다 오늘. 그래도 지킬 선은 지켜요.'],
+      ['현명한 균형파','쓸 땐 쓰고 모을 땐 모아요. 지금의 나와 미래의 나를 둘 다 챙겨요.'],
+      ['든든한 저축러','통장 잔고가 마음의 평화예요. 작은 사치는 계획 안에서만 허락해요.'],
+      ['미래형 자산가','오늘의 1만 원은 10년 뒤의 씨앗이에요. 참는 만큼 커진다는 걸 알아요.'],
+    ] },
+  { id:'food', no:3, name:'음식', hex:'#EE7D21', onHex:'#14161A', L:'도전', R:'익숙함',
+    flip:'0101101001' + '1010010110' + '0110101001' + '0011011001' + '1100100110' + '0101100101',
+    teaser:'친구가 만든 딸기 김치찌개 한 숟갈 vs 웃으며 맨밥',
+    qs:[
+      ['평생 점심 메뉴를 내가 못 정한다면','매일 룰렛이 정한다. 꽝도 있음','메뉴룰렛','최애 메뉴 3개를 돌려 먹는다','최애3개'],
+      ['친구가 직접 개발했다며 ‘딸기 김치찌개’를 내밀었다','일단 한 숟갈. 혹시 모르잖아','딸기찌개','웃으면서 맨밥만 먹는다','맨밥'],
+      ['처음 간 나라, 메뉴판에 사진도 영어도 없다','아무 줄이나 손가락으로 찍는다','손가락주문','옆 테이블을 가리키며 “저거요”','저거요'],
+      ['편의점에 ‘마라 바나나우유’가 새로 나왔다','출시 첫날 바로 마셔 본다','출시첫날','후기 100개가 쌓일 때까지 기다린다','후기대기'],
+      ['단골집 사장님이 “메뉴에 없는 거 하나 해 줄까?”','무조건 콜','히든메뉴','“늘 먹던 걸로 주세요”','늘먹던거'],
+      ['배달 앱 추천 1위가 처음 보는 ‘흑임자 떡볶이’다','추천을 믿어 본다','추천1위','주문 내역에서 ‘재주문’','재주문'],
+      ['해외여행 2주째, 한식이 너무 그립다','그래도 끝까지 현지 음식','현지식','한인 마트에서 라면부터 산다','한인마트'],
+      ['회식 장소를 정하는 담당이 됐다','아무도 안 가 본 골목 노포','골목노포','실패 없는 프랜차이즈','프랜차이즈'],
+      ['아이스크림 가게, 31가지 맛 앞에서','안 먹어 본 맛부터 도장 깨기','도장깨기','10년째 같은 맛','10년째'],
+      ['인생 마지막 한 끼','세계 최고 셰프의 처음 보는 요리','셰프요리','어릴 때 집에서 먹던 그 맛','어릴적맛'],
+      ['평생 하나만 고른다면','세상의 모든 음식을 한 입씩','모든음식한입','최애 음식을 평생 무제한','최애무제한'],
+      ['치킨을 시킬 때','이번 달 나온 신메뉴','신메뉴','10년째 같은 후라이드','늘후라이드'],
+      ['여행지 마트에서 사 오는 간식','포장지에 뭐라고 쓰였는지 모르는 것','정체불명간식','한국에서도 먹던 과자의 현지 버전','현지버전과자'],
+      ['친구가 처음 보는 과일 ‘두리안’을 권한다','냄새가 지독해도 먹어 본다','두리안','사과 주세요','사과'],
+      ['라면을 끓일 때','냉장고에 있는 걸 다 넣어 본다','실험라면','물 550mL, 봉지에 적힌 대로','정석라면'],
+      ['소개팅 장소를 고른다면','문 연 지 일주일 된 핫플','신상핫플','열 번은 가 본 단골집','단골집'],
+      ['요리 경연에 나간다면','처음 보는 재료로 즉석 창작 요리','창작요리','가장 자신 있는 김치볶음밥','김치볶음밥'],
+      ['맛은 초코칩과 똑같다는 곤충 쿠키가 나왔다','먹어 본다','곤충쿠키','그래도 원래 초코칩 쿠키','초코칩'],
+      ['평생 한 나라 음식만 먹어야 한다면','한 번도 안 먹어 본 나라 음식','처음나라','어릴 때부터 먹던 한식','한식'],
+      ['자판기에 ‘랜덤 음료’ 버튼이 있다','누른다','랜덤버튼','아는 음료 버튼을 누른다','아는음료'],
+      ['외국인 친구가 한국 음식을 추천해 달란다','산낙지부터 도전시킨다','산낙지','무난하게 불고기','불고기'],
+      ['오마카세 셰프가 “오늘은 특별한 재료가 있어요”','뭔지 묻지 않고 먹는다','묻지않고','정체를 확인하고 먹는다','확인먼저'],
+      ['카페 메뉴판 앞에서','이름이 제일 긴 신메뉴','긴이름신메뉴','아이스 아메리카노','아아'],
+      ['친구가 “맛집인데 줄이 하나도 없어”라며 데려갔다','오히려 좋다. 숨은 맛집일지도','숨은맛집','불안하다. 줄 긴 옆집으로 간다','줄긴옆집'],
+      ['야식 메뉴 고르기','배달 앱 랜덤 추천','랜덤야식','어제 먹은 거 또','어제그거'],
+      ['세계 음식 축제에 갔다','제일 이상해 보이는 부스부터','이색부스','그나마 아는 맛 부스를 찾는다','아는맛부스'],
+      ['인생 맛집을 찾는 방법','정보 없이 아무 골목에 들어가 본다','골목탐험','평점 4.5 이상, 리뷰 1,000개 이상만','평점4.5'],
+      ['평생 하나만 고른다면','매일 다른 셰프가 해 주는 밥. 단, 메뉴는 못 고름','매일셰프','평생 내가 해 먹는 밥. 단, 메뉴는 마음대로','내가요리'],
+      ['떡볶이 맵기 단계','처음 보는 최고 단계에 도전','최고단계','늘 먹던 순한맛','순한맛'],
+      ['외계인이 지구 음식을 맛보고 싶다고 한다','민트초코 마라탕을 개발해서 준다','민초마라탕','김치찌개 한 그릇을 준다','김치찌개'],
+      ['비행기 기내식, 하나만 고른다면','처음 들어 보는 현지 요리','현지기내식','소고기 덮밥','소고기덮밥'],
+      ['김밥집 메뉴판 앞에서','처음 보는 크림치즈 날치알 김밥','이색김밥','기본 김밥 두 줄','기본김밥'],
+      ['호텔 조식 뷔페에서','평소에 못 먹는 현지 음식만','현지조식','늘 먹는 빵, 달걀, 커피','늘조식'],
+      ['붕어빵 속, 하나만 고른다면','슈크림, 피자, 고구마… 새로 나온 맛','신상붕어빵','정통 팥','팥붕'],
+      ['요리 영상을 보다가','처음 보는 해외 레시피를 따라 한다','해외레시피','익숙한 집밥 레시피를 찾는다','집밥레시피'],
+      ['캠핑 가서 해 먹을 요리','처음 해 보는 통바비큐','통바비큐','실패 없는 삼겹살과 라면','삼겹살라면'],
+      ['과일 가게에서','이름도 처음 보는 열대 과일 한 바구니','열대과일','늘 사던 귤 한 봉지','귤한봉지'],
+      ['외국 친구가 보내 준 전통 음식, 냄새가 독특하다','바로 뜯어서 먹어 본다','바로시식','감사 인사만 하고 냉동실로','냉동실행'],
+      ['오늘 저녁, 하나만 고른다면','처음 가 보는 맛집. 웨이팅 1시간','웨이팅맛집','바로 들어가는 단골집','바로단골'],
+      ['처음 간 베트남 식당','이름도 모르는 지역 국수','지역국수','쌀국수','쌀국수'],
+      ['빵집에서 하나만 산다면','처음 보는 쑥 크림치즈 베이글','쑥베이글','늘 사는 소금빵','소금빵'],
+      ['소풍 도시락','처음 시도하는 퓨전 도시락','퓨전도시락','김밥과 유부초밥','김밥유부'],
+      ['배달 앱에 ‘사장님이 미쳤어요’ 신메뉴 알림이 왔다','궁금해서 시킨다','미친메뉴','미친 건 안 먹는다','안미친메뉴'],
+      ['평생 하나만 고른다면','모든 음식이 먹을 때마다 다른 맛','매번다른맛','모든 음식이 늘 같은 맛','늘같은맛'],
+      ['친구 생일 케이크를 고른다면','처음 보는 디자인으로 주문 제작','주문제작','실패 없는 생크림 케이크','생크림케이크'],
+      ['해외여행 중 햄버거 가게에서','그 나라에만 있는 버거','현지한정버거','한국에서도 먹던 그 버거','늘먹던버거'],
+      ['순대를 찍어 먹는다면','처음 보는 소스까지 다 찍어 본다','소스탐험','늘 먹던 소금','소금'],
+      ['명절 음식이 잔뜩 남았다','남은 전으로 새 요리를 개발한다','전리메이크','데워서 그대로 먹는다','그대로데움'],
+      ['동남아 길거리에서 처음 보는 꼬치를 판다','하나 사서 먹어 본다','길거리꼬치','배탈이 무섭다. 지나간다','지나감'],
+      ['혼자 밥 먹을 때','이번엔 안 먹어 본 메뉴','혼밥새메뉴','혼밥은 역시 늘 먹던 국밥','늘국밥'],
+      ['피자 토핑을 고른다면','파인애플에 할라피뇨, 꿀까지','과감토핑','페퍼로니','페퍼로니'],
+      ['오늘 급식이 ‘실험 메뉴’란다','오히려 기대된다','실험메뉴','편의점으로 간다','편의점행'],
+      ['처음 가 보는 나라 음식점에 친구들과 갔다','처음 보는 메뉴로만 다 시킨다','전부새메뉴','하나는 아는 메뉴를 꼭 시킨다','보험메뉴'],
+      ['식당에서 주문 실수로 처음 보는 음식이 나왔다','이것도 인연이다. 먹는다','그냥먹음','원래 시킨 걸로 바꿔 달라고 한다','교환요청'],
+      ['편의점 ‘꿀조합 레시피’가 유행이다','오늘 바로 만들어 본다','꿀조합','하나씩 따로 먹는다','따로먹기'],
+      ['한 끼를 하나로 바꿀 수 있다면','영양이 완벽한 미래형 알약 한 알','미래알약','늘 먹던 집밥 한 상','집밥한상'],
+      ['에어프라이어를 샀다','뭐든 넣어 본다. 오늘은 귤','뭐든넣기','냉동 만두 전용','냉동만두'],
+      ['손으로 먹는 게 전통인 식당에 갔다','현지 방식대로 손으로','손으로먹기','숟가락을 부탁한다','숟가락요청'],
+      ['생일에 먹고 싶은 것','매년 다른 나라 음식','매년다른나라','매년 같은 미역국과 잡채','미역국잡채'],
+      ['점심 메뉴로 고민하는 동료들에게 나는','“새로 생긴 데 가 보자!”','새로생긴데','“그냥 늘 가던 데 가자”','늘가던데'],
+    ],
+    tiers:[
+      ['미식 개척자','처음 보는 메뉴가 보이면 심장이 뛰어요. 실패한 메뉴도 이야깃거리라고 생각해요.'],
+      ['호기심 미식가','새로운 맛이 궁금하지만, 믿고 가는 맛집 목록도 꼭 챙겨 둬요.'],
+      ['그날그날 입맛파','도전하고 싶은 날과 아는 맛이 당기는 날이 반반이에요. 기분 따라 메뉴를 고를 줄 알아요.'],
+      ['단골 수호자','한 번 마음에 든 집은 끝까지 가요. 사장님이 내 주문을 외우고 있을지도 몰라요.'],
+      ['아는 맛 장인','실패 없는 한 끼가 최고예요. 같은 메뉴를 열 번 먹어도 질리지 않아요.'],
+    ] },
+  { id:'friends', no:4, name:'친구', hex:'#1FA5D6', onHex:'#14161A', L:'넓이', R:'깊이',
+    flip:'1100101010' + '0011010101' + '1001101010' + '1010011001' + '0101100110' + '1001010101',
+    teaser:'“생축” 한 줄 200개 vs 장문의 편지 3통',
+    qs:[
+      ['생일 축하 메시지, 하나만 고른다면','200명에게 받는 “생축” 한 줄씩','생축200','3명에게 받는 장문의 편지','장문3통'],
+      ['평생 하나만 고른다면','어딜 가도 아는 사람을 만난다. 화장실 앞에서도','인맥만렙','어딜 가도 아무도 날 모른다. 단골집에서도','투명인간'],
+      ['단톡방을 하나만 남긴다면','300명 단톡방의 방장','300명방장','3명 단톡방의 막내','3명막내'],
+      ['친구의 친구 생일 파티, 아는 사람은 딱 한 명','간다. 새 친구가 생길지도','파티참석','그 한 명이랑 따로 밥 먹는다','따로밥'],
+      ['둘 중 하나와 1년 동안 연락이 끊긴다','가장 친한 친구 한 명','베프잠수','그 외 아는 사람 전부','전원잠수'],
+      ['새 학기 첫 주 점심','매일 다른 사람이랑 먹는다','점심로테','첫날 같이 먹은 사람이랑 계속 먹는다','고정짝꿍'],
+      ['팔로워 1만 명을 주는 대신, 친구 한 명이 사라진다면','받는다. 누가 사라질지는 랜덤','팔로워1만','거절한다. 친구는 못 잃지','친구지키기'],
+      ['여행 메이트를 고른다면','처음 만난 10명과 게스트하우스 파티','게하파티','10년 지기 한 명과 말없이 드라이브','드라이브'],
+      ['더 듣고 싶은 칭찬','“너는 진짜 발이 넓다”','발이넓다','“너 같은 친구 있어서 좋겠다”','너같은친구'],
+      ['이사하는 날','얼굴만 아는 20명이 와서 1시간 만에 끝','20명이사','찐친 2명이랑 하루 종일, 끝나고 짜장면','짜장면'],
+      ['휴대폰 연락처, 하나만 고른다면','1,000명. 다 얼굴만 아는 사이','연락처1000','10명. 다 새벽에 전화할 수 있는 사이','연락처10'],
+      ['주말에 생긴 약속','처음 보는 사람이 섞인 6명 모임','6명모임','베프랑 둘이 늘 가던 곳','둘이늘가던곳'],
+      ['집들이를 한다면','아는 사람 다 불러서 3일 동안 릴레이','릴레이집들이','찐친 3명이랑 밤새 수다','찐친집들이'],
+      ['친구가 고민을 털어놓는다','그 분야를 잘 아는 지인을 바로 연결해 준다','지인연결','새벽까지 같이 들어 준다','새벽까지들음'],
+      ['동창회 연락이 왔다','간다. 오랜만에 다 보고 싶다','동창회참석','친한 둘이랑 따로 만난다','따로만남'],
+      ['평생 하나만 고른다면','어느 나라를 가든 재워 줄 친구가 있다','세계친구','10년 넘게 날 아는 친구가 동네에 셋','동네찐친'],
+      ['SNS 게시물에 달리는 반응','좋아요 500개','좋아요500','나를 진짜 아는 사람의 댓글 하나','진심댓글'],
+      ['새로 온 동료가 혼자 밥을 먹는다','바로 우리 무리에 끼워 준다','무리합류','둘이 따로 밥 먹으면서 친해진다','둘이밥'],
+      ['인생 친구를 만드는 방법','동호회 5개에 가입','동호회5개','한 동호회에 5년','한곳5년'],
+      ['동네 단골, 하나만 고른다면','인사만 하는 단골집이 20곳','단골20곳','사장님이 내 생일까지 아는 단골집 한 곳','단골1곳'],
+      ['명함 앱에 저장된 사람이 500명을 넘었다','뿌듯하다. 인맥이 자산','인맥자산','정리한다. 진짜 연락하는 사람만','명함정리'],
+      ['처음 간 파티에서 나는','30분 만에 모두와 인사한다','전원인사','한 사람이랑 구석에서 2시간 대화','구석대화'],
+      ['친한 친구가 3시간 거리로 이사 간다','새로운 친구들도 생기겠지','새친구','매달 KTX 타고 보러 간다','매달KTX'],
+      ['단체 사진을 찍는다면','모르는 사람까지 불러서 다 같이','다같이찰칵','친한 사람들끼리 따로 한 장','우리끼리'],
+      ['평생 하나만 고른다면','모든 사람과 무난하게 친하다','두루친함','딱 셋과 친한데, 그 셋은 목숨 걸고 내 편','목숨걸고내편'],
+      ['게임 친구, 하나만 고른다면','매일 다른 사람과 랜덤 매칭','랜덤매칭','5년째 같은 듀오','5년듀오'],
+      ['이웃과의 관계','아파트 단톡방의 인싸','단톡방인싸','옆집 한 곳이랑 반찬 나눠 먹는 사이','반찬이웃'],
+      ['힘든 날 받고 싶은 연락','여러 친구에게서 온 “괜찮아?” 10통','괜찮아10통','가장 친한 친구의 전화 한 통','전화한통'],
+      ['새해 첫날 보내는 메시지','연락처 전체에 새해 인사','전체인사','꼭 고마운 다섯 명에게만 길게','다섯명에게'],
+      ['내 인생이 영화가 된다면','카메오가 100명 나오는 떠들썩한 영화','카메오100','두 사람의 오랜 우정 영화','우정영화'],
+      ['MT에서 밤을 새운다면','방마다 돌아다니며 다 같이 게임','방순회','한 명이랑 베란다에서 새벽 대화','베란다대화'],
+      ['친구 소개로 만난 사람이 나랑 너무 잘 맞는다','그 사람 친구들까지 소개받는다','친구의친구','둘이서만 자주 만난다','둘이자주'],
+      ['SNS 친한 친구 목록','300명','친친300','5명','친친5'],
+      ['평생 하나만 고른다면','모든 모임에 초대받는다. 단, 깊은 얘기는 못 함','모든모임','모임 초대는 거의 없다. 단, 만나면 밤새 깊은 얘기','깊은얘기'],
+      ['친구가 결혼식 축사를 부탁했다','하객 300명 앞이라도 좋다. 한다','축사수락','축사는 사양하고 둘만 아는 얘기를 편지로 준다','편지로'],
+      ['카톡 프로필 음악','다들 아는 최신 인기곡','인기곡','친한 친구만 알아들을 우리 노래','우리노래'],
+      ['친구들과 단체 여행 중 자유 시간','다 같이 몰려다닌다','다같이','친한 한 명이랑 따로 빠진다','둘이빠짐'],
+      ['내 결혼식 하객 수','북적북적 300명','하객300','진짜 가까운 30명','하객30'],
+      ['친구가 새 애인을 소개해 준다고 한다','친구들 다 같이 모여서 보자','다같이소개','셋이서 조용히 밥 먹자','셋이밥'],
+      ['평생 하나만 고른다면','매년 새 친구가 10명씩 생긴다','매년10명','지금 친구들과 평생 간다. 새 친구는 없음','지금친구평생'],
+      ['모임에서 내 역할','처음 보는 사람들을 이어 주는 사람','연결고리','한 사람 이야기를 끝까지 들어 주는 사람','끝까지들음'],
+      ['메신저 대화방 상태','안 읽은 채팅이 999+','999플러스','대화방은 5개. 전부 다 읽음','대화방5개'],
+      ['오래된 친구와 크게 싸웠다','다른 친구들에게 의견을 물어본다','여론조사','그 친구랑 둘이 끝장 대화','끝장대화'],
+      ['새로 등록한 헬스장, 사람들이 말을 건다','다 친해진다. 운동은 덤','헬스장인싸','이어폰 끼고 운동만','이어폰운동'],
+      ['외국에서 1년 살게 됐다','현지 친구 50명 만들기','현지친구50','한국 친구들과 매일 영상 통화','매일영상통화'],
+      ['처음 보는 사람과 이야기할 때 나는','5분 만에 공통점 세 개를 찾는다','공통점찾기','5분 동안 웃으며 듣기만 한다','듣기만'],
+      ['친구 생일을 챙기는 방법','100명 생일 알림을 다 켜 둔다','알림100','외우는 생일은 다섯 명뿐','외우는다섯'],
+      ['약속 장소에 친구가 다른 친구를 데려왔다','오히려 좋다. 한 명 더 생겼다','오히려좋다','조금 서운하다. 둘이 얘기하고 싶었다','서운함'],
+      ['친구에게 비밀을 털어놓는다면','친한 친구들 단톡방에 한꺼번에','단톡방고백','가장 믿는 한 명에게만','한명에게만'],
+      ['내 말투가 바뀌는 이유','여러 친구 말투가 다 섞였다','말투짬뽕','베프 말투를 그대로 닮았다','베프말투'],
+      ['초능력 하나를 고른다면','세상 모든 사람의 이름을 기억하는 능력','이름기억','한 사람의 마음을 정확히 아는 능력','마음읽기'],
+      ['새 친구와 친해지는 데 걸리는 시간','하루면 된다','하루면','1년은 걸린다','1년걸림'],
+      ['명절에 친척들이 다 모였다','사촌 20명과 다 같이 윷놀이','윷놀이','제일 친한 사촌 한 명과 방에서 수다','사촌한명'],
+      ['내 인간관계를 나무로 그린다면','가지가 사방으로 뻗은 나무','가지많은나무','뿌리가 깊은 나무','뿌리깊은나무'],
+      ['나에게 더 든든한 것','어느 모임에 가도 반겨 주는 사람이 있다','어딜가도환영','무슨 일이 생겨도 달려와 줄 사람이 있다','달려와줄사람'],
+      ['내가 연예인이 된다면','팬클럽 회원 100만 명','팬클럽100만','오래 응원해 준 팬 10명을 다 기억하는 스타','팬10명'],
+      ['친구들과 노래방에 가면','다 같이 떼창하는 노래','떼창','둘이 듀엣하는 노래','듀엣'],
+      ['오늘 하루 연락한 사람 수','20명 이상','연락20명','2명','연락2명'],
+      ['친구들이 키우는 반려동물','친구 20명의 반려동물 이름을 다 안다','이름20개','베프네 강아지가 날 알아본다','날알아봄'],
+      ['친구를 사귈 때 더 중요한 것','함께 웃을 일이 많은 사람','함께웃음','함께 울어 줄 수 있는 사람','함께울음'],
+    ],
+    tiers:[
+      ['인맥 부자','어디서든 아는 사람을 만나요. 사람을 모으는 데 타고난 재능이 있어요.'],
+      ['핵인싸 사교러','새로운 사람은 늘 반가워요. 넓은 관계에서 에너지를 얻어요.'],
+      ['두루두루 진심파','넓게도 깊게도 만날 줄 알아요. 관계마다 알맞은 거리를 찾아요.'],
+      ['소수 정예파','친구가 많지 않아도 괜찮아요. 대신 한 명 한 명에게 진심이에요.'],
+      ['단 한 사람 수집가','진짜 친구 한 명이면 충분하다고 믿어요. 관계의 깊이가 곧 행복이에요.'],
+    ] },
+  { id:'travel', no:5, name:'여행', hex:'#8C5BBE', onHex:'#FFFFFF', L:'모험', R:'휴식',
+    flip:'0011010110' + '1100101001' + '0101011010' + '0110100101' + '1001011010' + '0011010110',
+    teaser:'내려야 어딘지 아는 랜덤 항공권 vs 늘 가던 그 도시',
+    qs:[
+      ['공항에서 ‘랜덤 항공권’을 판다. 가격은 같다','랜덤 항공권. 내려야 어딘지 앎','랜덤항공권','늘 가던 그 도시','늘가던곳'],
+      ['여행지에서 하루 동안 휴대폰이 안 된다','종이 지도 들고 골목 탐험','종이지도','호텔 수영장에서 책 한 권','수영장독서'],
+      ['숙소를 고른다면','말이 하나도 안 통하는 현지인 민박','현지민박','모든 게 예상대로인 체인 호텔','체인호텔'],
+      ['가이드가 “여기서부터는 길이 없습니다”','그래서 가 보는 거다','길없는길','여기서 사진 찍고 돌아간다','인증샷'],
+      ['비행기 옆자리 사람이 “같이 여행할래요?”','콜. 일정은 버린다','즉석동행','웃으며 이어폰을 낀다','이어폰'],
+      ['여행 일정표, 하나만 고른다면','새벽 5시 기상, 하루 6곳','하루6곳','점심때 기상, 하루 1곳','하루1곳'],
+      ['평생 딱 한 번 갈 수 있다면','아마존 정글 일주일 캠핑','아마존','몰디브 수상 빌라 일주일 낮잠','몰디브'],
+      ['폭우로 비행기가 하루 미뤄졌다','공항 밖으로 나가 그 도시를 하루 더','하루더','공항 라운지에서 하루 종일 쉰다','라운지'],
+      ['여행에서 꼭 챙겨 오고 싶은 것','평생 써먹을 무용담 하나. 고생은 덤','무용담','“얼굴 좋아졌다”는 말','얼굴폈다'],
+      ['다음 휴가 검색창에 치는 말','“아직 아무도 안 간 곳”','미지의곳','“지난번 그 호텔”','그호텔'],
+      ['여행 가방을 하나만 고른다면','배낭 하나로 한 달','배낭한달','캐리어 두 개로 일주일','캐리어둘'],
+      ['일정이 하나도 없는 여행 하루','현지 버스를 아무거나 타고 종점까지','버스종점','숙소 근처 카페에서 하루 종일','숙소카페'],
+      ['여행지에 일주일 내내 비 예보가 떴다','그래도 우비 입고 다 돌아본다','우비탐험','숙소에서 빗소리 들으며 쉰다','빗소리휴식'],
+      ['평생 하나만 고른다면','매년 다른 나라에서 한 달 살기','한달살기','매년 같은 휴양지에서 일주일','같은휴양지'],
+      ['캠핑을 간다면','전기도 물도 없는 오지 캠핑','오지캠핑','침대 있는 글램핑','글램핑'],
+      ['여행 중 현지 축제가 열렸다. 사람이 엄청 많다','인파 속으로 뛰어든다','축제입장','숙소 창문으로 구경한다','창문구경'],
+      ['기차 여행을 한다면','하루 한 번 다니는 시골 완행열차','완행열차','가장 빠른 고속열차 일등석','고속일등석'],
+      ['비행기 좌석, 하나만 고른다면','조종석 옆 보조석. 단, 12시간 내내 깨어 있어야 함','조종석','일등석 침대 좌석. 단, 창문 없음','일등석침대'],
+      ['여행지에서 길을 잃었다','오히려 좋다. 골목 구경','길잃기좋다','바로 택시를 부른다','바로택시'],
+      ['여행 사진, 하나만 남긴다면','절벽 끝에서 찍은 아찔한 사진','절벽사진','호텔 침대에서 찍은 발 사진','발사진'],
+      ['해외 한 달 살기, 숙소는','현지 대학생들과 셰어하우스','셰어하우스','전망 좋은 레지던스에 혼자','레지던스'],
+      ['다이빙 강사가 “상어 보러 갈래요?”','당연히 간다','상어다이빙','저는 해변에서 기다릴게요','해변대기'],
+      ['연휴 5일, 비행기표가 생겼다','3개국을 찍고 온다','3개국','한 도시에서 5일 내내','한도시'],
+      ['외국에서 현지인이 집밥에 초대했다','간다. 이런 기회가 어딨어','현지집밥','감사하지만 정중히 사양','정중사양'],
+      ['여행 계획 담당이 됐다','비행기만 잡고 나머지는 현지에서','현지에서','숙소, 맛집, 동선까지 엑셀로','엑셀일정'],
+      ['여행에서 체험 하나만 한다면','번지점프 100m','번지점프','전신 마사지 2시간','마사지'],
+      ['평생 하나만 고른다면','세계 모든 나라에 가 본다. 단, 전부 1박씩','모든나라1박','좋아하는 나라 한 곳에서 평생 휴가','한나라휴가'],
+      ['오로라를 보러 간다면','영하 30도, 밤새 기다리는 투어','오로라대기','유리 천장 호텔 침대에 누워서','유리천장'],
+      ['여행 마지막 날 밤','마지막까지 야시장과 클럽','불태우기','일찍 자고 공항에 여유 있게','여유귀국'],
+      ['여행에서 돌아와 듣고 싶은 말','“거기를 진짜 갔다고?”','진짜갔다고','“거기 진짜 좋았겠다”','좋았겠다'],
+      ['여행지에서 새벽 6시에 눈이 떠졌다','바로 나가서 일출 산책','일출산책','다시 자고 조식 마감 직전에 일어난다','조식마감'],
+      ['국내 여행, 하나만 고른다면','배 타고 들어가는 울릉도 섬 일주','울릉도일주','남해 바닷가 독채 펜션에서 3일','독채펜션'],
+      ['여행 첫날, 숙소 예약이 날아갔다','이것도 여행이다. 발길 닿는 데서 잔다','발길닿는데','근처에서 제일 좋은 호텔을 바로 잡는다','제일좋은호텔'],
+      ['해변에 도착했다','서핑 첫 수업부터 신청한다','서핑입문','선베드에 누워 파도 소리를 듣는다','선베드'],
+      ['렌터카로 여행한다면','지도에도 없는 비포장도로로','비포장도로','고속도로 휴게소 맛집 투어','휴게소투어'],
+      ['여행 짐에 꼭 넣는 것','등산화와 헤드랜턴','헤드랜턴','실크 수면 안대와 목베개','수면안대'],
+      ['평생 하나만 고른다면','세계 어디든 공짜로 간다. 단, 숙소는 늘 텐트','텐트세계여행','국내만 갈 수 있다. 단, 숙소는 늘 특급 호텔','특급호텔'],
+      ['산에 간다면','정상까지 6시간 코스','정상6시간','케이블카 타고 전망대 카페','전망대카페'],
+      ['말이 하나도 안 통하는 나라에서 장을 본다','손짓 발짓으로 시장 흥정','손짓흥정','가격표가 붙은 대형 마트','대형마트'],
+      ['겨울 휴가지를 고른다면','개썰매 타고 눈 덮인 북쪽 마을로','개썰매','따뜻한 남쪽 섬 리조트로','남쪽리조트'],
+      ['항공권 가격이 같다면','경유 두 번. 경유지 도시도 구경한다','경유구경','직항으로 빠르게','직항'],
+      ['여행 영상을 남긴다면','액션캠 들고 다이빙과 패러글라이딩','액션캠','호텔 창밖 풍경 타임랩스','타임랩스'],
+      ['사막 여행을 간다면','낙타 타고 사막 한가운데 텐트에서 1박','사막텐트','사막이 보이는 고급 호텔 수영장','사막뷰호텔'],
+      ['호텔 직원이 “현지인만 아는 폭포가 있어요”','지금 바로 출발한다','숨은폭포','“위치만 알려 주세요. 다음에 갈게요”','다음에갈게요'],
+      ['새벽 4시에 출발하는 열기구 투어가 있다','알람 다섯 개 맞추고 간다','열기구','그 시간엔 꿈속에서 난다','꿈속비행'],
+      ['투어를 고른다면','손전등 들고 들어가는 동굴 탐험','동굴탐험','꽃 정원과 찻집 투어','정원투어'],
+      ['캠핑장의 밤','별 보러 산꼭대기까지','별보러','텐트 안에서 보드게임','보드게임'],
+      ['여행 중 비가 그치고 무지개가 떴다','무지개 끝을 찾아 차를 몬다','무지개추적','창가에서 사진 한 장 찍고 낮잠','창가낮잠'],
+      ['경품으로 여행권을 고를 수 있다','우주 정거장 3일','우주정거장','세계 최고 스파 리조트 3일','스파리조트'],
+      ['휴가 첫날, 숙소에 도착하자마자','짐만 던져 놓고 바로 나간다','바로나감','일단 한숨 잔다','일단잠'],
+      ['배를 탄다면','작은 어선 타고 섬 사이 낚시','어선낚시','대형 크루즈 선상 수영장','크루즈'],
+      ['외국 시골에서 길을 물었더니 할머니가 직접 데려다주겠다고 한다','따라간다. 이게 여행이지','따라감','감사하지만 지도 앱을 믿는다','지도앱'],
+      ['여행 중 하루를 통째로 쓴다면','현지 요리 학교 수업','요리수업','숙소 테라스에서 하루 종일 멍','테라스멍'],
+      ['여행 기념품','벼룩시장에서 산 정체 모를 골동품','골동품','공항 면세점 초콜릿','면세초콜릿'],
+      ['테마파크에 왔다','제일 무서운 롤러코스터부터','롤러코스터','회전목마 타고 퍼레이드 구경','퍼레이드'],
+      ['여행지 아침 산책 중, 동네 마라톤 대회가 열렸다','즉석에서 참가 신청','즉석마라톤','길가에서 박수 치며 응원','길가응원'],
+      ['처음 가는 나라, 첫 끼니','공항 앞 노점에서 현지 음식','노점첫끼','호텔 룸서비스','룸서비스'],
+      ['자전거를 빌린다면','산악자전거로 숲길 20km','산악자전거','바구니 달린 자전거로 동네 한 바퀴','바구니자전거'],
+      ['현지 친구가 “진짜 맛집은 버스로 2시간 거리야”','따라간다','2시간맛집','숙소 근처 맛집도 충분하다','숙소근처맛집'],
+      ['여행지에서 운전해야 한다. 차선이 반대 방향이다','도전한다. 이것도 경험','반대차선','기사 딸린 투어를 예약한다','기사투어'],
+    ],
+    tiers:[
+      ['지도 밖 탐험가','익숙한 건 지루해요. 길을 잃는 것도 여행의 일부라고 생각해요.'],
+      ['호기심 여행자','새로운 곳에선 일단 걸어 봐요. 그래도 쉬어 갈 때를 알아요.'],
+      ['완급 조절 여행러','낮엔 탐험, 밤엔 휴식. 여행의 리듬을 잘 아는 사람이에요.'],
+      ['힐링 여행자','여행은 충전이에요. 좋은 숙소와 느긋한 아침이면 충분해요.'],
+      ['호캉스 마스터','가장 완벽한 여행은 아무것도 하지 않는 여행이에요. 침대와 수영장이 곧 목적지예요.'],
+    ] },
+  { id:'life', no:6, name:'일상', hex:'#A3672F', onHex:'#FFFFFF', L:'밖', R:'집',
+    flip:'1010010101' + '0101101010' + '1001010110' + '0101100101' + '1010011010' + '0110100110',
+    teaser:'밖에선 전부 공짜 vs 집에선 배달 0분',
+    qs:[
+      ['평생 하나만 고른다면','집 밖에선 모든 게 공짜. 단, 집엔 와이파이가 없음','밖이공짜','집에선 모든 배달이 0분. 단, 나가면 꼭 비가 옴','배달0분'],
+      ['토요일 아침, 알람 없이 눈을 떴다','일단 씻고 나간다. 어디 갈지는 버스에서','일단외출','다시 눈을 감는다','다시잠'],
+      ['친구가 “10분 뒤 너희 집 앞이야”','“그럼 나가자! 어디 갈래?”','집앞번개','“그럼 올라와, 라면 끓여 줄게”','우리집라면'],
+      ['날씨 앱에 ‘올해 가장 좋은 날’이 떴다','한강에 돗자리 펴러 간다','한강돗자리','창문 활짝 열고 집에서 즐긴다','창문열기'],
+      ['1년짜리 이용권을 준다면','전국 놀이공원 연간 이용권','연간이용권','세상의 모든 OTT 구독권','OTT전부'],
+      ['친구들이 “이번 주말에 캠핑 가자”','텐트부터 산다','진짜캠핑','거실에 텐트 치는 ‘집 캠핑’을 역제안','거실캠핑'],
+      ['할 일이 잔뜩 쌓였다','카페에 가야 집중이 된다','카페작업','침대 위가 내 사무실','침대사무실'],
+      ['갑자기 평일에 하루를 쉬게 됐다','평일이라 한산한 곳을 골라 돌아다닌다','평일외출','다들 출근한 평일 낮, 집에서 늘어진다','평일집콕'],
+      ['평생 살 곳을 고른다면','집 없이 매일 다른 호텔','매일호텔','평생 우리 동네 안에서만. 대신 집이 엄청 좋음','우리동네'],
+      ['가장 나다운 밤 9시','아직 밖. 2차 어디 갈지 고민 중','2차고민','이미 씻고 누움','이미누움'],
+      ['평생 하나만 고른다면','집에 침대가 없다. 대신 동네 찜질방이 공짜','침대없음','밖에선 의자에 못 앉는다. 대신 집이 최고급 호텔','밖에의자없음'],
+      ['퇴근길, 친구가 “한잔할래?”','“어디야? 바로 갈게”','바로간다','“다음에! 오늘은 집에 가고 싶어”','다음에'],
+      ['비 오는 일요일','우산 쓰고 동네 책방까지 산책','책방산책','이불 속에서 드라마 정주행','드라마정주행'],
+      ['내 방에 하나를 들일 수 있다면','현관에서 바로 탈 수 있는 자전거','현관자전거','방 한가운데 대형 빈백','대형빈백'],
+      ['한 달 동안 하나를 끊어야 한다','배달을 끊는다','배달금지','외식을 끊는다','외식금지'],
+      ['동네에 새 공원이 생겼다','오픈 첫날 바로 가 본다','공원첫날','창밖으로 보이니까 충분하다','창밖으로충분'],
+      ['동네 친구가 “산책할래?”','“지금 바로 나갈게”','바로산책','“영상 통화로 하자”','영상통화'],
+      ['월급날 가장 먼저 하는 소비','친구들과 맛집 원정','맛집원정','집 꾸미기 소품 쇼핑','집꾸미기'],
+      ['약속이 갑자기 취소됐다','아쉬워서 다른 친구를 부른다','대타소환','속으로 환호하며 잠옷으로 갈아입는다','잠옷환호'],
+      ['기온이 영하 15도다','그래도 나간다. 눈 오는 거리 구경','눈길산책','보일러 온도를 올린다','보일러'],
+      ['토요일 밤 10시, 가장 끌리는 소리','골목에서 들리는 사람들 웃음소리','골목웃음','세탁기가 다 돌았다는 알림음','세탁기알림'],
+      ['밖에 있는데 휴대폰 배터리가 10%','그래도 더 논다','배터리10%','집에 갈 핑계가 생겼다','귀가핑계'],
+      ['커피를 마신다면','하루 두 번 카페 출석','카페출석','홈카페 장비에 50만 원 투자','홈카페'],
+      ['쉬는 날 하루 일정','오전 전시회, 오후 쇼핑, 저녁 약속','풀코스','일정 없음이 일정','일정없음'],
+      ['이사 갈 동네를 고른다면','번화가 한복판. 밤에도 시끄러움','번화가','조용한 주택가. 편의점까지 15분','주택가'],
+      ['생일에 받고 싶은 하루','친구들이 짜 준 깜짝 투어','깜짝투어','아무도 연락 안 하는 고요한 하루','고요한하루'],
+      ['집에서 일주일 동안 못 나간다면','사흘째부터 답답해서 미칠 것 같다','사흘한계','일주일이 모자랄 것 같다','일주일모자람'],
+      ['저녁 메뉴를 정할 때','‘어디 가서 먹지?’부터 생각한다','어디가서','‘뭐 시켜 먹지?’부터 생각한다','뭐시켜'],
+      ['이상적인 일요일 오후 3시','한강에서 자전거 타기','한강자전거','소파에서 낮잠 2회차','낮잠2회차'],
+      ['외출 준비 시간','10분이면 충분. 일단 나가고 본다','10분준비','마음의 준비만 1시간','마음준비1시간'],
+      ['주말 운동을 한다면','동네 러닝 크루','러닝크루','거실에서 요가 영상','거실요가'],
+      ['택배를 받는 곳','회사나 편의점. 어차피 밖에 있으니까','편의점택배','무조건 집 앞. 어차피 집에 있으니까','집앞택배'],
+      ['하루 동안 휴대폰 없이 지내야 한다','밖에서 사람들을 만나며 보낸다','밖에서보냄','집에서 책과 퍼즐로 보낸다','책과퍼즐'],
+      ['주말 오후, 큰맘 먹고 머리를 감았다','감은 게 아까워서라도 나간다','감은김에','개운하게 다시 눕는다','다시눕기'],
+      ['장을 본다면','시장 구경하며 직접','시장장보기','새벽 배송 앱으로','새벽배송'],
+      ['휴일 오후의 소확행','새로 생긴 동네 빵집 탐방','빵집탐방','따뜻한 물에 반신욕','반신욕'],
+      ['평생 하나만 고른다면','외출하는 날마다 날씨가 딱 좋다','늘맑은외출','집에 있는 날마다 좋아하는 비가 온다','집콕빗소리'],
+      ['겨울 주말 오후','스케이트장','스케이트장','전기장판 위에서 귤','전기장판귤'],
+      ['친구 결혼식이 끝난 오후 3시','그대로 2차, 3차까지','3차까지','바로 집에 가서 정장부터 벗는다','정장벗기'],
+      ['날씨 앱을 보는 이유','나갈 옷을 고르려고','옷고르기','안 나가도 되는 이유를 찾으려고','안나갈이유'],
+      ['주말 브런치','소문난 맛집 웨이팅','브런치웨이팅','집에서 직접 구운 팬케이크','집팬케이크'],
+      ['영화를 본다면','개봉 첫날 영화관','개봉첫날','한 달 뒤 OTT','한달뒤OTT'],
+      ['친구 생일 파티 장소','루프탑 바','루프탑','우리 집 거실','거실파티'],
+      ['좋아하는 가수의 공연, 하나만 고른다면','공연장 맨 앞줄에서 직접','맨앞줄','집에서 고화질 생중계로','집생중계'],
+      ['휴대폰 위치 기록을 봤다','이번 달 다녀온 곳 47곳','47곳','이번 달 다녀온 곳 2곳. 집과 편의점','집과편의점'],
+      ['혼자만의 시간이 필요할 때','혼자 영화관이나 카페로','혼자외출','방문 닫고 침대로','방문닫기'],
+      ['동네 조기 축구회가 회원을 모집한다','가입한다','조기축구','집에서 축구 중계를 본다','축구중계'],
+      ['새벽 1시, 갑자기 아이스크림이 먹고 싶다','편의점까지 걸어간다','새벽편의점','배달비 3천 원을 낸다','배달비'],
+      ['방학이나 휴가로 한 달이 생겼다','매일 약속으로 채운다','약속한달','밀린 드라마와 게임으로 채운다','드라마한달'],
+      ['집에서 가장 좋아하는 곳','현관. 나갈 수 있으니까','현관','침대. 안 나가도 되니까','침대'],
+      ['동네 단골 가게 수','열 곳이 넘는다','단골열곳','배달 앱 단골만 있다','배달단골'],
+      ['여름밤','공원 야외 영화제','야외영화제','에어컨 아래서 수박','에어컨수박'],
+      ['휴대폰 사진첩에 가장 많은 사진','밖에서 찍은 풍경','풍경사진','집에서 찍은 음식과 소품','집사진'],
+      ['반려동물을 키운다면','하루 두 번 산책시켜야 하는 강아지','산책강아지','산책이 필요 없는 고양이','고양이'],
+      ['재택과 출근, 하나만 고른다면','매일 출근. 대신 회사가 핫플 한복판','핫플출근','매일 재택. 대신 집 밖에 나갈 일이 없다','완전재택'],
+      ['외출했다 돌아오는 길, 집 앞에 도착했다','아쉬워서 동네 한 바퀴 더','한바퀴더','“드디어 집이다”가 절로 나온다','드디어집'],
+      ['쉬는 날 아침에 먼저 여는 앱','지도 앱. 오늘 갈 곳 검색','지도앱','OTT 앱. 오늘 볼 것 검색','OTT앱'],
+      ['약속 장소가 집에서 1시간 거리다','그래도 간다. 가는 길도 나들이','1시간나들이','우리 동네로 와 달라고 한다','동네로와줘'],
+      ['12월 31일 밤','보신각 타종을 보러 간다','보신각','이불 속에서 TV 중계로 본다','이불중계'],
+      ['이사 온 동네의 첫 주말','동네 골목을 다 돌아본다','골목탐방','짐 정리하고 집을 꾸민다','짐정리'],
+    ],
+    tiers:[
+      ['프로 외출러','집은 잠만 자는 곳이에요. 문밖에 나서야 하루가 시작돼요.'],
+      ['동네 탐험가','나가면 즐겁고 들어오면 편해요. 그래도 약속이 생기면 눈이 반짝여요.'],
+      ['반반 생활자','나가는 날과 쉬는 날을 알아서 나눠요. 둘 다 즐길 줄 알아요.'],
+      ['아늑한 집콕러','내 방이 최고의 장소예요. 필요한 외출은 하지만 귀가가 더 설레요.'],
+      ['집콕 장인','현관문은 택배 받을 때만 열어요. 집 안에서도 하루가 꽉 차요.'],
+    ] },
+  { id:'time', no:7, name:'시간', hex:'#6B7614', onHex:'#FFFFFF', L:'과거', R:'미래',
+    flip:'0110011001' + '1001100110' + '0110101010' + '1001011010' + '0110100101' + '1010010110',
+    teaser:'1년 동안 사진 금지 vs 지난 10년 치 사진 삭제',
+    qs:[
+      ['사진첩이 꽉 찼다. 하나를 고른다면','앞으로 1년 동안 사진을 못 찍는다','1년금지','지난 10년 사진을 전부 지운다','10년삭제'],
+      ['싸이월드가 부활해 내 옛날 미니홈피가 공개됐다','추억이니까 그대로 둔다','그대로공개','전부 비공개로 돌린다','전부비공개'],
+      ['드라마 결말, 하나만 고른다면','기억을 지우고 최애 드라마를 처음부터 다시 보기','다시처음','아직 안 나온 다음 시즌 결말 미리 보기','미리결말'],
+      ['타임캡슐 하나를 열 수 있다','초등학생 때 묻어 둔 타임캡슐','초딩캡슐','10년 뒤의 내가 보낸 타임캡슐','미래캡슐'],
+      ['노래방에서 딱 한 곡만 부른다면','가사를 다 외우는 15년 전 노래','추억곡','이번 주 차트 1위 신곡','신곡'],
+      ['1월 1일에 하는 일','작년 사진 정리하며 한 해 돌아보기','작년정리','올해 버킷리스트 20개 쓰기','버킷리스트'],
+      ['5년 만에 연락 온 친구가 “우리 그때 기억나?”','그때 얘기로 밤새 수다','그때얘기','“요즘은 뭐 해?”로 근황부터','요즘얘기'],
+      ['이사 가면서 짐을 반으로 줄여야 한다','추억 상자는 챙기고 새 옷을 포기','추억상자','추억 상자를 버리고 새 가구를 들인다','새가구'],
+      ['능력 하나를 고른다면','한 번 겪은 일은 절대 안 잊는 기억력','완벽기억','내일 일어날 일을 딱 하루 먼저 아는 촉','하루촉'],
+      ['딱 하루를 고를 수 있다면','가장 행복했던 하루를 처음처럼 다시 살기','그날다시','앞으로 올 가장 행복한 하루를 1분 미리 보기','미리1분'],
+      ['어린 시절 살던 동네에 갔다','다니던 학교와 문방구부터 찾아간다','추억투어','새로 생긴 곳부터 둘러본다','새로생긴곳'],
+      ['평생 딱 한 번만 쓸 수 있다면','과거 아무 날로 하루 돌아가기','과거하루','미래 아무 날을 하루 엿보기','미래하루'],
+      ['카톡 대화방을 정리한다','5년 전 대화방도 못 지운다','못지움','안 쓰는 방은 다 나간다','다나감'],
+      ['오래된 일기장을 발견했다','그 자리에서 다 읽는다','일기정독','덮어 두고 내년 계획부터 쓴다','계획먼저'],
+      ['다시 볼 수 있다면','어릴 때 좋아한 만화를 처음부터','옛날만화','이번 주에 나온 신작 애니','신작애니'],
+      ['내 프로필 사진은','5년째 같은 사진','5년째프사','매주 새로 바꾼다','매주프사'],
+      ['초등학교 동창 단톡방이 생겼다','옛날 사진 대방출','사진대방출','근황만 짧게 묻고 나온다','근황만'],
+      ['평생 휴대폰 하나만 쓴다면','10년 전 처음 산 그 폰','첫폰','10년 뒤에 나올 폰. 단, 사용법은 모름','미래폰'],
+      ['사진첩 하나를 볼 수 있다면','부모님이 20대였을 때 사진첩','부모님20대','30년 뒤 우리 가족 사진첩','30년뒤가족'],
+      ['영화를 고른다면','20년 전 명작 재개봉','재개봉명작','오늘 개봉한 신작','오늘개봉'],
+      ['휴대폰 메모장, 하나만 남긴다면','10년 동안 써 온 일기 메모','일기메모','앞으로 10년 계획 메모','계획메모'],
+      ['예전에 살던 집 앞을 지나간다','잠깐 멈춰서 창문을 올려다본다','옛집앞','안 쳐다보고 지나간다. 지금 집이 더 좋다','그냥지나감'],
+      ['휴대폰 배경 화면으로 하나를 고른다면','어릴 때 사진','어릴때사진','이루고 싶은 목표 사진','목표사진'],
+      ['박물관과 과학관 중 한 곳만 간다면','공룡 화석과 고대 유물','고대유물','우주 정거장과 로봇 전시','로봇전시'],
+      ['옷 스타일을 고른다면','90년대 레트로','레트로','미래에서 온 것 같은 스타일','미래패션'],
+      ['인생 그래프를 그린다면','지금까지가 최고점','지금까지최고','최고점은 아직 안 왔다','아직안왔다'],
+      ['내일 딱 한 명을 만날 수 있다면','10년 동안 못 본 초등학교 단짝','초등단짝','10년 뒤 가장 친해질 미래의 친구','미래친구'],
+      ['인생 영화를 고른다면','잃어버린 시간을 되찾는 이야기','되찾는이야기','아직 오지 않은 미래를 바꾸는 이야기','바꾸는이야기'],
+      ['더 좋아하는 냄새','할머니 집 냄새','할머니집','새 차 냄새','새차'],
+      ['인생 마지막 날 보고 싶은 것','내가 살아온 날들의 하이라이트 영상','하이라이트','내가 떠난 뒤 10년 후의 세상','10년후세상'],
+      ['졸업 앨범을 다시 찍을 수 있다면','그때 그 교복 차림으로 한 장 더','교복한장','10년 뒤 내 모습으로 미리 한 장','10년뒤모습'],
+      ['집에 들일 물건 하나','할머니가 쓰시던 자개장','자개장','최신 스마트 가전','스마트가전'],
+      ['서점에서 한 권만 고른다면','어릴 때 읽던 동화책 개정판','동화책','2050년 미래 예측 보고서','미래보고서'],
+      ['스무 살의 나에게 한마디','“그때 그 선택, 잘했어”','잘했어','“앞으로 더 좋아질 거야”','더좋아질거야'],
+      ['딱 한 곳만 갈 수 있다면','수학여행 때 묵었던 경주의 그 숙소','경주숙소','2050년에 문을 여는 화성 기지','화성기지'],
+      ['딱 한 번 맛볼 수 있다면','어릴 때 엄마가 해 주던 그 반찬','엄마반찬','100년 뒤 사람들이 먹을 음식','100년뒤음식'],
+      ['기념일을 챙긴다면','처음 만난 날을 매년 기념한다','처음만난날','다음 목표를 이루는 날을 기념한다','목표달성일'],
+      ['손편지를 쓴다면','10년 전의 나에게','10년전나에게','10년 뒤의 나에게','10년뒤나에게'],
+      ['휴대폰을 바꿀 때','옛날 사진과 메시지를 하나도 안 빼고 옮긴다','전부옮김','이참에 깨끗하게 새로 시작한다','새로시작'],
+      ['하루만 그 나이로 살아 볼 수 있다면','열 살의 나','열살','일흔 살의 나','일흔'],
+      ['동네 오래된 가게가 문을 닫는다','마지막 날 가서 사진을 남긴다','마지막날사진','다음에 뭐가 생길지 궁금하다','다음가게'],
+      ['부모님께 듣고 싶은 이야기','내가 아기였을 때 이야기','아기때이야기','부모님이 꿈꾸는 노후 이야기','노후이야기'],
+      ['서랍에서 오래된 MP3 플레이어를 찾았다','충전해서 그때 노래를 다 들어 본다','MP3재생','추억은 마음에. 정리한다','MP3정리'],
+      ['은퇴하고 살 곳','어릴 때 살던 동네로 돌아간다','어릴적동네','한 번도 안 살아 본 새 도시','새도시'],
+      ['나이 들어서 듣고 싶은 말','“하나도 안 변했네”','안변했네','“갈수록 멋있어진다”','멋있어진다'],
+      ['오랜만에 간 단골 분식집 메뉴가 바뀌었다','아쉽다. 옛날 메뉴가 그립다','옛날메뉴','새 메뉴도 맛있겠지','새메뉴'],
+      ['드라마를 고른다면','1990년대 배경 시대극','90년대배경','2077년 배경 SF','2077SF'],
+      ['딱 하나를 배운다면','어릴 때 그만둔 피아노를 다시','다시피아노','앞으로 쓸모 있을 코딩','코딩'],
+      ['자기 전에 하는 생각','오늘 있었던 일을 되감는다','되감기','내일 할 일을 미리 그린다','미리그리기'],
+      ['물건을 버릴 때','언젠가 추억이 될까 봐 못 버린다','못버림','1년 동안 안 썼으면 바로 버린다','1년규칙'],
+      ['여행 사진을 찍는다면','필름 카메라로 딱 36장','필름36장','최신 AI 카메라로 무제한','AI무제한'],
+      ['좋아하는 계절이 끝나 간다','벌써 그립다','벌써그리움','다음 계절이 기대된다','다음계절'],
+      ['아이에게 들려주고 싶은 이야기','내가 어릴 때 이야기','내어릴때','네가 크면 펼쳐질 세상 이야기','펼쳐질세상'],
+      ['오래된 친구에게 선물한다면','우리 옛날 사진으로 만든 앨범','옛사진앨범','다음에 같이 갈 여행 티켓','다음여행티켓'],
+      ['더 반가운 휴대폰 알림','“1년 전 오늘의 추억”','1년전오늘','“예약한 여행 D-7”','D-7'],
+      ['평생 하나만 고른다면','과거의 실수 하나를 없던 일로 한다','실수삭제','미래의 실수 하나를 미리 피한다','실수회피'],
+      ['나를 표현하는 물건','오래 써서 손때 묻은 지갑','손때지갑','이번에 산 새 이어폰','새이어폰'],
+      ['어릴 적 꿈이 떠올랐다','지금이라도 그 꿈을 이루고 싶다','어릴적꿈','지금 새로 생긴 꿈이 더 중요하다','새로운꿈'],
+      ['내 인생을 책으로 쓴다면 제목은','“그땐 그랬지”','그땐그랬지','“다음 장은 더 재밌다”','다음장'],
+      ['오늘 밤 꿈을 고를 수 있다면','어린 시절 놀이터에서 노는 꿈','놀이터꿈','10년 뒤 내 집에서 눈뜨는 꿈','10년뒤집꿈'],
+    ],
+    tiers:[
+      ['추억 수집가','지나온 시간에 보물이 많아요. 오래된 사진 한 장에 하루가 따뜻해져요.'],
+      ['다정한 회고가','뒤를 돌아보며 힘을 얻어요. 과거를 아끼는 만큼 지금도 소중히 여겨요.'],
+      ['현재 거주자','과거와 미래 사이, 지금 이 순간에 살아요. 어제와 내일의 균형을 잘 잡아요.'],
+      ['내일 설계자','아직 오지 않은 날들이 더 궁금해요. 지난 일은 교훈으로만 남겨요.'],
+      ['미래 여행자','머릿속은 늘 5년 뒤에 가 있어요. 오늘은 내일을 위한 준비 운동이에요.'],
+    ] },
+  { id:'love', no:8, name:'연애', hex:'#D23A70', onHex:'#FFFFFF', L:'낭만', R:'현실',
+    flip:'1001100110' + '0110011001' + '1010100101' + '0101101001' + '1010010110' + '0110011010',
+    teaser:'3시간 뒤에 오는 장문 vs 1분 만에 오는 “ㅇㅇ”',
+    qs:[
+      ['소개팅 상대가 첫 만남에 손편지를 건넸다','설렌다. 요즘 이런 사람이 어딨어','손편지설렘','부담스럽다. 아직 이름도 헷갈리는데','부담백배'],
+      ['애인의 답장 스타일, 하나만 고른다면','3시간 뒤에 오는데 매번 장문','3시간장문','1분 만에 오는데 매번 “ㅇㅇ”','1분ㅇㅇ'],
+      ['기념일에 받고 싶은 선물','직접 만든 30분짜리 영상 편지','영상편지','내 장바구니를 몰래 결제','장바구니'],
+      ['첫 데이트 중 소나기가 쏟아진다','비 맞으면서 같이 뛰어다니기','빗속달리기','가까운 카페에서 비 그칠 때까지 대화','카페피신'],
+      ['평생 하나만 고른다면','운명의 상대를 만난다. 단, 첫 만남이 50살','50살운명','지금 잘 맞는 사람을 만난다. 단, 운명은 아님','지금인연'],
+      ['애인이 “우리 같이 살래?”','“좋아, 내일 당장!”','내일당장','“관리비랑 집안일 분담표부터 짜자”','분담표'],
+      ['헤어진 연인에게서 새벽 2시에 “자니?”','답장한다. 혹시 모르니까','답장','읽고 차단한다','읽씹차단'],
+      ['결혼식을 고른다면','하객 없이 둘이서 바닷가 결혼식','바닷가둘이','식은 생략하고 그 돈으로 집 보증금','보증금'],
+      ['크게 다툰 다음 날, 화해하는 방법','꽃 들고 집 앞에서 기다리기','꽃다발','“우리 각자 뭘 잘못했는지 정리해 보자”','정리화해'],
+      ['100살에 듣고 싶은 말','“평생 설렜어”','평생설렘','“평생 편했어”','평생편함'],
+      ['첫눈에 반한 사람을 카페에서 봤다. 연락처는 모른다','일주일 동안 같은 시간에 그 카페에 간다','카페잠복','현실적으로 다시 볼 일은 없다. 잊는다','잊는다'],
+      ['애인과 여행, 숙소를 고른다면','바다가 보이는 비싼 숙소 1박','오션뷰1박','같은 돈으로 깔끔한 숙소 3박','깔끔3박'],
+      ['고백받고 싶은 장소','불꽃놀이가 터지는 순간','불꽃놀이','편의점 앞 벤치에서 담백하게','편의점벤치'],
+      ['평생 하나만 고른다면','매일 설레지만 가끔 크게 싸우는 사랑','설렘과싸움','설렘은 덜해도 싸울 일 없는 사랑','평온한사랑'],
+      ['주말 데이트 계획','즉흥으로 떠나는 당일치기 바다','즉흥바다','미리 예약해 둔 맛집과 영화','예약데이트'],
+      ['연애 상대를 고를 때 더 중요한 것','말 안 해도 통하는 느낌','통하는느낌','생활 습관이 맞는지','생활습관'],
+      ['연인과 “누가 먼저 연락했냐”로 다퉜다','사랑하면 먼저 하는 거다','먼저연락','연락 규칙을 정하자','연락규칙'],
+      ['헤어진 연인이 준 선물','추억이니까 상자에 넣어 둔다','추억보관','중고로 팔고 치킨을 사 먹는다','중고판매'],
+      ['애인이 “우리 10년 뒤에 뭐 하고 있을까?”','“바닷가 작은 집에서 강아지 키우고 있겠지”','바닷가집','“그러려면 지금부터 얼마씩 모아야 할까?”','저축계획'],
+      ['소개팅 전날, 상대 SNS를 찾았다','안 본다. 처음 만나는 설렘을 남긴다','안본다','다 본다. 미리 알면 실패가 없다','다본다'],
+      ['애인이 아플 때 해 주고 싶은 것','밤새 옆에서 손잡고 있기','밤새간호','약이랑 죽을 문 앞에 두고 푹 자게 하기','문앞배달'],
+      ['커플 아이템, 어디까지?','반지, 티셔츠, 신발까지 전부 커플로','전부커플','아무것도 안 맞춘다. 각자 취향대로','취향대로'],
+      ['재회 제안이 왔다. 헤어진 이유는 그대로다','그래도 다시 만난다. 이번엔 다를 거야','다시만남','거절한다. 이유가 그대로면 결과도 그대로','재회거절'],
+      ['프러포즈를 받는다면','수백 명 앞 깜짝 이벤트','공개프러포즈','둘이 밥 먹다가 “우리 결혼할까?”','담백프러포즈'],
+      ['사귄 지 100일까지','매일 만난다','매일만남','일주일에 두 번. 각자 생활도 지킨다','주2회'],
+      ['더 끌리는 사람','처음 만난 날 운명 같았던 사람','운명같은','만날수록 괜찮은 사람','만날수록'],
+      ['함께 살 집, 하나만 고른다면','낡았지만 옥상에서 노을이 보이는 집','노을옥상','새 건물, 역까지 3분','역세권'],
+      ['로맨스 영화의 결말','모든 걸 버리고 공항으로 달려간다','공항질주','각자 꿈을 이루고 몇 년 뒤 다시 만난다','몇년뒤재회'],
+      ['애인의 단점을 발견했다','사랑하면 그것도 귀엽다','다귀엽다','고칠 수 있는지 대화해 본다','대화해본다'],
+      ['50년 뒤 우리 모습','아직도 손잡고 산책','손잡고산책','서로 건강검진 날짜를 챙긴다','건강검진'],
+      ['짝사랑 상대가 다른 도시로 이사 간다','이사 전날 고백한다','이사전고백','어차피 멀어질 사이. 마음을 정리한다','마음정리'],
+      ['연인과 처음 맞는 크리스마스','눈 오는 거리에서 깜짝 선물','눈거리선물','붐비는 날은 피해서 다음 날 데이트','다음날데이트'],
+      ['연애 중 데이트 비용','통장 같은 건 없다. 그때그때 기분대로','기분대로','데이트 통장을 만들어 매달 같은 금액','데이트통장'],
+      ['연인과 바다에 갔다. 해가 진다','신발 벗고 노을 속으로 뛰어간다','노을달리기','막차 시간부터 확인한다','막차확인'],
+      ['장거리 연애가 시작됐다','매일 밤 2시간 영상 통화','매일영통','주말에 만나고 평일엔 각자 생활','주말만남'],
+      ['“이 사람이다” 싶은 순간','같은 노래를 동시에 흥얼거렸을 때','동시흥얼','내 이사를 말없이 도와줬을 때','이사도움'],
+      ['연인과 쉬는 날이 겹쳤다','계획 없이 기차역으로 간다','무계획기차','밀린 집안일을 같이 해치운다','같이집안일'],
+      ['연인과 함께하고 싶은 취미','같이 춤 배우기','춤배우기','같이 재테크 공부','재테크공부'],
+      ['꽃다발 선물을 받는다면','꽃이 제일 좋다','꽃이좋다','꽃값으로 맛있는 걸 사 먹고 싶다','꽃값으로'],
+      ['밤 11시, 연인이 “보고 싶어”라고 한다. 거리는 1시간','지금 간다','지금간다','“내일 아침에 보자”','내일아침'],
+      ['결혼반지를 고른다면','둘이 직접 만든 반지','직접만든반지','나중에 팔아도 값이 나가는 반지','값나가는반지'],
+      ['좋아하는 사람이 생겼다. 친구들은 “별로”라고 한다','내 마음이 중요하다','내마음','친구들 말에도 일리가 있다','친구말일리'],
+      ['이별 후 듣는 노래','슬픈 발라드를 무한 반복','발라드반복','신나는 노래로 기분 전환','신나는노래'],
+      ['친구가 연애 상담을 해 왔다','“그래도 사랑이면 붙잡아!”','붙잡아','“객관적으로 보면 헤어지는 게 맞아”','객관적으로'],
+      ['결혼 10주년','첫 데이트 장소에서 다시 프러포즈','다시프러포즈','둘이 모은 적금으로 해외여행','적금여행'],
+      ['평생 하나만 고른다면','매일 연애편지 같은 문자를 받는다','연애편지문자','매일 “오늘 저녁 뭐 먹을래?” 문자를 받는다','저녁뭐먹지'],
+      ['둘 중 하나는 꼭 맞아야 한다면','음악 취향','음악취향','소비 습관','소비습관'],
+      ['결혼을 결심하기까지','1년이면 충분하다. 확신이 오면 간다','1년확신','최소 3년은 만나 보고 결정한다','3년검증'],
+      ['함께 사는 집의 첫 가구','둘이 누울 큰 해먹','해먹','튼튼한 수납장','수납장'],
+      ['첫 데이트 장소','놀이공원','놀이공원','조용한 카페','카페대화'],
+      ['연애할 때 나는','하루 종일 그 사람 생각','하루종일생각','연애는 연애, 내 생활은 내 생활','내생활'],
+      ['소개팅 첫 만남, 상대가 30분 늦었다','사정이 있었겠지. 그래도 설렌다','그래도설렘','시간 개념부터 다시 생각해 본다','시간개념'],
+      ['평생 하나만 고른다면','연애할 때마다 첫 연애처럼 설렌다','늘첫연애','연애할 때마다 전보다 현명해진다','현명해짐'],
+      ['연인 부모님께 첫인사를 간다면','직접 쓴 편지와 꽃','편지와꽃','과일 바구니와 깔끔한 정장','과일바구니'],
+      ['연인과 1주년','첫 데이트 코스를 그대로 다시','첫코스재현','앞으로 1년 계획을 같이 세운다','1년계획'],
+      ['사랑에 빠지면 생기는 초능력','머릿속에 배경 음악이 흐른다','배경음악','머리 위에 궁합 점수가 뜬다','궁합점수'],
+      ['연인과 같이 키우는 화분 이름','‘우리 사랑’','우리사랑','‘몬스테라 1호’','몬스테라1호'],
+      ['비 오는 날, 우산이 하나뿐이다','같이 쓰고 천천히 걷는다','우산하나','편의점에서 하나 더 산다','하나더삼'],
+      ['연애를 시작할지 고민될 때','심장이 시키는 대로','심장대로','장단점을 적어 본다','장단점'],
+      ['연인에게 매년 받고 싶은 연락','첫눈 오는 날 “눈 온다”','첫눈연락','월급날 “오늘 내가 쏜다”','월급날밥'],
+    ],
+    tiers:[
+      ['로맨스 영화 주인공','사랑 앞에서는 계산기를 꺼 둬요. 우연과 설렘을 믿는 진짜 낭만주의자예요.'],
+      ['다정한 낭만파','현실도 알지만 마음이 먼저 움직여요. 작은 이벤트로 일상을 특별하게 만들어요.'],
+      ['균형 잡힌 연애가','설렘도 현실도 중요해요. 마음과 머리를 함께 쓰는 사랑이에요.'],
+      ['든든한 현실파','꾸준함이 최고의 로맨스라고 믿어요. 화려한 말보다 지키는 약속이 좋아요.'],
+      ['연애 전략가','감정만큼 조건도 꼼꼼히 봐요. 오래가는 사랑에는 설계가 필요하다고 생각해요.'],
+    ] },
+  { id:'values', no:9, name:'가치관', hex:'#B49A4C', onHex:'#14161A', L:'진실', R:'행복',
+    flip:'0101010011' + '1010101100' + '0011011001' + '1001100101' + '0110011010' + '1001010110',
+    teaser:'내 뒷담화가 전부 보이는 버튼, 누른다 vs 부순다',
+    qs:[
+      ['누르면 내 뒷담화가 전부 보이는 버튼이 있다','누른다','버튼누름','버튼을 부순다','버튼부숨'],
+      ['평생 하나만 고른다면','누가 거짓말을 하면 빨간 글씨로 보인다','빨간글씨','거짓말은 영원히 모른다. 대신 늘 기분이 좋음','영원히모름'],
+      ['친구가 3년 준비한 창업 아이템, 솔직히 별로다','솔직하게 말한다. 지금이 마지막 기회','솔직평가','응원한다. 잘될 수도 있으니까','응원'],
+      ['내 글을 AI가 평가해 준다면','가차없는 100점 만점 채점','가차없음','장점만 골라 주는 칭찬 모드','칭찬모드'],
+      ['10년 다닌 맛집이 사실 냉동식품을 데워 줬다','그래도 알게 돼서 다행이다','알아서다행','차라리 몰랐으면 좋았다','몰랐으면'],
+      ['반전 영화 보기 직전, 친구가 결말을 말하려 한다','듣는다. 알고 보는 게 편하다','스포환영','귀를 막는다. 모르는 채로 놀라고 싶다','스포금지'],
+      ['평생 거울 하나만 쓴다면','있는 그대로 보여 주는 거울','생얼거울','늘 10% 더 잘나 보이는 거울','보정거울'],
+      ['누가 “네 인생은 사실 리얼리티 쇼야”라고 귀띔했다','숨은 카메라를 찾아낸다','카메라찾기','모른 척 계속 산다','모른척'],
+      ['애인이 준비 중인 깜짝 파티를 우연히 알게 됐다','“나 다 알아” 하고 같이 준비한다','다알아','끝까지 모르는 척 놀라 준다','놀라주기'],
+      ['점쟁이가 “네 인생 최대의 비밀을 알려 줄까?”','듣고 간다','비밀듣기','커피나 한잔하고 간다','커피한잔'],
+      ['친구의 새 애인이 바람둥이라는 소문, 확실하지는 않다','친구에게 말해 준다','말해준다','확실해질 때까지 모른 척','모른척대기'],
+      ['평생 하나만 고른다면','사람들의 속마음이 다 들린다','속마음들림','모두가 날 좋아한다고 믿으며 산다','좋아한다믿음'],
+      ['인터넷에 내 이름을 검색하면 평가가 나온다','악플까지 전부 읽는다','전부읽음','절대 검색하지 않는다','검색안함'],
+      ['뉴스 알림, 하나만 고른다면','세상의 나쁜 소식까지 전부 실시간으로','모든뉴스','좋은 소식만 골라서','좋은소식만'],
+      ['내 노래 실력이 궁금하다','냉정한 평가를 듣고 연습한다','냉정평가','노래방 100점 기계 앞에서만 부른다','100점기계'],
+      ['키우는 강아지가 갑자기 말을 하게 됐다','“너 나 진짜 좋아해?”라고 물어본다','진심질문','아무것도 묻지 않고 산책이나 간다','그냥산책'],
+      ['평생 하나만 고른다면','세상의 모든 비밀을 안다. 단, 아무에게도 말 못 함','모든비밀','무슨 일이든 다 잘될 거라고 믿는 마음','다잘될거야'],
+      ['쓰면 세상이 조금 더 예뻐 보이는 안경이 있다','안 쓴다. 있는 그대로가 좋다','맨눈','쓴다. 예쁜 게 좋다','필터안경'],
+      ['원하는 경험만 평생 할 수 있는 가상 현실 기계가 있다','안 들어간다. 진짜 인생을 산다','진짜인생','들어간다. 행복은 행복이다','경험기계'],
+      ['10년 동안 믿어 온 사실이 거짓이라는 증거가 나왔다','바로 생각을 고친다','생각수정','못 본 걸로 한다','못본걸로'],
+      ['기억 하나를 지울 수 있다면','안 지운다. 창피한 기억도 나니까','안지움','가장 창피한 기억을 지운다','창피삭제'],
+      ['AI가 내 사진으로 10년 뒤 얼굴을 보여 준다','본다. 궁금하니까','10년뒤얼굴','안 본다. 지금 얼굴로 충분하다','지금얼굴'],
+      ['내 연봉이 동기 중 몇 등인지 알 수 있다','확인한다','등수확인','모르는 게 속 편하다','속편함'],
+      ['인생 최고의 칭찬','“너는 늘 정확해”','늘정확','“너랑 있으면 행복해”','너랑행복'],
+      ['좋아하는 가수의 립싱크 의혹 영상이 올라왔다','끝까지 확인한다','끝까지확인','안 본다. 내 추억을 지킨다','추억지키기'],
+      ['평생 하나만 고른다면','시험이 끝나자마자 점수를 1점 단위까지 안다','점수즉시','결과는 몰라도 늘 잘 봤다는 기분','잘본기분'],
+      ['산타가 없다는 걸 알게 된다면','일곱 살에 알고 싶다','일곱살진실','열 살까지는 모르고 싶다','열살까지'],
+      ['박물관 명화가 사실 복제품이라는 안내문을 봤다','실망한다. 진짜를 보고 싶었다','진품원함','그래도 아름다우니 괜찮다','아름다우면'],
+      ['평생 하나만 고른다면','모두가 나에게 100% 솔직하다','100%솔직','모두가 나에게 100% 다정하다','100%다정'],
+      ['인생의 마지막 장면','모든 질문의 답을 알게 되는 순간','모든답','좋아하는 사람들이 웃고 있는 순간','웃는순간'],
+      ['방금 산 물건, 더 싼 곳을 알려 주는 앱이 있다','설치한다. 손해 본 건 알아야지','최저가앱','안 한다. 이미 산 건 잊는다','산건잊기'],
+      ['가족 단톡방에 가짜 뉴스가 올라왔다','출처를 찾아 정정해 드린다','팩트체크','분위기 안 깨지게 이모티콘만 보낸다','이모티콘만'],
+      ['MBTI가 별 근거 없다는 연구를 봤다','논문까지 찾아 읽어 본다','논문읽기','그래도 내 MBTI가 좋다','그래도MBTI'],
+      ['녹음된 내 목소리를 처음 들었다. 생각보다 이상하다','계속 들으며 익숙해진다','계속듣기','다시는 안 듣는다','안듣기'],
+      ['새 일을 시작하기 전, 성공 확률을 정확히 알 수 있다','알고 시작한다','확률확인','일단 부딪쳐 본다','일단부딪침'],
+      ['SNS 팔로워 절반이 가짜 계정이라는 분석이 나왔다','확인하고 정리한다','가짜정리','숫자는 숫자일 뿐. 그냥 둔다','그냥둠'],
+      ['꿈꾸던 직업의 선배가 “현실은 이래”라며 다 알려 주겠다고 한다','다 듣는다','현실듣기','꿈은 꿈으로 남겨 둔다','꿈은꿈으로'],
+      ['오래 지켜 온 징크스가 아무 근거 없다는 걸 알았다','바로 그만둔다','징크스중단','그래도 계속한다. 마음이 편하니까','계속징크스'],
+      ['영화가 끝나고 친구가 “재밌었지?”라고 묻는다','“솔직히 좀 지루했어”','솔직히지루','“응, 재밌었어!”','재밌었어'],
+      ['내가 받은 칭찬이 예의상 한 말인지 알 수 있다','확인해 본다','칭찬진위','칭찬은 그냥 기분 좋게 받는다','기분좋게'],
+      ['선물 받은 반지가 진짜 다이아몬드인지 감정할 수 있다','감정한다','감정함','마음이 중요하니까 안 한다','감정안함'],
+      ['평생 하나만 고른다면','내가 한 모든 선택의 정답을 나중에 알게 된다','정답공개','내 선택이 늘 옳았다고 믿으며 산다','옳았다믿음'],
+      ['어릴 때 키운 금붕어, 사실 부모님이 몰래 몇 번 바꿨다고 한다','몇 번이었는지 묻는다','몇번바뀜','몰랐던 그때가 좋았다','몰랐던그때'],
+      ['이어폰 하나를 고른다면','모든 질문의 정답이 들리는 이어폰','정답이어폰','모든 소음이 좋아하는 음악으로 바뀌는 이어폰','음악이어폰'],
+      ['사진 속 내 웃음이 어색하다는 말을 들었다','거울 보고 웃는 연습을 한다','웃음연습','그냥 내 웃음이 좋다','내웃음'],
+      ['과거의 나를 영상으로 다시 볼 수 있다. 흑역사 포함','전부 본다','흑역사시청','좋았던 장면만 본다','좋은장면만'],
+      ['토요일에 산 복권, 추첨이 끝났다','바로 번호를 맞춰 본다','바로확인','일주일 동안 1등 상상을 즐긴다','1등상상'],
+      ['밤하늘의 별 중 일부는 이미 사라졌다는 걸 알았다','신기하다. 더 찾아본다','더찾아봄','그래도 별은 예쁘다. 그냥 본다','그냥별'],
+      ['좋아하는 작가의 신작이 혹평을 받는다','리뷰를 다 읽고 나서 읽는다','리뷰먼저','리뷰는 안 보고 내 느낌대로','내느낌대로'],
+      ['아무도 모르는 사실을 알게 됐다. 말하면 다들 불편해진다','말한다','말한다','혼자 간직한다','혼자간직'],
+      ['좋아하는 사람이 나를 어떻게 생각하는지 정확히 알 수 있다','알아본다','마음확인','모르는 지금이 더 설렌다','지금이설렘'],
+      ['휴대폰 사용 시간 주간 리포트','매주 꼼꼼히 확인한다','주간리포트','알림을 꺼 버렸다','알림끔'],
+      ['인터넷 퀴즈에서 내 상식 점수가 하위 10%로 나왔다','공부를 시작한다','상식공부','퀴즈가 이상한 거다','퀴즈탓'],
+      ['세상에 새 규칙이 생긴다면','모든 실수가 기록으로 남는다','실수기록','모든 실수가 금방 잊힌다. 나도 남도','실수잊힘'],
+      ['잃어버린 줄 알았던 지갑, 사실 친구가 장난으로 숨긴 거였다','왜 그랬는지 끝까지 묻는다','끝까지물음','찾았으니 됐다. 웃고 넘긴다','웃고넘김'],
+      ['문 앞에 익명의 선물이 놓여 있다','누가 보냈는지 꼭 알아낸다','보낸사람추적','선물은 선물. 고맙게 쓴다','익명그대로'],
+      ['내가 몰랐던 내 버릇을 친구들은 다 알고 있었다','전부 알려 달라고 한다','버릇목록','알면 신경 쓰인다. 묻지 않는다','안물음'],
+      ['친구가 “너 그 노래 가사 계속 틀리게 불렀어”','정확한 가사를 찾아본다','정확한가사','내 가사가 더 마음에 든다','내가사'],
+      ['낡은 일기장에서 잊고 싶던 일을 발견했다','다시 읽고 제대로 마주한다','마주함','덮고 다시 묻어 둔다','묻어둠'],
+      ['우주에 외계인이 있는지 정답을 알 수 있다','알고 싶다','외계인정답','상상할 수 있을 때가 좋다','상상'],
+    ],
+    tiers:[
+      ['진실 탐구자','아프더라도 알아야 직성이 풀려요. 진실 위에 세운 행복만 믿어요.'],
+      ['솔직한 현실주의자','듣기 좋은 말보다 정확한 말이 좋아요. 그래도 말의 온도는 신경 써요.'],
+      ['따뜻한 정직파','진실도 행복도 놓치고 싶지 않아요. 상황마다 무엇을 지킬지 고민해요.'],
+      ['다정한 낙관주의자','모든 걸 알 필요는 없다고 생각해요. 오늘의 평화가 더 소중해요.'],
+      ['행복 수호자','모르는 게 약일 때도 있다는 걸 알아요. 웃을 수 있다면 그걸로 충분해요.'],
+    ] },
+];
+LINES.forEach((l) => { l.css = 'var(--l' + l.no + ')'; l.onCss = l.onHex === '#FFFFFF' ? 'var(--on-light)' : 'var(--on-dark)'; });
+const BY_ID = {};
+LINES.forEach((l) => { BY_ID[l.id] = l; });
+const ALL_Q = LINES.length * TOTAL;
+
+/* Worked example for the intro card: an invented topic, clearly labelled as an example on the page. */
+const SAMPLE = {
+  names: ['늦잠','브런치','전시회','낮잠','번개모임','집밥','야경','드라마','산책','일찍취침'],
+  ans: [1,0,0,1,0,1,0,1,0,1],
+  times: [1800,3200,1100,5600,2400,1500,7400,1300,2900,2000],
+  preds: [1,0,1,1,0,0,0,1,1,1],
+  fr: [1,1,0,1,0,0,0,1,1,1],
+};
+
+const PAL = { bg:'#F2F3F0', surface:'#FFFFFF', ink:'#14161A', ink2:'#565B63', ink3:'#868C93', rule:'#DADDD7' };
+const F_DISP = '"Hahmlet","Noto Serif KR","AppleMyungjo",serif';
+const F_BODY = '"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif';
+const F_MONO = '"IBM Plex Mono","IBM Plex Sans KR",ui-monospace,Menlo,monospace';
+
+const $ = (id) => document.getElementById(id);
+const el = {};
+['app','topMeta','brandBtn','hub','quickBtn','quickLabel','quickSub','browseBtn','sampleRoute','sampleStats',
+ 'daily','dailyDate','dailyBadge','dailyLine','dailyQ','dailyL','dailyR','dailyLText','dailyRText','dailyFoot','dailyGo',
+ 'lines','lineList','randomBtn','myMap','mmMeta','sliders','mmStats','mmImage','mmShare',
+ 'play','playBack','playBadge','playName','friendNote','stripFill','stepNo','lastSt','ask','howto','seal','sealText','sealHelp',
+ 'forkWrap','brL','brR','doors','doorL','doorR','doorLText','doorRText','fnote','undoBtn','live',
+ 'result','resBack','resBadge','resName','resEyebrow','verdict','verdictD','verdictNote','rounds','figTitle','routeSvg','legend',
+ 'axisText','leanBar','leanLegend','compat','compatTitle','xferCount','compatTier','compatD','compatDiff','compatDiffSum','compatDiffList',
+ 'factsBlock','factsTitle','facts','inviteText','shareBtn','posterBtn','nextBtn','againBtn','recapSum','recapList','moreLines',
+ 'imageSheet','imageTitle','shot','shotPh','shotHint','saveBtn','copySheet','copyArea','copyRetry','toast'].forEach((id) => { el[id] = $(id); });
+const stripDots = Array.from(document.querySelectorAll('#strip i'));
+const reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const isTouch = () => (navigator.maxTouchPoints || 0) > 0 || !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
+const canShareFile = (f) => { try { return !!(f && navigator.share && navigator.canShare && navigator.canShare({ files: [f] })); } catch (e) { return false; } };
+
+const state = { view:'hub', line:null, round:1, answers:[], times:[], preds:[], pred:0, friend:null, revealing:false, timer:0, lock:0, t0:0, paused:0, hiddenAt:0 };
+let lastShot = null;
+let lastCanvas = null;
+let lastFile = 'galae.png';
+let openSheetEl = null;
+let sheetReturn = null;
+let toastTimer = 0;
+let usingKeyboard = false;
+
+/* ---------- storage ---------- */
+const validAns = (a) => Array.isArray(a) && a.length === N && a.every((x) => x === 0 || x === 1);
+const validNums = (a) => Array.isArray(a) && a.length === N && a.every((x) => typeof x === 'number' && isFinite(x) && x >= 0);
+/* Earlier versions stored one 10-question set per topic as "work" and codes as "work-1a3"; those are round 1 now. */
+const upgradeCode = (c) => String(c || '').replace(/^([a-z]+)-/, '$11-');
+function loadStore(){
+  const empty = { runs:{}, mine:[], daily:{} };
+  try {
+    const v = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
+    if (!v || typeof v !== 'object') return empty;
+    const runs = {};
+    Object.keys(v.runs || {}).forEach((key) => {
+      const m = /^([a-z]+)([1-6])?$/.exec(key);
+      const r = v.runs[key];
+      if (!m || !BY_ID[m[1]] || !r || !validAns(r.answers)) return;
+      runs[m[1] + (m[2] || '1')] = { code: upgradeCode(r.code), answers: r.answers, times: validNums(r.times) ? r.times : null, preds: validAns(r.preds) ? r.preds : null, at: Number(r.at) || 0 };
+    });
+    const daily = {};
+    Object.keys(v.daily || {}).forEach((key) => {
+      const d = v.daily[key];
+      if (d && (d.p === 0 || d.p === 1)) daily[key] = { i: Number(d.i) || 0, p: d.p, v: Number(d.v) || 1 };
+    });
+    const mine = Array.isArray(v.mine) ? v.mine.filter((c) => typeof c === 'string').map(upgradeCode).slice(0, 200) : [];
+    return { runs, mine, daily };
+  } catch (e) { return empty; }
+}
+let store = loadStore();
+function saveStore(){ try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch (e) {} }
+
+/* ---------- helpers ---------- */
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+const leftCount = (a) => a.reduce((n, x) => n + (x === 0 ? 1 : 0), 0);
+const tierIdx = (x) => (x >= 9 ? 0 : x >= 7 ? 1 : x >= 4 ? 2 : x >= 2 ? 3 : 4);
+const tierOf = (line, l, total) => line.tiers[tierIdx(Math.round((l / total) * 10))];
+const qi = (r, k) => (r - 1) * N + k;
+const qOf = (line, r, k) => line.qs[qi(r, k)];
+const flipAt = (line, r, k) => (line.flip.charAt(qi(r, k)) === '1' ? 1 : 0);
+/* a side (0 = A, 1 = B) and a pole (0 = L, 1 = R) convert into each other with the same flip */
+const swap = (line, r, k, x) => x ^ flipAt(line, r, k);
+const optText = (line, r, k, pole) => qOf(line, r, k)[pole ? 3 : 1];
+const stName = (line, r, k, pole) => qOf(line, r, k)[pole ? 4 : 2];
+const sideText = (line, r, k, side) => optText(line, r, k, swap(line, r, k, side));
+const namesOf = (line, r, ans) => ans.map((p, k) => stName(line, r, k, p));
+const runOf = (line, r) => store.runs[line.id + r] || null;
+const roundsDone = (line) => RLIST.filter((r) => runOf(line, r));
+function nextRound(line){ for (let r = 1; r <= ROUNDS; r++) if (!runOf(line, r)) return r; return 0; }
+function latestRound(line){
+  let best = 0, at = -1;
+  for (let r = 1; r <= ROUNDS; r++) { const run = runOf(line, r); if (run && run.at >= at) { best = r; at = run.at; } }
+  return best;
+}
+function tally(line, skip){
+  let l = 0, total = 0;
+  for (let r = 1; r <= ROUNDS; r++) {
+    if (r === skip) continue;
+    const run = runOf(line, r);
+    if (run) { l += leftCount(run.answers); total += N; }
+  }
+  return { l, total };
+}
+const topicAnswers = (line) => RLIST.reduce((a, r) => { const run = runOf(line, r); return run ? a.concat(run.answers) : a; }, []);
+const solvedCount = () => Object.keys(store.runs).length * N;
+const mean = (a) => a.reduce((s, x) => s + x, 0) / a.length;
+const hitsOf = (ans, preds) => preds.reduce((n, p, i) => n + (p === ans[i] ? 1 : 0), 0);
+const sameCount = (a, b) => a.reduce((n, x, i) => n + (x === b[i] ? 1 : 0), 0);
+const secS = (ms) => (ms / 1000).toFixed(1) + 's';
+const numSec = (ms) => '<span class="num">' + (ms / 1000).toFixed(1) + '</span>초';
+function jong(word){
+  const w = String(word);
+  const c = w.charCodeAt(w.length - 1) - 0xAC00;
+  return c >= 0 && c <= 11171 && c % 28 !== 0;
+}
+const wasIt = (w) => (jong(w) ? '이었어요' : '였어요');
+const gwa = (w) => (jong(w) ? '과' : '와');
+function encode(a){ let v = 0; for (let i = 0; i < N; i++) if (a[i]) v |= (1 << i); return v.toString(16).padStart(3, '0'); }
+function decode(h){ const v = parseInt(h, 16); return Array.from({ length: N }, (_, i) => (v >> i) & 1); }
+const codeOf = (line, r, a) => line.id + r + '-' + encode(a);
+const speedTier = (ms) => (ms < 1500 ? '번개처럼 고르는 편' : ms < 3000 ? '적당히 고민하는 편' : ms < 5000 ? '신중하게 고르는 편' : '깊이 숙고하는 편');
+const predTier = (h) => (h >= 9 ? '완전히 읽히는 사람' : h >= 7 ? '꽤 한결같은 사람' : h >= 5 ? '반쯤은 예측 불가' : '예측을 배신하는 사람');
+function compatTier(m){
+  if (m === 10) return ['완벽히 같은 노선', '처음부터 끝까지 같은 길을 달렸어요.'];
+  if (m >= 8) return ['거의 같은 노선', '몇 번 빼고는 늘 같은 쪽을 골랐어요.'];
+  if (m >= 6) return ['환승이 잦은 사이', '갈라졌다가도 자꾸 다시 만나요.'];
+  if (m >= 4) return ['가끔 마주치는 사이', '다른 길을 가다가 가끔 같은 역에 서요.'];
+  return ['반대 방향 열차', '거의 모든 질문에서 서로 반대쪽을 골랐어요.'];
+}
+/* Predicts the pole: the side chosen most so far this round, then the last choice,
+   then this topic's earlier rounds, then the lean of the latest finished round anywhere. */
+function predictNext(ans){
+  const l = leftCount(ans), r = ans.length - l;
+  if (l > r) return 0;
+  if (r > l) return 1;
+  if (ans.length) return ans[ans.length - 1];
+  const t = tally(state.line, state.round);
+  if (t.total) return t.l * 2 >= t.total ? 0 : 1;
+  let last = null;
+  Object.keys(store.runs).forEach((key) => { const run = store.runs[key]; if (!last || run.at > last.at) last = run; });
+  return last && leftCount(last.answers) < 5 ? 1 : 0;
+}
+function setLineVars(node, line){ node.style.setProperty('--line', line.css); node.style.setProperty('--on-line', line.onCss); }
+const badgeHTML = (line) => '<span class="badge sm" style="--lc:' + line.css + ';--lon:' + line.onCss + '">' + line.no + '</span>';
+
+/* ---------- hesitation timer ---------- */
+function startTimer(){ state.t0 = performance.now(); state.paused = 0; state.hiddenAt = document.hidden ? performance.now() : 0; }
+function elapsed(){
+  const now = performance.now();
+  let t = now - state.t0 - state.paused;
+  if (state.hiddenAt) t -= now - state.hiddenAt;
+  return Math.max(0, Math.min(t, 60000));
+}
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { if (!state.hiddenAt) state.hiddenAt = performance.now(); }
+  else if (state.hiddenAt) { state.paused += performance.now() - state.hiddenAt; state.hiddenAt = 0; }
+});
+
+/* ---------- days (KST) ---------- */
+function dayInfo(back){
+  const n = Math.floor((Date.now() + 9 * 3600e3) / 86400e3) - (back || 0);
+  const d = new Date(n * 86400e3);
+  return { n, key: d.toISOString().slice(0, 10), m: d.getUTCMonth() + 1, d: d.getUTCDate() };
+}
+function dailyPick(n){
+  const idx = ((n * 37) % ALL_Q + ALL_Q) % ALL_Q;
+  const line = LINES[Math.floor(idx / TOTAL)], q = idx % TOTAL;
+  return { idx, line, r: Math.floor(q / N) + 1, k: q % N };
+}
+function streak(){
+  let i = store.daily[dayInfo(0).key] ? 0 : 1, c = 0;
+  while (store.daily[dayInfo(i).key]) { c++; i++; }
+  return c;
+}
+
+/* ---------- links ---------- */
+function setHash(h){
+  try { history.replaceState(null, '', h ? '#' + h : location.pathname + location.search); }
+  catch (e) { try { if (h) location.hash = h; } catch (_) {} }
+}
+const shareLink = (h) => (SHARE_BASE || (location.origin + location.pathname)) + (h ? '#' + h : '');
+
+/* ---------- navigation ---------- */
+function show(view){
+  state.view = view;
+  el.hub.hidden = view !== 'hub';
+  el.play.hidden = view !== 'play';
+  el.result.hidden = view !== 'result';
+}
+function render(){
+  if (state.line) setLineVars(el.app, state.line);
+  show(state.view);
+  el.topMeta.innerHTML = '푼 문제 <b>' + solvedCount() + '</b> / ' + ALL_Q;
+  if (state.view === 'hub') renderHub();
+  else if (state.view === 'play') renderPlay(false);
+  else renderResult();
+}
+function scrollTop(){ try { window.scrollTo({ top: 0, behavior: 'auto' }); } catch (e) { window.scrollTo(0, 0); } }
+function goHub(){
+  clearTimeout(state.timer);
+  state.revealing = false;
+  state.view = 'hub';
+  setHash(null);
+  render();
+  scrollTop();
+}
+function prepRound(line, r, friend){
+  clearTimeout(state.timer);
+  state.line = line;
+  state.round = r;
+  state.friend = friend || null;
+  state.answers = []; state.times = []; state.preds = [];
+  state.revealing = false;
+  state.view = 'play';
+}
+function startRound(line, r, friend){
+  prepRound(line, r, friend);
+  setHash(friend ? friend.code : line.id + r);
+  render();
+  scrollTop();
+}
+function showRun(line, r, run, friend){
+  clearTimeout(state.timer);
+  state.revealing = false;
+  state.line = line;
+  state.round = r;
+  state.friend = friend || null;
+  state.answers = run.answers.slice();
+  state.times = run.times ? run.times.slice() : [];
+  state.preds = run.preds ? run.preds.slice() : [];
+  state.view = 'result';
+}
+function openRound(line, r){
+  const run = runOf(line, r);
+  if (!run) { startRound(line, r, null); return; }
+  showRun(line, r, run, null);
+  setHash(run.code || codeOf(line, r, run.answers));
+  render();
+  scrollTop();
+}
+function openTopic(line){
+  const nr = nextRound(line);
+  if (nr) startRound(line, nr, null);
+  else openRound(line, latestRound(line));
+}
+function openTarget(id){
+  if (id === 'hub') { goHub(); return; }
+  if (id === 'mymap') { goHub(); if (!el.myMap.hidden) el.myMap.scrollIntoView(); return; }
+  const m = /^([a-z]+)(?:@([1-6]))?$/.exec(id);
+  if (!m || !BY_ID[m[1]]) return;
+  if (m[2]) openRound(BY_ID[m[1]], Number(m[2]));
+  else openTopic(BY_ID[m[1]]);
+}
+function quickTarget(){
+  const fresh = LINES.find((l) => !roundsDone(l).length);
+  if (fresh) return { line: fresh, r: 1 };
+  const part = LINES.find((l) => nextRound(l));
+  return part ? { line: part, r: nextRound(part) } : null;
+}
+function quickStart(){
+  const t = quickTarget();
+  if (t) startRound(t.line, t.r, null);
+  else startRound(LINES[Math.floor(Math.random() * LINES.length)], 1, null);
+}
+
+/* ---------- route diagram (SVG) ---------- */
+function routeSVG(o){
+  const DX = 18, DY = o.dy || 52, axis = o.axis !== false;
+  const pts = (a) => { const out = [{ x: 0, y: 0 }]; let v = 0; a.forEach((c, k) => { v += c ? 1 : -1; out.push({ x: v * DX, y: (k + 1) * DY }); }); return out; };
+  const pathD = (p) => { let d = 'M0 0'; for (let k = 1; k < p.length; k++) d += ' L' + p[k].x + ' ' + (p[k - 1].y + DX) + ' L' + p[k].x + ' ' + p[k].y; return d; };
+  const me = pts(o.ans), fp = o.fr ? pts(o.fr) : null;
+  const rad = (k) => (o.times ? 5 + (6 * Math.min(o.times[k], 8000)) / 8000 : 6);
+  let minX = axis ? -66 : -30, maxX = axis ? 66 : 30;
+  const labels = [];
+  for (let k = 0; k < N; k++) {
+    const n = me[k + 1], xfer = !!o.fr && o.fr[k] === o.ans[k], r = rad(k) + (xfer ? 2 : 0);
+    const name = o.names[k], tm = o.times ? secS(o.times[k]) : '';
+    const w = name.length * 13 + (tm ? tm.length * 6.4 + 6 : 0);
+    const side = n.x < 0 ? -1 : 1, tx = side < 0 ? n.x - r - 8 : n.x + r + 8;
+    minX = Math.min(minX, side < 0 ? tx - w : n.x - r);
+    maxX = Math.max(maxX, side > 0 ? tx + w : n.x + r);
+    labels.push({ k, n, r, xfer, name, tm, side, tx });
+  }
+  if (fp) fp.forEach((p) => { minX = Math.min(minX, p.x - 6); maxX = Math.max(maxX, p.x + 6); });
+  const pad = 10, top = axis ? 46 : 22;
+  const vx = Math.floor(minX - pad), vw = Math.ceil(maxX - minX + pad * 2), vy = -top, vh = N * DY + 22 + top;
+  const l = leftCount(o.ans);
+  const label = o.label || ('노선도: ' + o.L + ' 쪽 ' + l + '번, ' + o.R + ' 쪽 ' + (N - l) + '번');
+  let s = '<svg viewBox="' + vx + ' ' + vy + ' ' + vw + ' ' + vh + '" role="img" aria-label="' + esc(label) + '">';
+  if (axis) {
+    s += '<text class="rt-axis" x="' + (vx + pad) + '" y="' + (vy + 16) + '">← ' + esc(o.L) + '</text>';
+    s += '<text class="rt-axis" x="' + (vx + vw - pad) + '" y="' + (vy + 16) + '" text-anchor="end">' + esc(o.R) + ' →</text>';
+  }
+  if (fp) {
+    s += '<path class="rt-fpath" d="' + pathD(fp) + '"/>';
+    fp.slice(1).forEach((p) => { s += '<circle class="rt-fnode" cx="' + p.x + '" cy="' + p.y + '" r="3.2"/>'; });
+  }
+  s += '<path class="rt-path" d="' + pathD(me) + '" style="stroke:' + o.color + '"/>';
+  s += '<circle class="rt-start" cx="0" cy="0" r="5"/><text class="rt-small" x="0" y="-13" text-anchor="middle">출발</text>';
+  labels.forEach((L) => {
+    const miss = !!o.preds && o.preds[L.k] !== o.ans[L.k];
+    s += '<circle class="rt-node' + (miss ? ' miss' : '') + (L.xfer ? ' xfer' : '') + '" cx="' + L.n.x + '" cy="' + L.n.y + '" r="' + L.r.toFixed(1) + '" style="stroke:' + (L.xfer ? 'var(--ink)' : o.color) + '"/>';
+    s += '<text class="rt-name" x="' + L.tx + '" y="' + (L.n.y + 4.5) + '" text-anchor="' + (L.side < 0 ? 'end' : 'start') + '">' + esc(L.name) +
+      (L.tm ? '<tspan class="rt-time" dx="5">' + L.tm + '</tspan>' : '') + '</text>';
+  });
+  return s + '</svg>';
+}
+
+/* ---------- hub ---------- */
+function renderSample(){
+  el.sampleRoute.innerHTML = routeSVG({ names: SAMPLE.names, color: 'var(--ink)', ans: SAMPLE.ans, times: SAMPLE.times, preds: SAMPLE.preds, fr: SAMPLE.fr, dy: 30, axis: false, label: '결과 노선도 예시' });
+  const rows = [
+    ['평균 고민', (mean(SAMPLE.times) / 1000).toFixed(1) + '초'],
+    ['예측 적중', hitsOf(SAMPLE.ans, SAMPLE.preds) + ' / 10'],
+    ['친구와 같은 선택', sameCount(SAMPLE.ans, SAMPLE.fr) + ' / 10'],
+  ];
+  el.sampleStats.innerHTML = rows.map((r) => '<div><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd></div>').join('');
+}
+function miniRoute(line, ans){
+  const dx = 9 / ans.length, dy = 39 / ans.length;
+  let x = 10, y = 3, d = 'M10 3';
+  ans.forEach((a) => {
+    const nx = x + (a ? dx : -dx);
+    d += ' L' + nx.toFixed(2) + ' ' + (y + Math.min(dx, dy)).toFixed(2) + ' L' + nx.toFixed(2) + ' ' + (y + dy).toFixed(2);
+    x = nx; y += dy;
+  });
+  return '<svg class="mini" viewBox="0 0 20 46" aria-hidden="true"><path d="' + d + '" style="stroke:' + line.css + '"/><circle cx="' + x.toFixed(2) + '" cy="' + y.toFixed(2) + '" r="2" style="stroke:' + line.css + '"/></svg>';
+}
+const pipsHTML = (line) => '<span class="pips" aria-hidden="true">' + RLIST.map((r) => '<i' + (runOf(line, r) ? ' class="on"' : '') + '></i>').join('') + '</span>';
+function lineRow(line){
+  const done = roundsDone(line), nr = nextRound(line);
+  let side, aria;
+  if (!done.length) {
+    side = '<span class="lr-go">시작</span>';
+    aria = '1라운드 시작';
+  } else {
+    const t = tally(line, 0), v = tierOf(line, t.l, t.total)[0];
+    side = (nr ? pipsHTML(line) : miniRoute(line, topicAnswers(line))) +
+      '<span class="lr-done">' + esc(v) + '<small>' + (nr ? nr + '라운드 시작 →' : ROUNDS + '라운드 완료') + '</small></span>';
+    aria = nr ? '지금 결과 ' + v + ', ' + nr + '라운드 시작' : '최종 결과 ' + v + ', 결과 보기';
+  }
+  return '<li><button class="line-row" type="button" data-open="' + line.id + '" style="--lc:' + line.css + ';--lon:' + line.onCss + '"' +
+    ' aria-label="' + esc(line.no + '호선 ' + line.name + ', ' + aria) + '">' +
+    '<span class="badge" aria-hidden="true">' + line.no + '</span>' +
+    '<span class="lr-main"><span class="lr-name">' + esc(line.name) + '</span><span class="lr-teaser">' + esc(line.teaser) + '</span></span>' +
+    '<span class="lr-side">' + side + '</span></button></li>';
+}
+function renderHub(){
+  const solved = solvedCount(), t = quickTarget();
+  if (!solved) { el.quickLabel.textContent = '바로 시작하기'; el.quickSub.textContent = '1분'; }
+  else if (t) { el.quickLabel.textContent = '이어서 하기'; el.quickSub.textContent = t.line.no + '호선 ' + t.line.name + ' ' + t.r + '라운드'; }
+  else { el.quickLabel.textContent = '아무 주제나 다시'; el.quickSub.textContent = ALL_Q + '문제 완료'; }
+  renderDaily();
+  el.lineList.innerHTML = LINES.map(lineRow).join('');
+  renderMyMap();
+}
+function renderDaily(){
+  const t = dayInfo(0), p = dailyPick(t.n), line = p.line, q = qOf(line, p.r, p.k);
+  el.daily.style.setProperty('--lc', line.css);
+  el.daily.style.setProperty('--lon', line.onCss);
+  el.dailyDate.textContent = t.m + '월 ' + t.d + '일 · 매일 바뀌어요';
+  el.dailyBadge.textContent = line.no;
+  el.dailyLine.textContent = line.name + ' 주제 · ' + p.r + '라운드 ' + (p.k + 1) + '번 질문';
+  el.dailyQ.textContent = q[0];
+  el.dailyLText.textContent = sideText(line, p.r, p.k, 0);
+  el.dailyRText.textContent = sideText(line, p.r, p.k, 1);
+  const rec = store.daily[t.key];
+  const s = streak();
+  const pickedSide = rec && rec.v === 4 && rec.i === p.idx ? swap(line, p.r, p.k, rec.p) : -1;
+  [el.dailyL, el.dailyR].forEach((b, i) => {
+    const picked = pickedSide === i;
+    b.classList.toggle('won', picked);
+    b.classList.toggle('lost', !!rec && !picked);
+    b.disabled = !!rec;
+    b.setAttribute('aria-pressed', picked ? 'true' : 'false');
+  });
+  if (rec) {
+    el.dailyFoot.innerHTML = '골랐어요! 연속 <b>' + s + '일</b>째예요. 내일 새 문제가 열려요.';
+    el.dailyGo.hidden = false;
+    el.dailyGo.setAttribute('data-open', line.id + '@' + p.r);
+    el.dailyGo.textContent = runOf(line, p.r) ? line.name + ' ' + p.r + '라운드 결과 보기 →' : line.name + ' ' + p.r + '라운드 10문제 풀기 →';
+  } else {
+    el.dailyFoot.textContent = s ? '어제까지 ' + s + '일 연속으로 골랐어요. 오늘도 이어 가 볼까요?' : '하루에 한 문제씩 새로 열려요. 눌러서 바로 골라 보세요.';
+    el.dailyGo.hidden = true;
+  }
+}
+function answerDaily(side){
+  const t = dayInfo(0);
+  if (store.daily[t.key]) return;
+  const p = dailyPick(t.n);
+  store.daily[t.key] = { i: p.idx, p: swap(p.line, p.r, p.k, side), v: 4 };
+  const keys = Object.keys(store.daily).sort();
+  while (keys.length > 120) delete store.daily[keys.shift()];
+  saveStore();
+  renderDaily();
+}
+const factsHTML = (rows) => rows.map((r) => '<div class="fact"><dt>' + r[0] + '</dt><dd>' + r[1] + '</dd></div>').join('');
+function renderMyMap(){
+  const started = LINES.filter((l) => roundsDone(l).length);
+  el.myMap.hidden = !started.length;
+  if (!started.length) return;
+  const solved = solvedCount(), full = LINES.filter((l) => !nextRound(l)).length;
+  el.mmMeta.textContent = full === LINES.length ? ALL_Q + '문제를 모두 풀었어요.' : '푼 문제 ' + solved + '개 · 끝낸 주제 ' + full + '개';
+  el.sliders.innerHTML = LINES.map((line) => {
+    const t = tally(line, 0);
+    const st = ' style="--lc:' + line.css + ';--lon:' + line.onCss + '"';
+    if (!t.total) {
+      return '<button class="sl empty" type="button" data-open="' + line.id + '"' + st + ' aria-label="' + esc(line.name + ', 아직 안 풀었어요. 1라운드 시작') + '"><span class="badge sm">' + line.no + '</span><span class="pl">' + esc(line.L) + '</span><span class="track" aria-hidden="true"></span><span class="pr">' + esc(line.R) + '</span></button>';
+    }
+    const p = t.l / t.total;
+    return '<button class="sl" type="button" data-open="' + line.id + '@' + latestRound(line) + '"' + st + ' aria-label="' + esc(line.name + ': ' + t.total + '문제 중 ' + line.L + ' ' + t.l + '번, ' + line.R + ' ' + (t.total - t.l) + '번. 결과 보기') + '">' +
+      '<span class="badge sm">' + line.no + '</span><span class="pl' + (p > 0.5 ? ' win' : '') + '">' + esc(line.L) + '</span>' +
+      '<span class="track" aria-hidden="true"><i style="left:' + ((1 - p) * 100).toFixed(1) + '%"></i></span>' +
+      '<span class="pr' + (p < 0.5 ? ' win' : '') + '">' + esc(line.R) + '</span></button>';
+  }).join('');
+  const times = [];
+  let hits = 0, total = 0, longest = null;
+  LINES.forEach((line) => {
+    for (let r = 1; r <= ROUNDS; r++) {
+      const run = runOf(line, r);
+      if (!run) continue;
+      if (run.times) run.times.forEach((tm, k) => { times.push(tm); if (!longest || tm > longest.t) longest = { t: tm, line, r, k, a: run.answers[k] }; });
+      if (run.preds) { total += N; hits += hitsOf(run.answers, run.preds); }
+    }
+  });
+  const rows = [['푼 문제', '<span class="num">' + solved + '</span> / ' + ALL_Q]];
+  if (times.length) rows.push(['평균 고민 시간', numSec(mean(times)) + ' · ' + speedTier(mean(times))]);
+  if (total) rows.push(['예측 적중률', '<span class="num">' + Math.round((hits / total) * 100) + '%</span> · ' + predTier(Math.round((hits / total) * 10))]);
+  if (longest) rows.push(['가장 오래 고민한 질문', '<b>' + esc(qOf(longest.line, longest.r, longest.k)[0]) + '</b><br>' + numSec(longest.t) + ' 끝에 ‘' + esc(optText(longest.line, longest.r, longest.k, longest.a)) + '’']);
+  el.mmStats.innerHTML = factsHTML(rows);
+}
+
+/* ---------- ride ---------- */
+function renderPlay(animate){
+  const line = state.line, r = state.round, k = state.answers.length, kk = Math.min(k, N - 1);
+  el.playBadge.textContent = line.no;
+  el.playName.textContent = line.no + '호선 ' + line.name + ' · ' + r + '라운드';
+  if (state.friend) {
+    el.friendNote.innerHTML = '<b>친구가 보낸 밸런스 게임이에요.</b> ' + esc(line.name) + ' ' + r + '라운드 10문제를 똑같이 풀면, 친구와 같은 쪽을 고른 질문이 몇 개인지 알려 줘요.';
+    el.friendNote.hidden = false;
+  } else {
+    el.friendNote.hidden = true;
+  }
+  stripDots.forEach((d, i) => { d.className = i < k ? 'done' : (i === k ? 'now' : ''); });
+  el.stripFill.style.width = Math.min(k, N - 1) * 10 + '%';
+  el.stepNo.innerHTML = '질문 <b class="num">' + (kk + 1) + '</b> / ' + N;
+  el.lastSt.innerHTML = k ? '지나온 역 <b>' + esc(stName(line, r, k - 1, state.answers[k - 1])) + '</b>' : '출발역';
+  el.ask.textContent = qOf(line, r, kk)[0];
+  const a = sideText(line, r, kk, 0), b = sideText(line, r, kk, 1);
+  el.doorLText.textContent = a;
+  el.doorRText.textContent = b;
+  el.doorL.setAttribute('aria-label', 'A: ' + a);
+  el.doorR.setAttribute('aria-label', 'B: ' + b);
+  el.howto.hidden = k !== 0;
+  el.sealHelp.hidden = !(k === 0 && Object.keys(store.runs).length < 2);
+  el.doors.classList.remove('revealing');
+  [el.doorL, el.doorR].forEach((d) => d.classList.remove('won', 'lost', 'friend'));
+  el.forkWrap.classList.remove('go-l', 'go-r');
+  el.brL.classList.remove('on', 'off');
+  el.brR.classList.remove('on', 'off');
+  state.pred = predictNext(state.answers);
+  el.seal.className = 'seal';
+  el.sealText.textContent = '예측 봉인됨';
+  el.fnote.hidden = true;
+  el.fnote.textContent = '';
+  el.undoBtn.disabled = k === 0;
+  if (animate && !reduced) {
+    el.doors.classList.remove('enter');
+    void el.doors.offsetWidth;
+    el.doors.classList.add('enter');
+  }
+  startTimer();
+}
+function pick(side){
+  if (state.view !== 'play' || state.revealing || performance.now() < state.lock) return;
+  const line = state.line, r = state.round, k = state.answers.length;
+  if (k >= N) return;
+  const pole = swap(line, r, k, side);
+  state.answers.push(pole);
+  state.times.push(Math.round(elapsed()));
+  state.preds.push(state.pred);
+  state.revealing = true;
+
+  const won = side ? el.doorR : el.doorL, lost = side ? el.doorL : el.doorR;
+  el.doors.classList.remove('enter');
+  el.doors.classList.add('revealing');
+  won.classList.add('won');
+  lost.classList.add('lost');
+  el.forkWrap.classList.add(side ? 'go-r' : 'go-l');
+  (side ? el.brR : el.brL).classList.add('on');
+  (side ? el.brL : el.brR).classList.add('off');
+  stripDots[k].className = 'done';
+  if (k + 1 < N) stripDots[k + 1].className = 'now';
+  el.stripFill.style.width = Math.min(k + 1, N - 1) * 10 + '%';
+  el.lastSt.innerHTML = '지나온 역 <b>' + esc(stName(line, r, k, pole)) + '</b>';
+
+  const hit = state.pred === pole;
+  el.seal.className = 'seal ' + (hit ? 'hit' : 'miss');
+  el.sealText.textContent = hit ? '예측 적중! 이쪽을 고를 줄 알았어요' : '예측 실패! 반대쪽일 줄 알았어요';
+  let msg = optText(line, r, k, pole) + ' 선택. ' + el.sealText.textContent + '.';
+  if (state.friend) {
+    const fp = state.friend.answers[k];
+    (swap(line, r, k, fp) ? el.doorR : el.doorL).classList.add('friend');
+    el.fnote.textContent = fp === pole ? '환승역! 친구도 같은 쪽을 골랐어요.' : '여기서 친구와 길이 갈라졌어요.';
+    el.fnote.hidden = false;
+    msg += ' ' + el.fnote.textContent;
+  }
+  el.live.textContent = msg;
+  el.undoBtn.disabled = true;
+  clearTimeout(state.timer);
+  state.timer = setTimeout(advance, reduced ? 900 : (state.friend ? 1750 : 1350));
+}
+function advance(){
+  if (!state.revealing) return;
+  clearTimeout(state.timer);
+  state.revealing = false;
+  state.lock = performance.now() + 280;
+  if (state.answers.length >= N) { finish(); return; }
+  renderPlay(true);
+  if (usingKeyboard) el.doorL.focus({ preventScroll: true });
+}
+function undo(){
+  if (state.view !== 'play' || state.revealing || !state.answers.length) return;
+  state.answers.pop(); state.times.pop(); state.preds.pop();
+  renderPlay(true);
+}
+function finish(){
+  const line = state.line, r = state.round, code = codeOf(line, r, state.answers);
+  store.runs[line.id + r] = { code, answers: state.answers.slice(), times: state.times.slice(), preds: state.preds.slice(), at: Date.now() };
+  store.mine = [code].concat(store.mine.filter((x) => x !== code)).slice(0, 200);
+  saveStore();
+  setHash(code);
+  state.view = 'result';
+  render();
+  scrollTop();
+  if (usingKeyboard) el.shareBtn.focus({ preventScroll: true });
+}
+
+/* ---------- result ---------- */
+function nextTarget(line){
+  const nr = nextRound(line);
+  if (nr) return { line, r: nr, same: true };
+  const i0 = LINES.findIndex((l) => l.id === line.id);
+  for (let s = 1; s < LINES.length; s++) {
+    const ln = LINES[(i0 + s) % LINES.length], r = nextRound(ln);
+    if (r) return { line: ln, r, same: false };
+  }
+  return null;
+}
+function renderResult(){
+  const line = state.line, r = state.round, ans = state.answers;
+  const times = validNums(state.times) ? state.times : null;
+  const preds = validAns(state.preds) ? state.preds : null;
+  const fr = state.friend ? state.friend.answers : null;
+  const prev = tally(line, r);
+  const l = prev.l + leftCount(ans), answered = prev.total + N;
+  const v = tierOf(line, l, answered);
+
+  el.resBadge.textContent = line.no;
+  el.resName.textContent = line.no + '호선 ' + line.name;
+  el.resEyebrow.textContent = answered === TOTAL
+    ? line.name + ' 주제 최종 결과 · ' + TOTAL + '문제 모두 완료'
+    : line.name + ' 주제 결과 · ' + TOTAL + '문제 중 ' + answered + '문제 기준';
+  el.verdict.textContent = v[0];
+  el.verdictD.textContent = v[1];
+  let note = '';
+  if (prev.total) {
+    const pv = tierOf(line, prev.l, prev.total)[0];
+    note = pv === v[0] ? '이전 라운드까지의 결과와 같아요. ' : '이전 결과 <b>' + esc(pv) + '</b>에서 바뀌었어요. ';
+  }
+  note += answered < TOTAL ? '남은 ' + (TOTAL - answered) + '문제를 풀면 결과가 더 정확해져요.' : TOTAL + '문제를 모두 풀어서 이 주제 결과가 확정됐어요.';
+  el.verdictNote.innerHTML = note;
+  el.rounds.innerHTML = RLIST.map((rr) => {
+    const done = !!runOf(line, rr) || rr === r;
+    const cls = 'rchip' + (done ? ' done' : ' todo') + (rr === r ? ' cur' : '');
+    const label = rr + '라운드' + (rr === r ? ' · 지금' : '');
+    const aria = rr === r ? rr + '라운드, 지금 보는 결과' : done ? rr + '라운드 결과 보기' : rr + '라운드 시작';
+    return '<button class="' + cls + '" type="button" data-open="' + line.id + '@' + rr + '" aria-label="' + aria + '"' + (rr === r ? ' aria-current="true"' : '') + '><span class="dot" aria-hidden="true"></span>' + label + '</button>';
+  }).join('');
+
+  el.figTitle.textContent = r + '라운드 노선도';
+  el.routeSvg.innerHTML = routeSVG({ names: namesOf(line, r, ans), color: line.css, L: line.L, R: line.R, ans, times, preds, fr });
+  const lg = ['노선은 내가 고른 쪽으로 휘어요'];
+  if (times) lg.push('동그라미가 클수록 오래 고민한 질문');
+  if (preds) lg.push('속이 찬 동그라미는 예측이 빗나간 선택');
+  if (fr) lg.push('점선은 친구 노선, 굵은 테두리는 같은 선택');
+  el.legend.innerHTML = lg.map((t) => '<span>' + t + '</span>').join('');
+
+  el.axisText.innerHTML = '이 주제의 질문들은 사실 내가 <b>' + esc(line.L) + '</b>' + gwa(line.L) + ' <b>' + esc(line.R) + '</b> 중 어느 쪽에 가까운지 재고 있었어요. ' +
+    '지금까지 푼 <b class="num">' + answered + '</b>문제에서 ' + esc(line.L) + ' 쪽을 <b class="num">' + l + '</b>번, ' + esc(line.R) + ' 쪽을 <b class="num">' + (answered - l) + '</b>번 골랐어요.';
+  const seg = (cls, n) => (n > 0 ? '<i' + (cls ? ' class="' + cls + '"' : '') + ' style="flex:' + n + ' 1 0"></i>' : '');
+  el.leanBar.innerHTML = seg('l', l) + seg('', answered - l) + seg('e', TOTAL - answered);
+  el.leanLegend.innerHTML = '<span>' + esc(line.L) + ' <b>' + l + '</b></span>' +
+    (answered < TOTAL ? '<span>남은 문제 <b>' + (TOTAL - answered) + '</b></span>' : '') +
+    '<span><b>' + (answered - l) + '</b> ' + esc(line.R) + '</span>';
+
+  const rows = [];
+  if (times) {
+    let mx = 0, mn = 0;
+    times.forEach((t, i) => { if (t > times[mx]) mx = i; if (t < times[mn]) mn = i; });
+    rows.push(['평균 고민 시간', numSec(mean(times)) + ' · ' + speedTier(mean(times))]);
+    rows.push(['가장 오래 고민한 질문', '<b>' + esc(qOf(line, r, mx)[0]) + '</b><br>' + numSec(times[mx]) + ' 끝에 ‘' + esc(optText(line, r, mx, ans[mx])) + '’']);
+    rows.push(['가장 빨리 고른 질문', '<b>' + esc(qOf(line, r, mn)[0]) + '</b><br>' + numSec(times[mn]) + ' 만에 ‘' + esc(optText(line, r, mn, ans[mn])) + '’']);
+  }
+  if (preds) {
+    const h = hitsOf(ans, preds);
+    rows.push(['예측 적중', '<span class="num">' + h + ' / 10</span> · ' + predTier(h)]);
+  }
+  el.factsTitle.textContent = r + '라운드에서 잰 기록';
+  el.facts.innerHTML = factsHTML(rows);
+  el.factsBlock.hidden = !rows.length;
+
+  if (fr) {
+    const diff = [];
+    for (let i = 0; i < N; i++) if (fr[i] !== ans[i]) diff.push(i);
+    const same = N - diff.length, ct = compatTier(same), fl = leftCount(fr);
+    el.compatTitle.textContent = '친구와 비교한 결과 · ' + r + '라운드';
+    el.xferCount.textContent = same;
+    el.compatTier.textContent = ct[0];
+    el.compatD.innerHTML = '친구는 이 라운드에서 ' + esc(line.L) + ' 쪽을 <b>' + fl + '번</b>, ' + esc(line.R) + ' 쪽을 <b>' + (N - fl) + '번</b> 골랐어요. ' + ct[1];
+    if (diff.length) {
+      el.compatDiff.hidden = false;
+      el.compatDiffSum.textContent = '서로 다르게 고른 질문 ' + diff.length + '개 보기';
+      el.compatDiffList.innerHTML = diff.map((i) => '<li><span>' + esc(qOf(line, r, i)[0]) + '</span><span>나: ' + esc(optText(line, r, i, ans[i])) + ' / 친구: ' + esc(optText(line, r, i, fr[i])) + '</span></li>').join('');
+    } else {
+      el.compatDiff.hidden = true;
+      el.compatDiffList.innerHTML = '';
+    }
+    el.compat.hidden = false;
+    el.inviteText.textContent = '내 링크를 친구에게 돌려보내면 친구도 이 비교 결과를 볼 수 있어요.';
+  } else {
+    el.compat.hidden = true;
+    el.inviteText.textContent = '링크를 받은 친구가 이 라운드 10문제를 똑같이 풀면, 둘이 같은 쪽을 고른 질문이 몇 개인지 나와요.';
+  }
+
+  el.recapSum.textContent = r + '라운드에서 고른 10개 다시 보기';
+  el.recapList.innerHTML = ans.map((p, i) =>
+    '<li><span class="no">' + String(i + 1).padStart(2, '0') + '</span><div><p class="rq">' + esc(qOf(line, r, i)[0]) + '</p>' +
+    '<p class="rp">' + (swap(line, r, i, p) ? 'B' : 'A') + ' · ' + esc(optText(line, r, i, p)) + '</p>' +
+    (fr ? '<p class="rf">' + (fr[i] === p ? '친구도 같은 선택' : '친구는 ' + esc(optText(line, r, i, fr[i]))) + '</p>' : '') +
+    '</div><span class="tm">' + (times ? secS(times[i]) : '') + '</span></li>').join('');
+
+  const nx = nextTarget(line);
+  if (nx && nx.same) {
+    el.nextBtn.innerHTML = badgeHTML(line) + nx.r + '라운드 이어서 풀기';
+    el.nextBtn.setAttribute('data-open', line.id + '@' + nx.r);
+  } else if (nx) {
+    el.nextBtn.innerHTML = badgeHTML(nx.line) + '다음 주제 · ' + esc(nx.line.name);
+    el.nextBtn.setAttribute('data-open', nx.line.id + '@' + nx.r);
+  } else {
+    el.nextBtn.textContent = '나의 노선도 보기';
+    el.nextBtn.setAttribute('data-open', 'mymap');
+  }
+  el.againBtn.textContent = r + '라운드 다시 하기';
+  el.moreLines.innerHTML = LINES.filter((x) => x.id !== line.id).map((x) =>
+    '<button class="chip" type="button" data-open="' + x.id + '" style="--lc:' + x.css + ';--lon:' + x.onCss + '"><span class="badge sm">' + x.no + '</span>' +
+    esc(x.name) + (roundsDone(x).length ? '<small>' + roundsDone(x).length + '/' + ROUNDS + '</small>' : '') + '</button>').join('');
+}
+
+/* ---------- sharing ---------- */
+function copyText(text){
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text).then(() => true, () => false);
+  } catch (e) {}
+  return Promise.resolve(false);
+}
+function selectCopyArea(){
+  try { el.copyArea.focus(); el.copyArea.select(); el.copyArea.setSelectionRange(0, el.copyArea.value.length); } catch (e) {}
+}
+function openCopy(text){
+  el.copyArea.value = text;
+  openSheet(el.copySheet);
+  setTimeout(selectCopyArea, 60);
+}
+function shareOrCopy(text, okMsg){
+  const copy = () => copyText(text).then((ok) => { if (ok) toast(okMsg); else openCopy(text); });
+  if (isTouch() && navigator.share) {
+    navigator.share({ text }).catch((e) => { if (!e || e.name !== 'AbortError') copy(); });
+    return;
+  }
+  copy();
+}
+
+/* ---------- poster images ---------- */
+async function loadFonts(text){
+  if (!document.fonts || !document.fonts.load) return;
+  const digits = '0123456789./:s%· ';
+  try {
+    await Promise.race([
+      Promise.all([
+        document.fonts.load('700 80px "Hahmlet"', text),
+        document.fonts.load('400 30px "IBM Plex Sans KR"', text),
+        document.fonts.load('500 30px "IBM Plex Sans KR"', text),
+        document.fonts.load('600 30px "IBM Plex Sans KR"', text),
+        document.fonts.load('700 30px "IBM Plex Sans KR"', text),
+        document.fonts.load('400 30px "IBM Plex Mono"', digits),
+        document.fonts.load('500 30px "IBM Plex Mono"', digits),
+      ]),
+      new Promise((r) => setTimeout(r, 2500)),
+    ]);
+  } catch (e) {}
+}
+function makeCanvas(w, h){ const c = document.createElement('canvas'); c.width = w; c.height = h; return c; }
+function roundRect(g, x, y, w, h, r){
+  g.beginPath();
+  g.moveTo(x + r, y);
+  g.arcTo(x + w, y, x + w, y + h, r);
+  g.arcTo(x + w, y + h, x, y + h, r);
+  g.arcTo(x, y + h, x, y, r);
+  g.arcTo(x, y, x + w, y, r);
+  g.closePath();
+}
+function wrapText(g, text, maxW){
+  const out = [];
+  let cur = '';
+  String(text).split(' ').forEach((w) => {
+    const t = cur ? cur + ' ' + w : w;
+    if (!cur || g.measureText(t).width <= maxW) cur = t;
+    else { out.push(cur); cur = w; }
+  });
+  if (cur) out.push(cur);
+  return out;
+}
+function drawBadge(g, cx, cy, r, line, fs){
+  g.beginPath(); g.arc(cx, cy, r, 0, Math.PI * 2); g.fillStyle = line.hex; g.fill();
+  g.fillStyle = line.onHex; g.font = '700 ' + fs + 'px ' + F_BODY; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText(String(line.no), cx, cy + 1);
+}
+function drawRoute(g, o, box){
+  const dy = (box.h - 84) / N, dx = 26;
+  const toPts = (a) => { const out = [{ x: 0, y: 0 }]; let v = 0; a.forEach((c, k) => { v += c ? 1 : -1; out.push({ x: v * dx, y: (k + 1) * dy }); }); return out; };
+  const nodes = toPts(o.ans), fnodes = o.fr ? toPts(o.fr) : null;
+  const rad = (k) => (o.times ? 8 + (9 * Math.min(o.times[k], 8000)) / 8000 : 10);
+  const nameFont = '500 28px ' + F_BODY, timeFont = '400 21px ' + F_MONO;
+  let minX = -110, maxX = 110;
+  const labels = [];
+  for (let k = 0; k < N; k++) {
+    const n = nodes[k + 1], xfer = !!o.fr && o.fr[k] === o.ans[k], r = rad(k) + (xfer ? 3 : 0);
+    const name = o.names[k], tm = o.times ? secS(o.times[k]) : '';
+    g.font = nameFont; const wn = g.measureText(name).width;
+    g.font = timeFont; const wt = tm ? g.measureText(tm).width + 10 : 0;
+    const side = n.x < 0 ? -1 : 1, tx = side < 0 ? n.x - r - 14 : n.x + r + 14;
+    minX = Math.min(minX, side < 0 ? tx - wn - wt : n.x - r);
+    maxX = Math.max(maxX, side > 0 ? tx + wn + wt : n.x + r);
+    labels.push({ k, n, r, xfer, name, tm, side, tx, wn, wt });
+  }
+  if (fnodes) fnodes.forEach((p) => { minX = Math.min(minX, p.x - 8); maxX = Math.max(maxX, p.x + 8); });
+  const ox = box.x + (box.w - (maxX - minX)) / 2 - minX, oy = box.y + 70;
+  const trace = (pts) => {
+    g.beginPath(); g.moveTo(ox, oy);
+    for (let k = 1; k < pts.length; k++) { g.lineTo(ox + pts[k].x, oy + pts[k - 1].y + dx); g.lineTo(ox + pts[k].x, oy + pts[k].y); }
+  };
+  g.textBaseline = 'alphabetic';
+  g.font = '600 26px ' + F_BODY; g.fillStyle = PAL.ink2;
+  g.textAlign = 'left'; g.fillText('← ' + o.L, box.x, box.y + 24);
+  g.textAlign = 'right'; g.fillText(o.R + ' →', box.x + box.w, box.y + 24);
+  g.lineCap = 'round'; g.lineJoin = 'round';
+  if (fnodes) {
+    g.setLineDash([8, 10]); g.strokeStyle = PAL.ink3; g.lineWidth = 4; trace(fnodes); g.stroke(); g.setLineDash([]);
+    g.fillStyle = PAL.ink3;
+    fnodes.slice(1).forEach((p) => { g.beginPath(); g.arc(ox + p.x, oy + p.y, 5, 0, Math.PI * 2); g.fill(); });
+  }
+  g.strokeStyle = o.hex; g.lineWidth = 10; trace(nodes); g.stroke();
+  g.fillStyle = PAL.ink; g.beginPath(); g.arc(ox, oy, 8, 0, Math.PI * 2); g.fill();
+  g.font = '500 22px ' + F_BODY; g.fillStyle = PAL.ink2; g.textAlign = 'center'; g.fillText('출발', ox, oy - 22);
+  labels.forEach((L) => {
+    const x = ox + L.n.x, y = oy + L.n.y, miss = !!o.preds && o.preds[L.k] !== o.ans[L.k];
+    g.beginPath(); g.arc(x, y, L.r, 0, Math.PI * 2);
+    g.fillStyle = miss ? PAL.ink : PAL.surface; g.fill();
+    g.lineWidth = L.xfer ? 5 : 4; g.strokeStyle = L.xfer ? PAL.ink : o.hex; g.stroke();
+    g.textBaseline = 'middle';
+    if (L.side < 0) {
+      g.textAlign = 'right';
+      if (L.tm) { g.font = timeFont; g.fillStyle = PAL.ink3; g.fillText(L.tm, ox + L.tx, y + 1); }
+      g.font = nameFont; g.fillStyle = PAL.ink; g.fillText(L.name, ox + L.tx - L.wt, y);
+    } else {
+      g.textAlign = 'left';
+      g.font = nameFont; g.fillStyle = PAL.ink; g.fillText(L.name, ox + L.tx, y);
+      if (L.tm) { g.font = timeFont; g.fillStyle = PAL.ink3; g.fillText(L.tm, ox + L.tx + L.wn + 10, y + 1); }
+    }
+  });
+  g.textBaseline = 'alphabetic';
+}
+async function drawLinePoster(){
+  const line = state.line, r = state.round, ans = state.answers;
+  const times = validNums(state.times) ? state.times : null;
+  const preds = validAns(state.preds) ? state.preds : null;
+  const fr = state.friend ? state.friend.answers : null;
+  const prev = tally(line, r), l = prev.l + leftCount(ans), answered = prev.total + N;
+  const v = tierOf(line, l, answered), names = namesOf(line, r, ans);
+  await loadFonts(v[0] + v[1] + names.join('') + line.name + line.L + line.R + '호선 라운드 갈래 밸런스 게임 평균 고민 예측 적중 친구와 같은 선택 문제 기준 둘 중 하나 어느 쪽으로 갈래 출발 →←');
+  const W = 1080, H = 1350, cv = makeCanvas(W, H), g = cv.getContext('2d');
+  g.fillStyle = PAL.bg; g.fillRect(0, 0, W, H);
+  drawBadge(g, 98, 104, 28, line, 28);
+  g.textBaseline = 'middle'; g.textAlign = 'left'; g.fillStyle = PAL.ink; g.font = '700 36px ' + F_BODY;
+  g.fillText(line.no + '호선 ' + line.name + ' · ' + r + '라운드', 142, 106);
+  g.textAlign = 'right'; g.fillStyle = PAL.ink2; g.font = '500 26px ' + F_BODY;
+  g.fillText('갈래 · 밸런스 게임', W - 72, 106);
+  g.fillStyle = PAL.rule; g.fillRect(72, 162, W - 144, 2);
+  g.textBaseline = 'alphabetic'; g.textAlign = 'left'; g.fillStyle = PAL.ink;
+  let fs = 104;
+  g.font = '700 ' + fs + 'px ' + F_DISP;
+  while (g.measureText(v[0]).width > W - 144 && fs > 60) { fs -= 4; g.font = '700 ' + fs + 'px ' + F_DISP; }
+  g.fillText(v[0], 72, 296);
+  g.fillStyle = PAL.ink2; g.font = '400 30px ' + F_BODY;
+  wrapText(g, v[1], W - 144).slice(0, 2).forEach((t, i) => g.fillText(t, 72, 356 + i * 46));
+  drawRoute(g, { names, hex: line.hex, L: line.L, R: line.R, ans, times, preds, fr }, { x: 72, y: 470, w: W - 144, h: 660 });
+  g.fillStyle = PAL.rule; g.fillRect(72, 1172, W - 144, 2);
+  const stats = [[line.L + ' · ' + line.R + ' (' + answered + '문제)', l + ' : ' + (answered - l)]];
+  if (times) stats.push(['평균 고민', secS(mean(times))]);
+  if (preds) stats.push(['예측 적중', hitsOf(ans, preds) + ' / 10']);
+  if (fr) stats.push(['친구와 같은 선택', sameCount(ans, fr) + ' / 10']);
+  const colW = (W - 144) / stats.length;
+  stats.forEach((st, i) => {
+    const x = 72 + i * colW;
+    g.textAlign = 'left'; g.fillStyle = PAL.ink2; g.font = '500 24px ' + F_BODY; g.fillText(st[0], x, 1220);
+    g.fillStyle = PAL.ink; g.font = '500 40px ' + F_MONO; g.fillText(st[1], x, 1270);
+  });
+  g.textAlign = 'right'; g.fillStyle = PAL.ink3; g.font = '400 22px ' + F_BODY; g.fillText('둘 중 하나, 어느 쪽으로 갈래?', W - 72, 1312);
+  return cv;
+}
+async function drawMapPoster(){
+  const solved = solvedCount();
+  await loadFonts('나의 선택 노선도 개 주제 완료 푼 문제 평균 고민 예측 적중 아직 안 함 라운드 갈래 밸런스 게임 둘 중 하나 어느 쪽으로' + LINES.map((l) => l.name + l.tiers.map((t) => t[0]).join('')).join(''));
+  const W = 1080, H = 1350, cv = makeCanvas(W, H), g = cv.getContext('2d');
+  g.fillStyle = PAL.bg; g.fillRect(0, 0, W, H);
+  g.textBaseline = 'alphabetic'; g.textAlign = 'left'; g.fillStyle = PAL.ink; g.font = '700 84px ' + F_DISP;
+  g.fillText('나의 선택 노선도', 72, 168);
+  g.fillStyle = PAL.ink2; g.font = '400 30px ' + F_BODY;
+  g.fillText('갈래 밸런스 게임 · 푼 문제 ' + solved + ' / ' + ALL_Q, 72, 222);
+  const tw = 296, th = 292, gap = 24, x0 = 72, y0 = 268;
+  LINES.forEach((line, i) => {
+    const x = x0 + (i % 3) * (tw + gap), y = y0 + Math.floor(i / 3) * (th + gap), cx = x + tw / 2;
+    roundRect(g, x, y, tw, th, 22); g.fillStyle = PAL.surface; g.fill(); g.lineWidth = 2; g.strokeStyle = PAL.rule; g.stroke();
+    drawBadge(g, x + 36, y + 38, 17, line, 18);
+    g.textAlign = 'left'; g.textBaseline = 'middle'; g.fillStyle = PAL.ink; g.font = '700 26px ' + F_BODY; g.fillText(line.name, x + 64, y + 40);
+    const all = topicAnswers(line);
+    if (all.length) {
+      const sy = 120 / all.length, sx = Math.min(6, 60 / all.length);
+      let px = cx, py = y + 76;
+      g.strokeStyle = line.hex; g.lineWidth = 6; g.lineCap = 'round'; g.lineJoin = 'round';
+      g.beginPath(); g.moveTo(px, py);
+      all.forEach((a) => { const nx = px + (a ? sx : -sx); g.lineTo(nx, py + Math.min(sx, sy)); g.lineTo(nx, py + sy); px = nx; py += sy; });
+      g.stroke();
+      g.fillStyle = PAL.ink; g.beginPath(); g.arc(cx, y + 76, 4, 0, Math.PI * 2); g.fill();
+      g.beginPath(); g.arc(px, py, 7, 0, Math.PI * 2); g.fillStyle = PAL.surface; g.fill(); g.lineWidth = 3; g.strokeStyle = line.hex; g.stroke();
+      const t = tally(line, 0);
+      g.textAlign = 'center'; g.textBaseline = 'alphabetic';
+      g.fillStyle = PAL.ink; g.font = '600 24px ' + F_BODY; g.fillText(tierOf(line, t.l, t.total)[0], cx, y + th - 40);
+      g.fillStyle = PAL.ink3; g.font = '500 18px ' + F_BODY; g.fillText(roundsDone(line).length + ' / ' + ROUNDS + ' 라운드', cx, y + th - 14);
+    } else {
+      g.setLineDash([6, 8]); g.strokeStyle = PAL.rule; g.lineWidth = 3;
+      g.beginPath(); g.moveTo(cx, y + 80); g.lineTo(cx, y + 196); g.stroke(); g.setLineDash([]);
+      g.textAlign = 'center'; g.textBaseline = 'alphabetic'; g.fillStyle = PAL.ink3; g.font = '500 22px ' + F_BODY; g.fillText('아직 안 함', cx, y + th - 34);
+    }
+  });
+  const times = [];
+  let hits = 0, total = 0;
+  Object.keys(store.runs).forEach((key) => { const run = store.runs[key]; if (run.times) times.push.apply(times, run.times); if (run.preds) { total += N; hits += hitsOf(run.answers, run.preds); } });
+  const parts = [];
+  if (times.length) parts.push('평균 고민 ' + secS(mean(times)));
+  if (total) parts.push('예측 적중 ' + Math.round((hits / total) * 100) + '%');
+  g.textBaseline = 'alphabetic'; g.textAlign = 'left'; g.fillStyle = PAL.ink2; g.font = '500 26px ' + F_BODY; g.fillText(parts.join(' · '), 72, 1296);
+  g.textAlign = 'right'; g.fillStyle = PAL.ink3; g.font = '400 22px ' + F_BODY; g.fillText('둘 중 하나, 어느 쪽으로 갈래?', W - 72, 1296);
+  return cv;
+}
+function updateSaveUI(){
+  if (el.imageSheet.hidden || el.shot.hidden) return;
+  const touch = isTouch(), share = touch && canShareFile(lastShot);
+  el.saveBtn.hidden = false;
+  el.saveBtn.textContent = share ? '이미지 공유·저장' : '이미지 저장';
+  el.shotHint.textContent = touch ? '버튼을 누르거나 이미지를 길게 눌러 사진에 저장하세요.' : '버튼을 누르면 PNG 파일로 내려받아요.';
+}
+async function openImage(title, file, draw){
+  el.imageTitle.textContent = title;
+  lastFile = file;
+  el.shot.hidden = true;
+  el.shot.removeAttribute('src');
+  el.shotPh.hidden = false;
+  el.shotPh.textContent = '이미지를 만드는 중…';
+  el.saveBtn.hidden = true;
+  el.shotHint.textContent = '';
+  openSheet(el.imageSheet);
+  try {
+    lastCanvas = await draw();
+    lastShot = null;
+    try {
+      const blob = await new Promise((res, rej) => lastCanvas.toBlob((b) => (b ? res(b) : rej(new Error('blob'))), 'image/png'));
+      lastShot = typeof File === 'function' ? new File([blob], file, { type: 'image/png' }) : blob;
+    } catch (e) {}
+    el.shot.src = lastCanvas.toDataURL('image/png');
+    el.shot.alt = title;
+    el.shot.hidden = false;
+    el.shotPh.hidden = true;
+    updateSaveUI();
+  } catch (e) {
+    el.shotPh.textContent = '이미지를 만들지 못했어요. 화면을 캡처해서 공유해 주세요.';
+  }
+}
+
+/* ---------- sheets & toast ---------- */
+function openSheet(sheet){
+  if (openSheetEl && openSheetEl !== sheet) closeSheet(true);
+  sheetReturn = document.activeElement;
+  sheet.hidden = false;
+  openSheetEl = sheet;
+  document.documentElement.style.overflow = 'hidden';
+  const x = sheet.querySelector('[data-close]');
+  if (x) x.focus({ preventScroll: true });
+}
+function closeSheet(silent){
+  if (!openSheetEl) return;
+  openSheetEl.hidden = true;
+  openSheetEl = null;
+  document.documentElement.style.overflow = '';
+  if (!silent && sheetReturn && sheetReturn.focus) { try { sheetReturn.focus({ preventScroll: true }); } catch (e) {} }
+}
+function trapFocus(e){
+  const f = Array.from(openSheetEl.querySelectorAll('button, textarea')).filter((n) => !n.disabled && !n.hidden && n.offsetParent !== null);
+  if (!f.length) return;
+  const first = f[0], last = f[f.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+}
+function toast(msg){
+  el.toast.textContent = msg;
+  el.toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.toast.classList.remove('show'), 2600);
+}
+
+/* ---------- routing ---------- */
+/* #work → next round of that topic, #work2 → round 2, #work2-1a3 → a finished round 2 (mine or a friend's).
+   Codes without a round digit (#work-1a3) come from earlier versions and mean round 1. */
+function parseFriend(code){
+  const m = /^([a-z]+)([1-6])?-([0-9a-f]{3})$/.exec(String(code || ''));
+  if (!m || !BY_ID[m[1]]) return null;
+  return { answers: decode(m[3]), code: m[1] + (m[2] || '1') + '-' + m[3] };
+}
+function route(){
+  let h = (location.hash || '').slice(1);
+  try { h = decodeURIComponent(h); } catch (e) {}
+  h = h.trim().toLowerCase();
+  const m = /^([a-z]+)([1-6])?(?:-([0-9a-f]{3}))?$/.exec(h);
+  if (!m || !BY_ID[m[1]]) {
+    clearTimeout(state.timer);
+    state.revealing = false;
+    state.view = 'hub';
+    return;
+  }
+  const line = BY_ID[m[1]];
+  if (!m[3]) {
+    if (m[2]) { prepRound(line, Number(m[2]), null); return; }
+    const nr = nextRound(line);
+    if (nr) { prepRound(line, nr, null); return; }
+    const lr = latestRound(line);
+    showRun(line, lr, runOf(line, lr), null);
+    return;
+  }
+  const r = Number(m[2] || 1), code = line.id + r + '-' + m[3], ans = decode(m[3]);
+  const run = runOf(line, r);
+  if (store.mine.indexOf(code) !== -1) {
+    const same = !!run && run.code === code;
+    showRun(line, r, { answers: ans, times: same ? run.times : null, preds: same ? run.preds : null }, null);
+  } else if (run) {
+    showRun(line, r, run, { answers: ans, code });
+  } else {
+    prepRound(line, r, { answers: ans, code });
+  }
+}
+
+/* ---------- events ---------- */
+el.brandBtn.addEventListener('click', goHub);
+el.playBack.addEventListener('click', goHub);
+el.resBack.addEventListener('click', goHub);
+el.undoBtn.addEventListener('click', undo);
+el.againBtn.addEventListener('click', () => startRound(state.line, state.round, state.friend));
+el.quickBtn.addEventListener('click', quickStart);
+el.browseBtn.addEventListener('click', () => {
+  try { el.lines.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' }); } catch (e) { el.lines.scrollIntoView(); }
+});
+el.randomBtn.addEventListener('click', () => {
+  const pool = LINES.filter((l) => nextRound(l));
+  if (!pool.length) { startRound(LINES[Math.floor(Math.random() * LINES.length)], 1, null); return; }
+  const line = pool[Math.floor(Math.random() * pool.length)];
+  startRound(line, nextRound(line), null);
+});
+el.dailyL.addEventListener('click', () => answerDaily(0));
+el.dailyR.addEventListener('click', () => answerDaily(1));
+el.doors.addEventListener('click', (e) => {
+  if (state.revealing) { advance(); return; }
+  const b = e.target.closest('.door');
+  if (b) pick(b === el.doorR ? 1 : 0);
+});
+el.shareBtn.addEventListener('click', () => {
+  const line = state.line, r = state.round;
+  const prev = tally(line, r), v = tierOf(line, prev.l + leftCount(state.answers), prev.total + N)[0];
+  const text = '갈래 밸런스 게임 · ' + line.no + '호선 ' + line.name + ' ' + r + '라운드\n' + line.name + ' 주제에서 나는 ‘' + v + '’' + (jong(v) ? '이었어.' : '였어.') +
+    ' 똑같은 10문제로 나랑 몇 번이나 같은 걸 고르는지 해 볼래?\n' + shareLink(codeOf(line, r, state.answers));
+  shareOrCopy(text, '링크를 복사했어요. 친구에게 붙여 넣어 보내 보세요.');
+});
+el.mmShare.addEventListener('click', () => {
+  const text = '둘 중 하나만 고르는 밸런스 게임 ‘갈래’. 9개 주제, ' + ALL_Q + '문제로 나만의 노선도를 그려 봐.\n나는 벌써 ' + solvedCount() + '문제를 풀었어.\n' + shareLink('');
+  shareOrCopy(text, '링크를 복사했어요.');
+});
+el.posterBtn.addEventListener('click', () => openImage('노선도 이미지', 'galae-' + state.line.id + state.round + '.png', drawLinePoster));
+el.mmImage.addEventListener('click', () => openImage('전체 노선도 이미지', 'galae-map.png', drawMapPoster));
+el.copyRetry.addEventListener('click', () => {
+  const text = el.copyArea.value;
+  let done = false;
+  selectCopyArea();
+  try { done = !!(document.execCommand && document.execCommand('copy')); } catch (e) {}
+  if (done) { closeSheet(); toast('복사했어요.'); return; }
+  copyText(text).then((ok) => {
+    if (ok) { closeSheet(); toast('복사했어요.'); }
+    else { selectCopyArea(); toast('글을 길게 눌러 직접 복사해 주세요.'); }
+  });
+});
+el.saveBtn.addEventListener('click', async () => {
+  if (!lastShot) { toast('이미지를 길게 눌러 저장해 주세요.'); return; }
+  if (isTouch() && canShareFile(lastShot)) {
+    try { await navigator.share({ files: [lastShot] }); return; }
+    catch (e) { if (e && e.name === 'AbortError') return; }
+  }
+  try {
+    const url = URL.createObjectURL(lastShot);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = lastFile;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+    toast('이미지를 저장했어요.');
+  } catch (e) {
+    toast('이미지를 길게 눌러 저장해 주세요.');
+  }
+});
+document.querySelectorAll('.sheet').forEach((s) => {
+  s.addEventListener('click', (e) => { if (e.target === s || e.target.closest('[data-close]')) closeSheet(); });
+});
+document.addEventListener('click', (e) => {
+  const t = e.target.closest('[data-open]');
+  if (t && !t.closest('.sheet')) { e.preventDefault(); openTarget(t.getAttribute('data-open')); }
+});
+document.addEventListener('keydown', (e) => {
+  usingKeyboard = true;
+  if (openSheetEl) {
+    if (e.key === 'Escape') { e.preventDefault(); closeSheet(); }
+    else if (e.key === 'Tab') trapFocus(e);
+    return;
+  }
+  if (state.view !== 'play' || e.altKey || e.ctrlKey || e.metaKey) return;
+  const tag = (e.target && e.target.tagName) || '';
+  if (tag === 'TEXTAREA' || tag === 'INPUT') return;
+  const k = e.key;
+  if (state.revealing) {
+    if (k === 'Enter' || k === ' ' || k === 'ArrowLeft' || k === 'ArrowRight') { e.preventDefault(); advance(); }
+    return;
+  }
+  if (k === 'ArrowLeft' || k === 'a' || k === 'A') { e.preventDefault(); pick(0); }
+  else if (k === 'ArrowRight' || k === 'b' || k === 'B') { e.preventDefault(); pick(1); }
+  else if (k === 'Backspace') { e.preventDefault(); undo(); }
+});
+document.addEventListener('pointerdown', () => { usingKeyboard = false; }, true);
+window.addEventListener('hashchange', () => { route(); render(); scrollTop(); });
+
+/* ---------- capabilities & boot ---------- */
+renderSample();
+
+function start(data){
+  if (data && data.line && BY_ID[data.line] && Array.isArray(data.answers) && data.answers.length <= N && data.answers.every((x) => x === 0 || x === 1)) {
+    state.line = BY_ID[data.line];
+    state.round = RLIST.indexOf(data.round) !== -1 ? data.round : 1;
+    state.answers = data.answers.slice();
+    state.times = Array.isArray(data.times) ? data.times.slice(0, state.answers.length) : [];
+    state.preds = Array.isArray(data.preds) ? data.preds.slice(0, state.answers.length) : [];
+    state.friend = data.friend ? parseFriend(data.friend) : null;
+    state.view = data.view === 'result' && state.answers.length === N ? 'result' : (data.view === 'play' && state.answers.length < N ? 'play' : 'hub');
+  } else {
+    route();
+  }
+  render();
+}
+start({});
+})();
+</script>
+</body>
+</html>
