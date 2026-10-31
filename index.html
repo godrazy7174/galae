@@ -110,7 +110,12 @@ main{flex:1}
 .brand{display:inline-flex;align-items:baseline;gap:8px;padding:6px 0;background:none;border:0;cursor:pointer;color:var(--ink)}
 .brand b{font-weight:800;font-size:20px;line-height:1;letter-spacing:-.035em}
 .brand small{font-size:13px;font-weight:600;color:var(--ink-2)}
+.top-end{display:flex;align-items:center;gap:14px;min-width:0}
 .top-meta{margin:0;font-size:13px;color:var(--ink-2)}
+.snd{min-height:44px;padding:0 0 0 14px;border:0;border-left:1px solid var(--rule);border-radius:0;background:none;font-size:13px;font-weight:600;line-height:1.2;color:var(--ink-2);cursor:pointer;white-space:nowrap}
+@media (hover:hover){ .snd:hover{color:var(--ink)} }
+.snd[aria-pressed="false"]{color:var(--ink-3)}
+@media (max-width:359px){ .brand small{display:none} }
 .top-meta b{font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
 
 .badge{flex:none;width:26px;height:26px;border-radius:50%;display:inline-grid;place-items:center;background:var(--lc, var(--line));color:var(--lon, var(--on-line));font-size:13px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
@@ -252,7 +257,8 @@ main{flex:1}
 .fork-wrap.go-r .train{left:75%;top:100%;opacity:1}
 /* the two choices are direction signs: dark panel, arrow toward the destination */
 .doors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.door{position:relative;display:flex;align-items:center;justify-content:center;min-height:clamp(150px,26vh,240px);padding:46px 16px 38px;border:0;border-radius:var(--r);background:var(--sign);color:var(--on-sign);text-align:center;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;transition:background-color .2s ease,box-shadow .15s ease,color .2s ease,opacity .2s ease}
+.door{position:relative;display:flex;align-items:center;justify-content:center;min-height:clamp(150px,26vh,240px);padding:46px 16px 38px;border:0;border-radius:var(--r);background:var(--sign);color:var(--on-sign);text-align:center;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none;transition:background-color .2s ease,box-shadow .15s ease,color .2s ease,opacity .2s ease,transform .12s ease}
+.doors:not(.revealing) .door:active{transform:scale(.985)}
 .door .dir{position:absolute;top:12px;left:16px;font-size:22px;font-weight:500;line-height:1;color:var(--sign-2)}
 .door-r .dir{left:auto;right:16px}
 .dtxt{max-width:14em;font-size:clamp(17px,4.4vw,22px);font-weight:700;line-height:1.45;letter-spacing:-.02em;text-wrap:balance}
@@ -283,7 +289,8 @@ kbd{padding:1px 6px;border:1px solid var(--rule);border-radius:2px;background:va
   .routefig{position:sticky;top:calc(16px + env(safe-area-inset-top, 0px))}
 }
 /* the arrival sign: same face as the platform sign */
-.arrive{padding:20px 20px 24px;background:var(--panel);border-top:6px solid var(--line);border-radius:var(--r)}
+.arrive{position:relative;overflow:hidden;padding:26px 20px 24px;background:var(--panel);border-radius:var(--r)}
+.arrive::before{content:"";position:absolute;left:0;right:0;top:0;height:6px;background:var(--line);transform-origin:0 50%}
 .arrive-label{margin:0;font-size:14px;font-weight:600;color:var(--ink-2)}
 .verdict{margin:6px 0 0;font-weight:800;font-size:clamp(40px,11vw,72px);line-height:1.1;letter-spacing:-.045em;text-wrap:balance}
 .verdict-d{margin:14px 0 0;max-width:30em;font-size:17px;font-weight:400;line-height:1.75;color:var(--ink-2)}
@@ -388,7 +395,7 @@ kbd{padding:1px 6px;border:1px solid var(--rule);border-radius:2px;background:va
 .xstrip i{position:relative;z-index:1;justify-self:center;width:11px;height:11px;box-sizing:border-box;border-radius:50%;background:var(--bg);border:3px solid var(--lc)}
 .xstrip i.done{background:var(--ink);border-color:var(--ink)}
 .xstrip i.now{width:16px;height:16px;border-width:4px}
-.x-arrive{border-top-color:var(--sign)}
+.x-arrive::before{background:var(--sign)}
 .xlist{display:grid;margin:24px 0 0;padding:0;list-style:none;background:var(--panel);border-radius:var(--r)}
 .xrow{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"badge name go" "track track track";align-items:center;column-gap:12px;row-gap:10px;padding:16px;background:none;border:0;border-top:1px solid var(--rule);color:var(--ink);text-align:left;cursor:pointer;transition:background-color .15s ease}
 .xlist li:first-child .xrow{border-top:0}
@@ -419,6 +426,31 @@ kbd{padding:1px 6px;border:1px solid var(--rule);border-radius:2px;background:va
 .spec .end{display:block;font-size:12px;font-weight:500;color:var(--ink-3)}
 .here{display:inline-block;margin-left:8px;padding:1px 6px;border-radius:2px;background:var(--ink);color:var(--panel);font-size:11.5px;font-style:normal;font-weight:700;vertical-align:2px}
 
+/* motion
+   One arrival sequence on result screens: the band sweeps in like a train pulling in, the name comes up,
+   then the route is drawn from 출발 at an even speed and each station appears as the line reaches it.
+   Everything else only answers an action. */
+.ride-sign.enter .ask{animation:roll .3s cubic-bezier(.2,.7,.2,1) both}
+.seal.hit,.seal.miss{animation:stamp .3s ease-out both}
+.arriving .arrive::before{animation:sweep .55s cubic-bezier(.25,.8,.25,1) both}
+.arriving .arrive-label,.arriving .verdict,.arriving .verdict-d{animation:rise .5s cubic-bezier(.2,.7,.2,1) both}
+.arriving .arrive-label{animation-delay:.15s}
+.arriving .verdict{animation-delay:.24s}
+.arriving .verdict-d{animation-delay:.36s}
+.arriving .rt-path{stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw 1.3s .45s linear forwards}
+.arriving .rt-node{transform-box:fill-box;transform-origin:center;animation:stop-in .26s calc(.45s + var(--at, 0s)) ease-out both}
+.arriving .rt-name{animation:fade .3s calc(.45s + var(--at, 0s)) ease-out both}
+.arriving .rt-fpath,.arriving .rt-fnode{animation:fade .5s 1.7s ease both}
+.arriving .xr-bar i{animation:lean .8s .4s cubic-bezier(.3,.7,.25,1) both}
+@keyframes roll{from{opacity:0;transform:translateY(.4em)}to{opacity:1;transform:none}}
+@keyframes stamp{from{opacity:0;transform:scale(1.15)}to{opacity:1;transform:none}}
+@keyframes sweep{from{transform:scaleX(0)}to{transform:none}}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes stop-in{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes lean{from{left:50%}}
+
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.01ms !important;animation-delay:0s !important;transition-duration:.01ms !important}
 }
@@ -429,7 +461,10 @@ kbd{padding:1px 6px;border:1px solid var(--rule);border-radius:2px;background:va
 <div class="app" id="app">
   <header class="top">
     <button class="brand" id="brandBtn" type="button" aria-label="갈래 처음 화면으로"><b>갈래</b><small>밸런스 게임</small></button>
-    <p class="top-meta" id="topMeta"></p>
+    <div class="top-end">
+      <p class="top-meta" id="topMeta"></p>
+      <button class="snd" id="sndBtn" type="button" aria-label="효과음" aria-pressed="true">소리 켬</button>
+    </div>
   </header>
 
   <main>
@@ -1374,7 +1409,7 @@ const F_BODY = '"Gothic A1","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR"
 
 const $ = (id) => document.getElementById(id);
 const el = {};
-['app','topMeta','brandBtn','hub','quickBtn','quickLabel','quickSub',
+['app','topMeta','sndBtn','brandBtn','hub','quickBtn','quickLabel','quickSub',
  'lines','lineList','myMap','mmMeta','sliders','mmStats','mmImage','mmShare',
  'play','playBack','playBadge','playName','friendNote','stripFill','stepNo','lastSt','ask','howto','seal','sealText','sealHelp',
  'forkWrap','brL','brR','doors','doorL','doorR','doorLText','doorRText','fnote','undoBtn','live',
@@ -1389,6 +1424,63 @@ const stripDots = Array.from(document.querySelectorAll('#strip i'));
 const reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 const isTouch = () => (navigator.maxTouchPoints || 0) > 0 || !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
 const canShareFile = (f) => { try { return !!(f && navigator.share && navigator.canShare && navigator.canShare({ files: [f] })); } catch (e) { return false; } };
+
+/* ---------- sound ----------
+   Synthesized on the spot with Web Audio; there are no sound files.
+   pick: the short beep of a transit card on a ticket gate, a little to the side that was picked.
+   undo: a lower, shorter click. arrive: two soft bell notes, a rising fifth, when a run ends. */
+const SOUND_KEY = 'galae.sound';
+let soundOn = true;
+try { soundOn = localStorage.getItem(SOUND_KEY) !== 'off'; } catch (e) {}
+let actx = null;
+function audioCtx(){
+  if (!soundOn) return null;
+  try {
+    if (!actx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      actx = new AC();
+    }
+    if (actx.state === 'suspended') actx.resume().catch(() => {});
+    return actx;
+  } catch (e) { return null; }
+}
+function voice(ac, o){
+  const t = ac.currentTime + (o.at || 0), end = t + o.len;
+  const osc = ac.createOscillator(), g = ac.createGain();
+  osc.type = o.type || 'sine';
+  osc.frequency.setValueAtTime(o.f, t);
+  g.gain.setValueAtTime(0.0001, t);
+  g.gain.exponentialRampToValueAtTime(o.peak, t + 0.005);
+  if (o.hold) g.gain.setValueAtTime(o.peak, t + o.hold);
+  g.gain.exponentialRampToValueAtTime(0.0001, end);
+  osc.connect(g);
+  let out = g;
+  if (o.pan && ac.createStereoPanner) { const p = ac.createStereoPanner(); p.pan.setValueAtTime(o.pan, t); g.connect(p); out = p; }
+  out.connect(ac.destination);
+  osc.start(t);
+  osc.stop(end + 0.03);
+}
+const sfx = {
+  pick(side){
+    const ac = audioCtx(); if (!ac) return;
+    const pan = side ? 0.3 : -0.3;
+    voice(ac, { f: 2093, len: 0.11, hold: 0.075, peak: 0.05, pan });
+    voice(ac, { f: 4186, len: 0.09, hold: 0.06, peak: 0.012, pan });
+  },
+  undo(){
+    const ac = audioCtx(); if (!ac) return;
+    voice(ac, { f: 1046.5, type: 'triangle', len: 0.07, hold: 0.03, peak: 0.05 });
+  },
+  arrive(){
+    const ac = audioCtx(); if (!ac) return;
+    [[659.25, 0], [987.77, 0.17]].forEach(([f, at]) => {
+      voice(ac, { f, at, len: 1.5, peak: 0.06 });
+      voice(ac, { f: f * 2, at, len: 0.7, peak: 0.016 });
+      voice(ac, { f: f * 3, at, len: 0.35, peak: 0.006 });
+    });
+  },
+};
 
 const state = { view:'hub', line:null, round:1, answers:[], times:[], preds:[], pred:0, friend:null, revealing:false, timer:0, lock:0, t0:0, paused:0, hiddenAt:0, xa:[] };
 let lastShot = null;
@@ -1527,6 +1619,20 @@ function show(view){
   el.xpress.hidden = view !== 'xpress';
   el.xresult.hidden = view !== 'xresult';
 }
+let shownKey = '';
+function viewKey(){
+  if (state.view === 'result') return 'r' + state.line.id + state.round + state.answers.join('') + (state.friend ? state.friend.code : '');
+  if (state.view === 'xresult') return 'x' + (store.express ? store.express.answers : state.xa).join('');
+  return state.view;
+}
+function arrive(section){
+  if (reduced) return;
+  section.classList.remove('arriving');
+  void section.offsetWidth;
+  section.classList.add('arriving');
+  clearTimeout(section.arriveTimer);
+  section.arriveTimer = setTimeout(() => section.classList.remove('arriving'), 2600);
+}
 function render(){
   if (state.line) setLineVars(el.app, state.line);
   show(state.view);
@@ -1536,6 +1642,9 @@ function render(){
   else if (state.view === 'result') renderResult();
   else if (state.view === 'xpress') renderExpress(false);
   else if (state.view === 'xresult') renderExpressResult();
+  const key = viewKey();
+  if (key !== shownKey && (state.view === 'result' || state.view === 'xresult')) arrive(state.view === 'result' ? el.result : el.xresult);
+  shownKey = key;
 }
 function scrollTop(){ try { window.scrollTo({ top: 0, behavior: 'auto' }); } catch (e) { window.scrollTo(0, 0); } }
 function goHub(){
@@ -1637,12 +1746,13 @@ function routeSVG(o){
     s += '<path class="rt-fpath" d="' + pathD(fp) + '"/>';
     fp.slice(1).forEach((p) => { s += '<circle class="rt-fnode" cx="' + p.x + '" cy="' + p.y + '" r="3.2"/>'; });
   }
-  s += '<path class="rt-path" d="' + pathD(me) + '" style="stroke:' + o.color + '"/>';
+  const stepLen = Math.hypot(DX, DX) + (DY - DX), drawT = (k) => (((k + 1) / N) * 1.3).toFixed(2) + 's';
+  s += '<path class="rt-path" d="' + pathD(me) + '" style="stroke:' + o.color + ';--len:' + Math.ceil(stepLen * N) + '"/>';
   s += '<circle class="rt-start" cx="0" cy="0" r="5"/><text class="rt-small" x="0" y="-13" text-anchor="middle">출발</text>';
   labels.forEach((L) => {
     const miss = !!o.preds && o.preds[L.k] !== o.ans[L.k];
-    s += '<circle class="rt-node' + (miss ? ' miss' : '') + (L.xfer ? ' xfer' : '') + '" cx="' + L.n.x + '" cy="' + L.n.y + '" r="' + L.r.toFixed(1) + '" style="stroke:' + (L.xfer ? 'var(--ink)' : o.color) + '"/>';
-    s += '<text class="rt-name" x="' + L.tx + '" y="' + (L.n.y + 4.5) + '" text-anchor="' + (L.side < 0 ? 'end' : 'start') + '">' + esc(L.name) +
+    s += '<circle class="rt-node' + (miss ? ' miss' : '') + (L.xfer ? ' xfer' : '') + '" cx="' + L.n.x + '" cy="' + L.n.y + '" r="' + L.r.toFixed(1) + '" style="stroke:' + (L.xfer ? 'var(--ink)' : o.color) + ';--at:' + drawT(L.k) + '"/>';
+    s += '<text class="rt-name" x="' + L.tx + '" y="' + (L.n.y + 4.5) + '" text-anchor="' + (L.side < 0 ? 'end' : 'start') + '" style="--at:' + drawT(L.k) + '">' + esc(L.name) +
       (L.tm ? '<tspan class="rt-time" dx="5">' + L.tm + '</tspan>' : '') + '</text>';
   });
   return s + '</svg>';
@@ -1752,9 +1862,10 @@ function renderPlay(animate){
   el.fnote.textContent = '';
   el.undoBtn.disabled = k === 0;
   if (animate && !reduced) {
-    el.doors.classList.remove('enter');
+    const sign = el.ask.parentNode;
+    el.doors.classList.remove('enter'); sign.classList.remove('enter');
     void el.doors.offsetWidth;
-    el.doors.classList.add('enter');
+    el.doors.classList.add('enter'); sign.classList.add('enter');
   }
   startTimer();
 }
@@ -1767,6 +1878,7 @@ function pick(side){
   state.times.push(Math.round(elapsed()));
   state.preds.push(state.pred);
   state.revealing = true;
+  sfx.pick(side);
 
   const won = side ? el.doorR : el.doorL, lost = side ? el.doorL : el.doorR;
   el.doors.classList.remove('enter');
@@ -1809,6 +1921,7 @@ function advance(){
 function undo(){
   if (state.view !== 'play' || state.revealing || !state.answers.length) return;
   state.answers.pop(); state.times.pop(); state.preds.pop();
+  sfx.undo();
   renderPlay(true);
 }
 function finish(){
@@ -1819,6 +1932,7 @@ function finish(){
   setHash(code);
   state.view = 'result';
   render();
+  sfx.arrive();
   scrollTop();
   if (usingKeyboard) el.shareBtn.focus({ preventScroll: true });
 }
@@ -1995,9 +2109,10 @@ function renderExpress(animate){
   [el.xL, el.xR].forEach((d) => d.classList.remove('won', 'lost'));
   el.xUndo.disabled = state.xa.length === 0;
   if (animate && !reduced) {
-    el.xDoors.classList.remove('enter');
+    const sign = el.xAsk.parentNode;
+    el.xDoors.classList.remove('enter'); sign.classList.remove('enter');
     void el.xDoors.offsetWidth;
-    el.xDoors.classList.add('enter');
+    el.xDoors.classList.add('enter'); sign.classList.add('enter');
   }
 }
 function pickExpress(side){
@@ -2007,6 +2122,7 @@ function pickExpress(side){
   const q = EXPRESS[i], line = q.line, pole = swap(line, q.r, q.k, side);
   state.xa.push(pole);
   state.revealing = true;
+  sfx.pick(side);
   el.xDoors.classList.remove('enter');
   el.xDoors.classList.add('revealing');
   (side ? el.xR : el.xL).classList.add('won');
@@ -2031,6 +2147,7 @@ function advanceExpress(){
 function undoExpress(){
   if (state.view !== 'xpress' || state.revealing || !state.xa.length) return;
   state.xa.pop();
+  sfx.undo();
   renderExpress(true);
 }
 function finishExpress(){
@@ -2039,6 +2156,7 @@ function finishExpress(){
   state.view = 'xresult';
   setHash('express');
   render();
+  sfx.arrive();
   scrollTop();
 }
 /* per line: how many of its two express answers went to the line's first pole */
@@ -2447,6 +2565,18 @@ function route(){
 }
 
 /* ---------- events ---------- */
+function renderSound(){
+  el.sndBtn.textContent = soundOn ? '소리 켬' : '소리 끔';
+  el.sndBtn.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+}
+renderSound();
+el.sndBtn.addEventListener('click', () => {
+  soundOn = !soundOn;
+  try { localStorage.setItem(SOUND_KEY, soundOn ? 'on' : 'off'); } catch (e) {}
+  renderSound();
+  if (soundOn) sfx.pick(1);
+});
+document.addEventListener('touchstart', () => {}, { passive: true });
 el.brandBtn.addEventListener('click', goHub);
 el.playBack.addEventListener('click', goHub);
 el.resBack.addEventListener('click', goHub);
