@@ -23,6 +23,52 @@
 <meta property="og:locale" content="ko_KR">
 <meta name="twitter:card" content="summary_large_image">
 <style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<script>
+/* 애드센스 설정: 광고를 켜려면 client에 게시자 ID(ca-pub-로 시작)를 넣으세요.
+   slots에는 애드센스에서 만든 디스플레이 광고 단위 ID(숫자)를 넣으면 그 자리에 광고가 나와요.
+   hub = 처음 화면 노선도 아래, result = 라운드 결과 아래, xresult = 급행 결과 아래.
+   client가 비어 있으면 광고 코드는 하나도 실리지 않아요. 문제 푸는 화면에는 광고를 넣지 않아요(잘못 누르기 쉬워서). */
+window.GALAE_ADS = { client: '', slots: { hub: '', result: '', xresult: '' } };
+</script>
+<script>
+(function () {
+  var cfg = window.GALAE_ADS || {}, id = String(cfg.client || '').trim(), slots = cfg.slots || {};
+  if (!/^ca-pub-\d{10,20}$/.test(id)) return;
+  var root = document.documentElement;
+  var meta = document.createElement('meta');
+  meta.name = 'google-adsense-account'; meta.content = id;
+  document.head.appendChild(meta);
+  var tag = document.createElement('script');
+  tag.async = true; tag.crossOrigin = 'anonymous';
+  tag.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(id);
+  tag.onerror = function () { root.classList.remove('ads-on'); };
+  document.head.appendChild(tag);
+  root.classList.add('ads-on');
+  /* screens are swapped with [hidden]; a slot gets its ad the first time its screen is on view, once per visit */
+  function fill(box) {
+    var slot = String(slots[box.getAttribute('data-ad')] || '').trim();
+    if (!/^\d{6,20}$/.test(slot) || box.hasAttribute('data-filled')) return;
+    if (!box.parentElement || !box.parentElement.offsetWidth) return;
+    box.setAttribute('data-filled', '');
+    var ins = document.createElement('ins');
+    ins.className = 'adsbygoogle';
+    ins.style.display = 'block';
+    ins.setAttribute('data-ad-client', id);
+    ins.setAttribute('data-ad-slot', slot);
+    ins.setAttribute('data-ad-format', 'auto');
+    ins.setAttribute('data-full-width-responsive', 'true');
+    box.appendChild(ins);
+    try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) {}
+  }
+  function scan() { Array.prototype.forEach.call(document.querySelectorAll('.ad-slot'), fill); }
+  document.addEventListener('DOMContentLoaded', function () {
+    scan();
+    if (window.MutationObserver) {
+      new MutationObserver(scan).observe(document.getElementById('app') || document.body, { attributes: true, subtree: true, attributeFilter: ['hidden'] });
+    }
+  });
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Gothic+A1:wght@400;500;600;700;800&display=swap">
@@ -412,6 +458,12 @@ kbd{padding:1px 6px;border:1px solid var(--rule);border-radius:3px;background:va
 .foot p{margin:0}
 .foot a{color:var(--ink-2);font-weight:800;text-underline-offset:3px}
 
+/* ad places: nothing shows until a slot id is set and the ad script loads; an unfilled slot folds away */
+.ad-slot{display:none}
+.ads-on .ad-slot[data-filled]{display:grid;gap:6px;margin-top:48px;padding-top:12px;border-top:1px solid var(--rule)}
+.ads-on .ad-slot[data-filled]::before{content:"광고";font-size:11.5px;font-weight:700;color:var(--ink-3)}
+.ads-on .ad-slot:has(ins[data-ad-status="unfilled"]){display:none}
+
 /* sheets */
 .sheet{position:fixed;inset:0;z-index:50;display:grid;place-items:end center;background:var(--scrim);
   padding-top:calc(16px + env(safe-area-inset-top, 0px));
@@ -546,6 +598,8 @@ kbd{padding:1px 6px;border:1px solid var(--rule);border-radius:3px;background:va
         <ol class="line-list" id="lineList"></ol>
       </section>
 
+      <div class="ad-slot" data-ad="hub"></div>
+
       <section class="mymap" id="myMap" hidden aria-labelledby="myMapTitle">
         <div class="sec-head">
           <h2 class="sec-h" id="myMapTitle">내 기록</h2>
@@ -674,6 +728,7 @@ kbd{padding:1px 6px;border:1px solid var(--rule);border-radius:3px;background:va
           </details>
         </div>
       </div>
+      <div class="ad-slot" data-ad="result"></div>
       <section class="more" aria-labelledby="moreTitle">
         <h2 class="sec-h" id="moreTitle">다른 노선</h2>
         <div class="chips" id="moreLines"></div>
@@ -728,12 +783,14 @@ kbd{padding:1px 6px;border:1px solid var(--rule);border-radius:3px;background:va
         <button class="btn primary" id="xShare" type="button">친구에게 급행 보내기</button>
         <button class="btn" id="xAgain" type="button">급행 다시 타기</button>
       </div>
+      <div class="ad-slot" data-ad="xresult"></div>
     </section>
   </main>
 
   <footer class="foot">
     <p>기록은 이 브라우저에만 저장돼요. 다른 기기로 옮기려면 ‘내 기록’의 옮기기 링크를 쓰세요.</p>
     <p>같이 운영하는 1분 심리테스트 모음 <a href="https://godrazy7174.github.io/">뭐나와</a>도 있어요.</p>
+    <p><a href="https://godrazy7174.github.io/privacy.html">개인정보처리방침</a></p>
   </footer>
 </div>
 
