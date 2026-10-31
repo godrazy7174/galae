@@ -118,6 +118,7 @@ main{flex:1}
 @media (hover:hover){ .btn.primary:hover{background:var(--sign-hover);border-color:var(--sign-hover)} }
 .btn.big{min-height:60px;padding:14px 24px;font-size:17px}
 .btn .sub{font-size:13px;font-weight:600;color:var(--sign-2)}
+.btn .sub2{font-size:13px;font-weight:600;color:var(--ink-2)}
 .btn.text{min-height:44px;padding:8px 0;border-color:transparent;background:none;color:var(--ink-2);font-weight:700}
 @media (hover:hover){ .btn.text:hover{background:none;color:var(--ink)} }
 
@@ -132,14 +133,15 @@ main{flex:1}
 .st-band{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:54px;margin:0;padding:10px 18px;background:var(--sign);color:var(--on-sign);font-size:clamp(16px,4.4vw,20px);font-weight:800;letter-spacing:-.01em}
 .hero-row{display:grid;gap:16px}
 .lede{margin:0;max-width:33em;font-size:clamp(16px,4.3vw,18px);line-height:1.7;color:var(--ink-2);text-wrap:pretty}
-.hero-row .btn{width:100%}
+.hero-btns{display:grid;gap:10px}
+.hero-btns .btn{width:100%}
 @media (min-width:760px){
   .st-lines{padding:18px 20px 0}
   .st-lines .badge{width:24px;height:24px;font-size:12.5px}
   .st-body{padding:22px 24px 34px}
   .hero{gap:24px;padding-top:12px}
   .hero-row{grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:40px}
-  .hero-row .btn{width:auto;min-width:16em}
+  .hero-btns{grid-auto-flow:column;grid-auto-columns:minmax(12em,auto)}
 }
 
 .sec-head{display:grid;gap:4px}
@@ -241,8 +243,8 @@ main{flex:1}
 .door:focus-visible{outline:3px solid var(--line);outline-offset:3px}
 .doors.revealing .door.won{background:var(--line);color:var(--on-line)}
 .doors.revealing .door.won .dir{color:inherit;opacity:.8}
-.doors.revealing .door.lost{opacity:.28}
-.ftag{position:absolute;bottom:12px;left:50%;padding:3px 8px;border-radius:2px;background:var(--on-sign);color:var(--sign);font-size:11.5px;font-weight:800;white-space:nowrap;opacity:0;transform:translateX(-50%);transition:opacity .2s ease;pointer-events:none}
+.doors.revealing .door.lost{opacity:.4}
+.ftag{position:absolute;top:12px;left:50%;padding:3px 8px;border-radius:2px;background:var(--on-sign);color:var(--sign);font-size:11.5px;font-weight:800;white-space:nowrap;opacity:0;transform:translateX(-50%);transition:opacity .2s ease;pointer-events:none}
 .doors.revealing .door.won .ftag{background:var(--on-line);color:var(--line)}
 .doors.revealing .door.friend .ftag{opacity:1}
 .doors.enter .door{animation:door-in .28s ease both}
@@ -362,6 +364,57 @@ kbd{padding:1px 6px;border:1px solid var(--rule);border-radius:2px;background:va
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom, 0px));z-index:60;max-width:calc(100% - 32px);padding:12px 18px;border-radius:var(--r);background:var(--sign);color:var(--on-sign);font-size:14px;font-weight:800;text-align:center;opacity:0;pointer-events:none;transform:translate(-50%,10px);transition:opacity .2s ease,transform .2s ease}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 
+/* vote shares, shown on both doors once a question has enough votes */
+.door .pct{position:absolute;left:0;right:0;bottom:12px;font-size:22px;font-weight:900;line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums;opacity:0;transition:opacity .2s ease}
+.doors.has-pct .door .pct{opacity:1}
+.crowd{margin:12px 0 0;font-size:14.5px;font-weight:800;text-align:center}
+
+/* express: nine lines, two stops each */
+.xp-tag{display:inline-flex;align-items:center;min-height:22px;padding:0 8px;border-radius:2px;background:var(--sign);color:var(--on-sign);font-size:12px;font-weight:900}
+.xstrip{position:relative;display:grid;grid-template-columns:repeat(18,minmax(0,1fr));align-items:center;height:24px;margin-top:14px}
+.xstrip::before{content:"";position:absolute;left:2.8%;right:2.8%;top:50%;height:4px;margin-top:-2px;background:var(--rule)}
+.xstrip i{position:relative;z-index:1;justify-self:center;width:11px;height:11px;box-sizing:border-box;border-radius:50%;background:var(--bg);border:3px solid var(--lc)}
+.xstrip i.done{background:var(--ink);border-color:var(--ink)}
+.xstrip i.now{width:17px;height:17px;border-width:4px}
+.x-arrive{border-top-color:var(--sign)}
+.xlist{display:grid;margin:20px 0 0;padding:0;list-style:none;background:var(--panel);border-radius:var(--r)}
+.xrow{width:100%;display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-areas:"badge name go" "track track track";align-items:center;column-gap:12px;row-gap:8px;padding:14px 16px;background:none;border:0;border-top:1px solid var(--rule);color:var(--ink);text-align:left;cursor:pointer;transition:background-color .15s ease}
+.xlist li:first-child .xrow{border-top:0}
+@media (hover:hover){ .xrow:hover{background:var(--tint)} }
+.xrow .badge{grid-area:badge}
+.xr-name{grid-area:name;min-width:0;font-size:17px;font-weight:900;letter-spacing:-.03em}
+.xr-name small{margin-left:8px;font-size:13.5px;font-weight:800;color:var(--ink-2)}
+.xr-go{grid-area:go;font-size:13px;font-weight:800;color:var(--ink-2);white-space:nowrap}
+.xr-track{grid-area:track;display:grid;grid-template-columns:4.2em minmax(0,1fr) 4.2em;align-items:center;gap:10px;font-size:13px;color:var(--ink-2)}
+.xr-track .pl{text-align:right}
+.xr-track .win{color:var(--ink);font-weight:900}
+.xr-bar{position:relative;height:6px;margin:0 9px;background:var(--lc)}
+.xr-bar i{position:absolute;top:50%;width:18px;height:18px;margin:-9px 0 0 -9px;box-sizing:border-box;border-radius:50%;background:var(--panel);border:5px solid var(--ink)}
+@media (min-width:760px){ .xrow{grid-template-columns:28px 11em minmax(0,1fr) auto;grid-template-areas:"badge name track go";column-gap:20px;padding:16px 22px} }
+.x-actions{display:grid;gap:10px;margin-top:20px}
+@media (min-width:520px){ .x-actions{grid-template-columns:repeat(2,minmax(0,1fr))} }
+
+/* the five result stations of a line, with "you are here" */
+.spec{display:grid;margin:2px 0 0;padding:0;list-style:none}
+.spec li{position:relative;display:grid;grid-template-columns:22px minmax(0,1fr);align-items:center;gap:12px;padding:7px 0}
+.spec li::before{content:"";position:absolute;left:8px;top:0;bottom:0;width:6px;background:var(--line)}
+.spec li:first-child::before{top:50%}
+.spec li:last-child::before{bottom:50%}
+.spec i{position:relative;z-index:1;width:22px;height:22px;box-sizing:border-box;border-radius:50%;background:var(--panel);border:5px solid var(--line)}
+.spec .cur i{background:var(--ink);border-color:var(--ink)}
+.spec b{font-size:15.5px;font-weight:800;letter-spacing:-.02em}
+.spec .cur b{font-weight:900}
+.spec .end{display:block;font-size:12px;font-weight:700;color:var(--ink-3)}
+.here{display:inline-block;margin-left:8px;padding:1px 6px;border-radius:2px;background:var(--ink);color:var(--panel);font-size:11.5px;font-style:normal;font-weight:800;vertical-align:2px}
+
+/* owner stats (#stats) */
+.stats{display:grid;gap:14px;margin-top:14px}
+.tbl{overflow-x:auto;background:var(--panel);border-radius:var(--r)}
+.tbl table{width:100%;border-collapse:collapse;font-size:14px}
+.tbl th,.tbl td{padding:10px 14px;border-top:1px solid var(--rule);text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tbl th:first-child,.tbl td:first-child{text-align:left}
+.tbl thead th{border-top:0;font-size:12.5px;color:var(--ink-2)}
+
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{animation-duration:.01ms !important;animation-delay:0s !important;transition-duration:.01ms !important}
 }
@@ -398,7 +451,10 @@ kbd{padding:1px 6px;border:1px solid var(--rule);border-radius:2px;background:va
         </div>
         <div class="hero-row">
           <p class="lede">주제 9개, 질문 540개. 둘 중 더 끌리는 쪽을 고르면 그쪽으로 내 노선이 이어지고, 10문제를 풀 때마다 내가 어느 쪽으로 기울었는지 알려 줘요.</p>
-          <button class="btn primary big" id="quickBtn" type="button"><span id="quickLabel">바로 출발</span><span class="sub" id="quickSub"></span></button>
+          <div class="hero-btns">
+            <button class="btn primary big" id="quickBtn" type="button"><span id="quickLabel">바로 출발</span><span class="sub" id="quickSub"></span></button>
+            <button class="btn big" id="xStartBtn" type="button"><span id="xStartLabel">3분 급행</span><span class="sub2" id="xStartSub">9개 노선 18문제</span></button>
+          </div>
         </div>
       </div>
 
@@ -422,6 +478,7 @@ kbd{padding:1px 6px;border:1px solid var(--rule);border-radius:2px;background:va
         <div class="mm-actions">
           <button class="btn primary" id="mmImage" type="button">전체 노선도 이미지</button>
           <button class="btn" id="mmShare" type="button">친구에게 갈래 소개하기</button>
+          <button class="btn" id="mmMove" type="button">다른 기기로 기록 옮기기</button>
         </div>
       </section>
     </section>
@@ -461,10 +518,11 @@ kbd{padding:1px 6px;border:1px solid var(--rule);border-radius:2px;background:va
           <span class="train"></span>
         </div>
         <div class="doors" id="doors">
-          <button class="door door-l" id="doorL" type="button"><span class="dir" aria-hidden="true">←</span><span class="dtxt" id="doorLText"></span><span class="ftag">친구 선택</span></button>
-          <button class="door door-r" id="doorR" type="button"><span class="dir" aria-hidden="true">→</span><span class="dtxt" id="doorRText"></span><span class="ftag">친구 선택</span></button>
+          <button class="door door-l" id="doorL" type="button"><span class="dir" aria-hidden="true">←</span><span class="dtxt" id="doorLText"></span><span class="pct" aria-hidden="true"></span><span class="ftag">친구 선택</span></button>
+          <button class="door door-r" id="doorR" type="button"><span class="dir" aria-hidden="true">→</span><span class="dtxt" id="doorRText"></span><span class="pct" aria-hidden="true"></span><span class="ftag">친구 선택</span></button>
         </div>
         <p class="fnote" id="fnote" hidden></p>
+        <p class="crowd" id="crowd" hidden></p>
         <div class="ride-foot">
           <button class="back" id="undoBtn" type="button">← 이전 질문</button>
           <p class="kbd"><kbd>←</kbd> <kbd>→</kbd> 키로도 고를 수 있어요</p>
@@ -501,6 +559,11 @@ kbd{padding:1px 6px;border:1px solid var(--rule);border-radius:2px;background:va
             <div class="lean" id="leanBar" aria-hidden="true"></div>
             <div class="lean-legend" id="leanLegend"></div>
           </section>
+          <section class="block" aria-labelledby="specTitle">
+            <h2 class="blk-h" id="specTitle">이 노선의 결과 역 5개</h2>
+            <ol class="spec" id="spec"></ol>
+            <p class="blk-p" id="specNote"></p>
+          </section>
           <section class="compat" id="compat" hidden aria-labelledby="compatTitle">
             <h2 class="blk-h" id="compatTitle"></h2>
             <p class="compat-big"><strong id="xferCount"></strong><span>개 질문에서 친구와 같은 쪽을 골랐어요</span></p>
@@ -536,10 +599,69 @@ kbd{padding:1px 6px;border:1px solid var(--rule);border-radius:2px;background:va
         <div class="chips" id="moreLines"></div>
       </section>
     </section>
+
+    <section id="xpress" hidden aria-label="급행 18문제">
+      <div class="stage">
+        <div class="ride-head">
+          <button class="back" id="xBack" type="button">← 노선도</button>
+          <p class="ride-line"><span class="xp-tag">급행</span><span>9개 노선 18문제</span></p>
+        </div>
+        <div class="xstrip" id="xStrip" aria-hidden="true"></div>
+        <div class="strip-meta"><span id="xStep"></span><span id="xLine"></span></div>
+        <div class="ride-sign">
+          <h2 class="ask" id="xAsk"></h2>
+          <p class="howto" id="xHowto">9개 노선을 두 역씩만 서는 급행이에요. 더 끌리는 쪽을 누르세요.</p>
+          <div class="seal-row"></div>
+        </div>
+        <div class="fork-wrap" aria-hidden="true">
+          <svg class="fork" viewBox="0 0 400 100" preserveAspectRatio="none">
+            <path class="stem" d="M200 0 V44"/>
+            <path class="br" d="M200 44 L100 100"/>
+            <path class="br" d="M200 44 L300 100"/>
+          </svg>
+          <span class="node"></span>
+        </div>
+        <div class="doors" id="xDoors">
+          <button class="door door-l" id="xL" type="button"><span class="dir" aria-hidden="true">←</span><span class="dtxt" id="xLText"></span><span class="pct" aria-hidden="true"></span></button>
+          <button class="door door-r" id="xR" type="button"><span class="dir" aria-hidden="true">→</span><span class="dtxt" id="xRText"></span><span class="pct" aria-hidden="true"></span></button>
+        </div>
+        <p class="crowd" id="xCrowd" hidden></p>
+        <div class="ride-foot">
+          <button class="back" id="xUndo" type="button">← 이전 질문</button>
+        </div>
+        <p class="sr" id="xLive" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section id="xresult" hidden aria-label="급행 결과">
+      <div class="ride-head">
+        <button class="back" id="xrBack" type="button">← 노선도</button>
+        <p class="ride-line"><span class="xp-tag">급행</span><span>18문제 결과</span></p>
+      </div>
+      <div class="arrive x-arrive">
+        <p class="arrive-label">급행 종점 도착</p>
+        <h1 class="verdict" id="xVerdict"></h1>
+        <p class="verdict-d" id="xSummary"></p>
+      </div>
+      <ol class="xlist" id="xList"></ol>
+      <div class="x-actions">
+        <button class="btn primary" id="xShare" type="button">친구에게 급행 보내기</button>
+        <button class="btn" id="xAgain" type="button">급행 다시 타기</button>
+      </div>
+    </section>
+
+    <section id="statsView" hidden aria-label="방문 통계">
+      <div class="ride-head">
+        <button class="back" id="stBack" type="button">← 노선도</button>
+      </div>
+      <h1 class="sec-h">방문 통계</h1>
+      <p class="sec-sub" id="stNote"></p>
+      <div class="stats" id="stats"></div>
+    </section>
   </main>
 
   <footer class="foot">
-    <p>기록은 이 브라우저에만 저장돼요. 다른 기기나 브라우저에서는 처음부터 시작해요.</p>
+    <p id="footNote">진행 기록은 이 브라우저에만 저장되고, 다른 기기로 옮기려면 ‘내 기록’의 옮기기 링크를 쓰면 돼요. 고른 답은 이름 없이 숫자로만 합산해서 다른 사람들의 선택 비율을 보여 주는 데 써요.</p>
   </footer>
 </div>
 
@@ -564,6 +686,15 @@ kbd{padding:1px 6px;border:1px solid var(--rule);border-radius:2px;background:va
   </div>
 </div>
 
+<div class="sheet" id="moveSheet" hidden role="dialog" aria-modal="true" aria-labelledby="moveTitle">
+  <div class="sheet-box">
+    <h2 class="sheet-title" id="moveTitle">기록 가져오기</h2>
+    <button class="x" type="button" data-close aria-label="닫기">×</button>
+    <p class="sheet-hint" id="moveText"></p>
+    <button class="btn primary" id="moveYes" type="button">가져오기</button>
+  </div>
+</div>
+
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -577,6 +708,12 @@ const ROUNDS = 6;        // rounds per topic
 const TOTAL = N * ROUNDS;
 const RLIST = Array.from({ length: ROUNDS }, (_, i) => i + 1);
 const STORE_KEY = 'galae.v2';
+/* The GitHub Pages build turns these on (build_site.py); the artifact page cannot reach other sites. */
+const CROWD_ON = true;       // anonymous vote counts: "62% picked this side"
+const RESULT_PAGES = true;   // a shared result link opens r/<topic>-<type>.html, whose preview card shows that result
+const CROWD_API = 'https://abacus.jasoncameron.dev';
+const CROWD_NS = 'galae-godrazy7174';
+const CROWD_MIN = 10;         // a question shows percentages once it has this many votes
 
 /* qs: [질문, L 선택지, L 역 이름, R 선택지, R 역 이름], 10개씩 1~6라운드
    flip: 1이면 그 질문에서 R 선택지를 A(왼쪽)에 보여 줘요. 숨은 기준이 위치로 드러나지 않게 섞는 장치예요.
@@ -1236,6 +1373,12 @@ const BY_ID = {};
 LINES.forEach((l) => { BY_ID[l.id] = l; });
 const ALL_Q = LINES.length * TOTAL;
 
+/* 급행: two stops on each of the nine lines, lines 1-9 and then 1-9 again. [topic, question 0-59] */
+const EXPRESS = [['work',37],['money',52],['food',50],['friends',37],['travel',48],['life',58],['time',39],['love',39],['values',46],
+  ['work',49],['money',54],['food',43],['friends',59],['travel',49],['life',49],['time',54],['love',38],['values',50]]
+  .map((e) => ({ line: BY_ID[e[0]], r: Math.floor(e[1] / 10) + 1, k: e[1] % 10 }));
+const X_N = EXPRESS.length;
+
 const PAL = { bg:'#E9ECEE', surface:'#FFFFFF', ink:'#111418', ink2:'#4F565E', ink3:'#737A82', rule:'#D2D6DA', sign:'#25292F', onSign:'#FFFFFF', onSign2:'rgba(255,255,255,.66)' };
 const F_BODY = '"Gothic A1","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif';
 
@@ -1248,13 +1391,17 @@ const el = {};
  'result','resBack','resBadge','resName','arriveLabel','verdict','verdictD','verdictNote','rounds','figTitle','routeSvg','legend',
  'axisBig','axisText','leanBar','leanLegend','compat','compatTitle','xferCount','compatTier','compatD','compatDiff','compatDiffSum','compatDiffList',
  'factsBlock','factsTitle','facts','inviteText','shareBtn','posterBtn','nextBtn','againBtn','recapSum','recapList','moreLines',
+ 'xStartBtn','xStartLabel','xStartSub','mmMove','crowd','spec','specNote',
+ 'xpress','xBack','xStrip','xStep','xLine','xAsk','xHowto','xDoors','xL','xR','xLText','xRText','xCrowd','xUndo','xLive',
+ 'xresult','xrBack','xVerdict','xSummary','xList','xShare','xAgain','statsView','stBack','stNote','stats','moveSheet','moveText','moveYes','footNote',
  'imageSheet','imageTitle','shot','shotPh','shotHint','saveBtn','copySheet','copyArea','copyRetry','toast'].forEach((id) => { el[id] = $(id); });
 const stripDots = Array.from(document.querySelectorAll('#strip i'));
 const reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
 const isTouch = () => (navigator.maxTouchPoints || 0) > 0 || !!(window.matchMedia && window.matchMedia('(pointer: coarse)').matches);
 const canShareFile = (f) => { try { return !!(f && navigator.share && navigator.canShare && navigator.canShare({ files: [f] })); } catch (e) { return false; } };
 
-const state = { view:'hub', line:null, round:1, answers:[], times:[], preds:[], pred:0, friend:null, revealing:false, timer:0, lock:0, t0:0, paused:0, hiddenAt:0 };
+const state = { view:'hub', line:null, round:1, answers:[], times:[], preds:[], crowd:[], ctok:[], pred:0, friend:null, revealing:false, timer:0, lock:0, t0:0, paused:0, hiddenAt:0,
+  xa:[], xcrowd:[], xtok:[], pickNo:0 };
 let lastShot = null;
 let lastCanvas = null;
 let lastFile = 'galae.png';
@@ -1266,10 +1413,11 @@ let usingKeyboard = false;
 /* ---------- storage ---------- */
 const validAns = (a) => Array.isArray(a) && a.length === N && a.every((x) => x === 0 || x === 1);
 const validNums = (a) => Array.isArray(a) && a.length === N && a.every((x) => typeof x === 'number' && isFinite(x) && x >= 0);
+const validCrowd = (a) => Array.isArray(a) && a.length === N && a.every((x) => x === null || (typeof x === 'number' && x >= 0 && x <= 100));
 /* Earlier versions stored one 10-question set per topic as "work" and codes as "work-1a3"; those are round 1 now. */
 const upgradeCode = (c) => String(c || '').replace(/^([a-z]+)-/, '$11-');
 function loadStore(){
-  const empty = { runs:{}, mine:[] };
+  const empty = { runs:{}, mine:[], voted:{}, express:null, seen:'' };
   try {
     const v = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
     if (!v || typeof v !== 'object') return empty;
@@ -1278,10 +1426,14 @@ function loadStore(){
       const m = /^([a-z]+)([1-6])?$/.exec(key);
       const r = v.runs[key];
       if (!m || !BY_ID[m[1]] || !r || !validAns(r.answers)) return;
-      runs[m[1] + (m[2] || '1')] = { code: upgradeCode(r.code), answers: r.answers, times: validNums(r.times) ? r.times : null, preds: validAns(r.preds) ? r.preds : null, at: Number(r.at) || 0 };
+      runs[m[1] + (m[2] || '1')] = { code: upgradeCode(r.code), answers: r.answers, times: validNums(r.times) ? r.times : null, preds: validAns(r.preds) ? r.preds : null, crowd: validCrowd(r.crowd) ? r.crowd : null, at: Number(r.at) || 0 };
     });
     const mine = Array.isArray(v.mine) ? v.mine.filter((c) => typeof c === 'string').map(upgradeCode).slice(0, 200) : [];
-    return { runs, mine };
+    const voted = {};
+    if (v.voted && typeof v.voted === 'object') Object.keys(v.voted).forEach((k) => { if (/^[a-z]+-\d{1,2}$/.test(k) && (v.voted[k] === 0 || v.voted[k] === 1)) voted[k] = v.voted[k]; });
+    const xa = v.express && v.express.answers;
+    const express = Array.isArray(xa) && xa.length === X_N && xa.every((x) => x === 0 || x === 1) ? { answers: xa, at: Number(v.express.at) || 0 } : null;
+    return { runs, mine, voted, express, seen: typeof v.seen === 'string' ? v.seen : '' };
   } catch (e) { return empty; }
 }
 let store = loadStore();
@@ -1386,6 +1538,9 @@ function show(view){
   el.hub.hidden = view !== 'hub';
   el.play.hidden = view !== 'play';
   el.result.hidden = view !== 'result';
+  el.xpress.hidden = view !== 'xpress';
+  el.xresult.hidden = view !== 'xresult';
+  el.statsView.hidden = view !== 'stats';
 }
 function render(){
   if (state.line) setLineVars(el.app, state.line);
@@ -1393,7 +1548,10 @@ function render(){
   el.topMeta.innerHTML = '푼 문제 <b>' + solvedCount() + '</b> / ' + ALL_Q;
   if (state.view === 'hub') renderHub();
   else if (state.view === 'play') renderPlay(false);
-  else renderResult();
+  else if (state.view === 'result') renderResult();
+  else if (state.view === 'xpress') renderExpress(false);
+  else if (state.view === 'xresult') renderExpressResult();
+  else if (state.view === 'stats') renderStats();
 }
 function scrollTop(){ try { window.scrollTo({ top: 0, behavior: 'auto' }); } catch (e) { window.scrollTo(0, 0); } }
 function goHub(){
@@ -1409,9 +1567,11 @@ function prepRound(line, r, friend){
   state.line = line;
   state.round = r;
   state.friend = friend || null;
-  state.answers = []; state.times = []; state.preds = [];
+  state.answers = []; state.times = []; state.preds = []; state.crowd = []; state.ctok = [];
   state.revealing = false;
   state.view = 'play';
+  track('start-' + line.id);
+  if (friend) track('friend');
 }
 function startRound(line, r, friend){
   prepRound(line, r, friend);
@@ -1428,6 +1588,8 @@ function showRun(line, r, run, friend){
   state.answers = run.answers.slice();
   state.times = run.times ? run.times.slice() : [];
   state.preds = run.preds ? run.preds.slice() : [];
+  state.crowd = run.crowd ? run.crowd.slice() : [];
+  state.ctok = [];
   state.view = 'result';
 }
 function openRound(line, r){
@@ -1534,6 +1696,8 @@ function renderHub(){
   if (!solved) { el.quickLabel.textContent = '바로 출발'; el.quickSub.textContent = t ? t.line.no + '호선 ' + t.line.name + '부터' : ''; }
   else if (t) { el.quickLabel.textContent = '이어서 하기'; el.quickSub.textContent = t.line.no + '호선 ' + t.line.name + ' ' + t.r + '라운드'; }
   else { el.quickLabel.textContent = '아무 노선이나 다시'; el.quickSub.textContent = ALL_Q + '문제 완주'; }
+  el.xStartLabel.textContent = store.express ? '급행 결과 보기' : '3분 급행';
+  el.xStartSub.textContent = store.express ? expressTitle(expressLeans(store.express.answers)) : '9개 노선 18문제';
   el.lineList.innerHTML = LINES.map(lineRow).join('');
   renderMyMap();
 }
@@ -1606,6 +1770,7 @@ function renderPlay(animate){
   el.sealText.textContent = '예측 봉인됨';
   el.fnote.hidden = true;
   el.fnote.textContent = '';
+  clearCrowd(el.doors, el.crowd);
   el.undoBtn.disabled = k === 0;
   if (animate && !reduced) {
     el.doors.classList.remove('enter');
@@ -1622,6 +1787,9 @@ function pick(side){
   state.answers.push(pole);
   state.times.push(Math.round(elapsed()));
   state.preds.push(state.pred);
+  state.crowd.push(null);
+  const pn = ++state.pickNo;
+  state.ctok.push(pn);
   state.revealing = true;
 
   const won = side ? el.doorR : el.doorL, lost = side ? el.doorL : el.doorR;
@@ -1650,8 +1818,19 @@ function pick(side){
   }
   el.live.textContent = msg;
   el.undoBtn.disabled = true;
+  if (CROWD_ON) {
+    crowdFetch(line, r, k, pole).then((c) => {
+      if (c.total < CROWD_MIN || state.ctok[k] !== pn) return;
+      const p = Math.round((c.mine / c.total) * 100);
+      state.crowd[k] = p;
+      if (state.view === 'play' && state.revealing && state.answers.length === k + 1) {
+        showCrowd(el.doors, el.crowd, side, p, c.total);
+        el.live.textContent = msg + ' ' + el.crowd.textContent;
+      }
+    }).catch(() => {});
+  }
   clearTimeout(state.timer);
-  state.timer = setTimeout(advance, reduced ? 900 : (state.friend ? 1750 : 1350));
+  state.timer = setTimeout(advance, reduced ? 900 : (state.friend ? 1750 : CROWD_ON ? 1600 : 1350));
 }
 function advance(){
   if (!state.revealing) return;
@@ -1664,12 +1843,13 @@ function advance(){
 }
 function undo(){
   if (state.view !== 'play' || state.revealing || !state.answers.length) return;
-  state.answers.pop(); state.times.pop(); state.preds.pop();
+  state.answers.pop(); state.times.pop(); state.preds.pop(); state.crowd.pop(); state.ctok.pop();
   renderPlay(true);
 }
 function finish(){
   const line = state.line, r = state.round, code = codeOf(line, r, state.answers);
-  store.runs[line.id + r] = { code, answers: state.answers.slice(), times: state.times.slice(), preds: state.preds.slice(), at: Date.now() };
+  store.runs[line.id + r] = { code, answers: state.answers.slice(), times: state.times.slice(), preds: state.preds.slice(), crowd: state.crowd.slice(), at: Date.now() };
+  track('finish-' + line.id);
   store.mine = [code].concat(store.mine.filter((x) => x !== code)).slice(0, 200);
   saveStore();
   setHash(code);
@@ -1736,6 +1916,15 @@ function renderResult(){
     (answered < TOTAL ? '<span>남은 문제 <b>' + (TOTAL - answered) + '</b></span>' : '') +
     '<span><b>' + (answered - l) + '</b> ' + esc(line.R) + '</span>';
 
+  const ti = tierIdx(Math.round((l / answered) * 10));
+  el.spec.innerHTML = line.tiers.map((t, i) =>
+    '<li' + (i === ti ? ' class="cur" aria-current="true"' : '') + '><i aria-hidden="true"></i><div><b>' + esc(t[0]) + '</b>' + (i === ti ? '<em class="here">현위치</em>' : '') +
+    (i === 0 ? '<span class="end">' + esc(line.L) + ' 쪽 끝</span>' : i === 4 ? '<span class="end">' + esc(line.R) + ' 쪽 끝</span>' : '') + '</div></li>').join('');
+  const opp = line.tiers[4 - ti][0];
+  el.specNote.innerHTML = ti === 2
+    ? '가운데 역이에요. 어느 쪽 끝 유형인 친구와 풀어도 절반쯤은 같은 쪽을 고를 거예요.'
+    : '반대편 역은 <b>' + esc(opp) + '</b>' + (jong(opp) ? '이에요' : '예요') + '. 이 유형인 친구와 풀면 갈라지는 질문이 많을 거예요.';
+
   const rows = [];
   if (times) {
     let mx = 0, mn = 0;
@@ -1748,6 +1937,11 @@ function renderResult(){
     const h = hitsOf(ans, preds);
     rows.push(['예측 적중', '<span class="num">' + h + ' / 10</span> · ' + predTier(h)]);
   }
+  const cr = state.crowd.filter((x) => typeof x === 'number');
+  if (cr.length >= 3) {
+    const maj = cr.filter((x) => x >= 50).length;
+    rows.push(['다수와 같은 선택', '<span class="num">' + maj + ' / ' + cr.length + '</span> · ' + crowdTier(maj / cr.length)]);
+  }
   el.factsTitle.textContent = r + '라운드에서 잰 기록';
   el.facts.innerHTML = factsHTML(rows);
   el.factsBlock.hidden = !rows.length;
@@ -1759,7 +1953,9 @@ function renderResult(){
     el.compatTitle.textContent = '친구와 비교한 결과 · ' + r + '라운드';
     el.xferCount.textContent = same;
     el.compatTier.textContent = ct[0];
-    el.compatD.innerHTML = '친구는 이 라운드에서 ' + esc(line.L) + ' 쪽을 ' + fl + '번, ' + esc(line.R) + ' 쪽을 ' + (N - fl) + '번 골랐어요. ' + ct[1];
+    const ft = tierOf(line, fl, N)[0];
+    el.compatD.innerHTML = '친구는 이 라운드에서 ' + esc(line.L) + ' 쪽을 ' + fl + '번, ' + esc(line.R) + ' 쪽을 ' + (N - fl) + '번 골랐어요. ' +
+      '이번 라운드만 보면 친구는 <b>' + esc(ft) + '</b>' + (jong(ft) ? '이에요. ' : '예요. ') + ct[1];
     if (diff.length) {
       el.compatDiff.hidden = false;
       el.compatDiffSum.textContent = '서로 다르게 고른 질문 ' + diff.length + '개 보기';
@@ -1780,6 +1976,7 @@ function renderResult(){
     '<li><span class="no">' + (i + 1) + '</span><div><p class="rq">' + esc(qOf(line, r, i)[0]) + '</p>' +
     '<p class="rp">' + (swap(line, r, i, p) ? '→ ' : '← ') + esc(optText(line, r, i, p)) + '</p>' +
     (fr ? '<p class="rf">' + (fr[i] === p ? '친구도 같은 선택' : '친구는 ' + esc(optText(line, r, i, fr[i]))) + '</p>' : '') +
+    (typeof state.crowd[i] === 'number' ? '<p class="rf">' + state.crowd[i] + '%가 같은 쪽을 골랐어요</p>' : '') +
     '</div><span class="tm">' + (times ? secS(times[i]) : '') + '</span></li>').join('');
 
   const nx = nextTarget(line);
@@ -1797,6 +1994,252 @@ function renderResult(){
   el.moreLines.innerHTML = LINES.filter((x) => x.id !== line.id).map((x) =>
     '<button class="chip" type="button" data-open="' + x.id + '" style="--lc:' + x.css + ';--lon:' + x.onCss + '"><span class="badge sm">' + x.no + '</span><span class="nm">' +
     esc(x.name) + '</span>' + (roundsDone(x).length ? '<small>' + roundsDone(x).length + '/' + ROUNDS + '</small>' : '') + '</button>').join('');
+}
+
+/* ---------- crowd: anonymous vote counts ---------- */
+/* One counter per option of every question. A browser adds 1 the first time it answers a question;
+   later rides of the same question only read. Nothing else is sent. */
+const qid = (line, r, k) => line.id + '-' + qi(r, k);
+function crowdNum(path){
+  return fetch(CROWD_API + path, { cache: 'no-store' })
+    .then((res) => (res.status === 404 ? { value: 0 } : res.ok ? res.json() : Promise.reject(new Error('http ' + res.status))))
+    .then((j) => Math.max(0, Math.floor(Number(j && j.value) || 0)));
+}
+function crowdFetch(line, r, k, pole){
+  if (!CROWD_ON || typeof fetch !== 'function') return Promise.reject(new Error('off'));
+  const id = qid(line, r, k), base = '/' + CROWD_NS + '/' + id + '-';
+  const first = store.voted[id] === undefined;
+  if (first) { store.voted[id] = pole; saveStore(); }
+  return Promise.all([crowdNum((first ? '/hit' : '/get') + base + pole), crowdNum('/get' + base + (1 - pole))])
+    .then((v) => ({ mine: v[0], total: v[0] + v[1] }));
+}
+function track(ev){ if (CROWD_ON && typeof fetch === 'function') crowdNum('/hit/' + CROWD_NS + '/ev-' + ev).catch(() => {}); }
+const dayKey = () => new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 10);
+function trackVisit(){
+  const d = dayKey();
+  if (!CROWD_ON || store.seen === d) return;
+  store.seen = d;
+  saveStore();
+  track('visit');
+}
+const crowdTier = (x) => (x >= 0.8 ? '대세를 타는 편' : x >= 0.5 ? '무난한 편' : x >= 0.3 ? '살짝 마이웨이' : '소수 노선 개척자');
+const crowdLine = (p, total) => total + '표 중 ' + (p === 50 ? '정확히 반반으로 갈렸어요.' : p > 50 ? p + '%가 나와 같은 쪽이에요.' : p + '%만 이쪽이에요. 소수파예요.');
+function showCrowd(doors, note, side, p, total){
+  (side ? doors.lastElementChild : doors.firstElementChild).querySelector('.pct').textContent = p + '%';
+  (side ? doors.firstElementChild : doors.lastElementChild).querySelector('.pct').textContent = (100 - p) + '%';
+  doors.classList.add('has-pct');
+  note.textContent = crowdLine(p, total);
+  note.hidden = false;
+}
+function clearCrowd(doors, note){
+  doors.classList.remove('has-pct');
+  doors.querySelectorAll('.pct').forEach((n) => { n.textContent = ''; });
+  note.hidden = true;
+  note.textContent = '';
+}
+const resultLink = (line, ti, code) => (RESULT_PAGES
+  ? location.origin + location.pathname.replace(/[^/]*$/, '') + 'r/' + line.id + '-' + ti + '.html#' + code
+  : shareLink(code));
+
+/* ---------- 급행 (express): 18 questions, two per line ---------- */
+function startExpress(){
+  clearTimeout(state.timer);
+  state.revealing = false;
+  state.xa = []; state.xcrowd = []; state.xtok = [];
+  state.view = 'xpress';
+  setHash('express');
+  track('xstart');
+  render();
+  scrollTop();
+}
+function openExpress(){
+  if (!store.express) { startExpress(); return; }
+  clearTimeout(state.timer);
+  state.revealing = false;
+  state.view = 'xresult';
+  setHash('express');
+  render();
+  scrollTop();
+}
+function renderExpress(animate){
+  const i = Math.min(state.xa.length, X_N - 1), q = EXPRESS[i], line = q.line;
+  setLineVars(el.xpress, line);
+  el.xStrip.innerHTML = EXPRESS.map((e, j) => '<i style="--lc:' + e.line.css + '"' + (j < state.xa.length ? ' class="done"' : j === state.xa.length ? ' class="now"' : '') + '></i>').join('');
+  el.xStep.innerHTML = '질문 <b class="num">' + (i + 1) + '</b> / ' + X_N;
+  el.xLine.innerHTML = '<b>' + line.no + '호선 ' + esc(line.name) + '</b>';
+  el.xAsk.textContent = qOf(line, q.r, q.k)[0];
+  const a = sideText(line, q.r, q.k, 0), b = sideText(line, q.r, q.k, 1);
+  el.xLText.textContent = a;
+  el.xRText.textContent = b;
+  el.xL.setAttribute('aria-label', '왼쪽: ' + a);
+  el.xR.setAttribute('aria-label', '오른쪽: ' + b);
+  el.xHowto.hidden = i !== 0;
+  el.xDoors.classList.remove('revealing');
+  [el.xL, el.xR].forEach((d) => d.classList.remove('won', 'lost'));
+  clearCrowd(el.xDoors, el.xCrowd);
+  el.xUndo.disabled = state.xa.length === 0;
+  if (animate && !reduced) {
+    el.xDoors.classList.remove('enter');
+    void el.xDoors.offsetWidth;
+    el.xDoors.classList.add('enter');
+  }
+}
+function pickExpress(side){
+  if (state.view !== 'xpress' || state.revealing || performance.now() < state.lock) return;
+  const i = state.xa.length;
+  if (i >= X_N) return;
+  const q = EXPRESS[i], line = q.line, pole = swap(line, q.r, q.k, side);
+  state.xa.push(pole);
+  state.xcrowd.push(null);
+  const pn = ++state.pickNo;
+  state.xtok.push(pn);
+  state.revealing = true;
+  el.xDoors.classList.remove('enter');
+  el.xDoors.classList.add('revealing');
+  (side ? el.xR : el.xL).classList.add('won');
+  (side ? el.xL : el.xR).classList.add('lost');
+  const dots = el.xStrip.children;
+  if (dots[i]) dots[i].className = 'done';
+  if (dots[i + 1]) dots[i + 1].className = 'now';
+  el.xUndo.disabled = true;
+  el.xLive.textContent = optText(line, q.r, q.k, pole) + ' 선택.';
+  if (CROWD_ON) {
+    crowdFetch(line, q.r, q.k, pole).then((c) => {
+      if (c.total < CROWD_MIN || state.xtok[i] !== pn) return;
+      const p = Math.round((c.mine / c.total) * 100);
+      state.xcrowd[i] = p;
+      if (state.view === 'xpress' && state.revealing && state.xa.length === i + 1) showCrowd(el.xDoors, el.xCrowd, side, p, c.total);
+    }).catch(() => {});
+  }
+  clearTimeout(state.timer);
+  state.timer = setTimeout(advanceExpress, reduced ? 700 : CROWD_ON ? 1300 : 900);
+}
+function advanceExpress(){
+  if (!state.revealing) return;
+  clearTimeout(state.timer);
+  state.revealing = false;
+  state.lock = performance.now() + 250;
+  if (state.xa.length >= X_N) { finishExpress(); return; }
+  renderExpress(true);
+  if (usingKeyboard) el.xL.focus({ preventScroll: true });
+}
+function undoExpress(){
+  if (state.view !== 'xpress' || state.revealing || !state.xa.length) return;
+  state.xa.pop(); state.xcrowd.pop(); state.xtok.pop();
+  renderExpress(true);
+}
+function finishExpress(){
+  store.express = { answers: state.xa.slice(), at: Date.now() };
+  saveStore();
+  track('xfinish');
+  state.view = 'xresult';
+  setHash('express');
+  render();
+  scrollTop();
+}
+/* per line: how many of its two express answers went to the line's first pole */
+function expressLeans(answers){
+  return LINES.map((line) => {
+    let l = 0, n = 0;
+    EXPRESS.forEach((e, i) => { if (e.line === line) { n++; if (answers[i] === 0) l++; } });
+    return { line, l, n };
+  });
+}
+const strongOf = (leans) => leans.filter((x) => x.n && (x.l === x.n || x.l === 0));
+function expressTitle(leans){
+  const strong = strongOf(leans).map((x) => (x.l ? x.line.L : x.line.R));
+  return strong.length ? strong.slice(0, 3).join('·') + ' 쪽' : '모든 노선에서 반반';
+}
+function renderExpressResult(){
+  const ans = store.express ? store.express.answers : state.xa;
+  const leans = expressLeans(ans), strong = strongOf(leans);
+  el.xVerdict.textContent = expressTitle(leans);
+  el.xSummary.textContent = (strong.length
+    ? '9개 노선 중 ' + strong.length + '개에서 두 번 다 같은 쪽을 골랐어요. ' + (strong.length > 3 ? '제목에는 앞의 세 노선만 적었어요. ' : '')
+    : '모든 노선에서 한 번씩은 반대쪽을 골랐어요. ') + '노선을 누르면 그 주제의 10문제를 이어서 풀 수 있어요.';
+  el.xList.innerHTML = leans.map((x) => {
+    const pos = x.n ? (x.n - x.l) / x.n : 0.5;
+    const side = x.l === x.n ? x.line.L + ' 쪽' : x.l === 0 ? x.line.R + ' 쪽' : '반반';
+    const nr = nextRound(x.line);
+    return '<li><button class="xrow" type="button" data-open="' + x.line.id + '" style="--lc:' + x.line.css + ';--lon:' + x.line.onCss + '"' +
+      ' aria-label="' + esc(x.line.no + '호선 ' + x.line.name + ', ' + side + '. ' + (nr ? nr + '라운드 타기' : '결과 보기')) + '">' +
+      '<span class="badge" aria-hidden="true">' + x.line.no + '</span>' +
+      '<span class="xr-name">' + esc(x.line.name) + '<small>' + esc(side) + '</small></span>' +
+      '<span class="xr-track" aria-hidden="true"><span class="pl' + (x.l * 2 > x.n ? ' win' : '') + '">' + esc(x.line.L) + '</span>' +
+      '<span class="xr-bar"><i style="left:' + Math.round(pos * 100) + '%"></i></span>' +
+      '<span class="pr' + (x.l * 2 < x.n ? ' win' : '') + '">' + esc(x.line.R) + '</span></span>' +
+      '<span class="xr-go">' + (nr ? nr + '라운드 타기 →' : '결과 보기 →') + '</span></button></li>';
+  }).join('');
+}
+
+/* ---------- moving records to another browser ---------- */
+/* #move-work1-1a3-food2-3f0 … carries finished rounds (answers only) to another device. */
+function moveLink(){
+  const codes = Object.keys(store.runs).map((key) => {
+    const run = store.runs[key], line = BY_ID[key.replace(/\d$/, '')];
+    return run.code || codeOf(line, Number(key.slice(-1)), run.answers);
+  });
+  return shareLink('move-' + codes.join('-'));
+}
+let pendingMove = null;
+function parseMove(h){
+  const out = [], re = /([a-z]+)([1-6])-([0-9a-f]{3})/g;
+  let m;
+  while ((m = re.exec(h))) if (BY_ID[m[1]]) out.push({ line: BY_ID[m[1]], r: Number(m[2]), code: m[1] + m[2] + '-' + m[3], answers: decode(m[3]) });
+  return out;
+}
+function offerMove(list){
+  pendingMove = list;
+  const fresh = list.filter((x) => !runOf(x.line, x.r)).length;
+  el.moveText.textContent = fresh
+    ? '라운드 기록 ' + list.length + '개 중 이 브라우저에 없는 ' + fresh + '개를 가져와요. 이미 푼 라운드는 그대로 둬요.'
+    : '가져올 새 기록이 없어요. 이 브라우저에 이미 다 있어요.';
+  el.moveYes.hidden = !fresh;
+  openSheet(el.moveSheet);
+}
+function acceptMove(){
+  if (!pendingMove) return;
+  let n = 0;
+  pendingMove.forEach((x) => {
+    if (runOf(x.line, x.r)) return;
+    store.runs[x.line.id + x.r] = { code: x.code, answers: x.answers, times: null, preds: null, crowd: null, at: Date.now() };
+    store.mine = [x.code].concat(store.mine.filter((c) => c !== x.code)).slice(0, 200);
+    n++;
+  });
+  pendingMove = null;
+  saveStore();
+  closeSheet(true);
+  goHub();
+  toast('라운드 기록 ' + n + '개를 가져왔어요.');
+}
+
+/* ---------- visit stats (#stats), counted anonymously in the GitHub Pages build ---------- */
+const STAT_KEYS = [['visit', '방문 (한 브라우저에서 하루 한 번)'], ['xstart', '급행 시작'], ['xfinish', '급행 완주'], ['share', '결과 링크 보내기'],
+  ['xshare', '급행 링크 보내기'], ['poster', '노선도 이미지 만들기'], ['friend', '친구 링크로 시작'], ['move', '기록 옮기기 링크']];
+async function renderStats(){
+  el.stats.innerHTML = '';
+  if (!CROWD_ON) { el.stNote.textContent = '이 버전에서는 통계를 모으지 않아요.'; return; }
+  el.stNote.textContent = '불러오는 중이에요…';
+  const keys = STAT_KEYS.map((x) => x[0]);
+  LINES.forEach((l) => keys.push('start-' + l.id, 'finish-' + l.id));
+  const val = {};
+  for (let i = 0; i < keys.length; i += 6) {
+    const part = keys.slice(i, i + 6);
+    const got = await Promise.all(part.map((k) => crowdNum('/get/' + CROWD_NS + '/ev-' + k).catch(() => null)));
+    part.forEach((k, j) => { val[k] = got[j]; });
+    if (i + 6 < keys.length) await new Promise((res) => setTimeout(res, 900));
+  }
+  if (state.view !== 'stats') return;
+  const n = (k) => (val[k] === null || val[k] === undefined ? '–' : String(val[k]));
+  el.stNote.textContent = '이름 없이 숫자로만 센 값이에요. 같은 사람이 여러 번 하면 그만큼 따로 세요.';
+  el.stats.innerHTML =
+    '<div class="tbl"><table><thead><tr><th>항목</th><th>횟수</th></tr></thead><tbody>' +
+    STAT_KEYS.map((x) => '<tr><td>' + x[1] + '</td><td>' + n(x[0]) + '</td></tr>').join('') + '</tbody></table></div>' +
+    '<div class="tbl"><table><thead><tr><th>노선</th><th>시작</th><th>완주</th><th>완주율</th></tr></thead><tbody>' +
+    LINES.map((l) => {
+      const st = val['start-' + l.id], fi = val['finish-' + l.id];
+      return '<tr><td>' + l.no + '호선 ' + esc(l.name) + '</td><td>' + n('start-' + l.id) + '</td><td>' + n('finish-' + l.id) + '</td><td>' + (st ? Math.round((fi / st) * 100) + '%' : '–') + '</td></tr>';
+    }).join('') + '</tbody></table></div>';
 }
 
 /* ---------- sharing ---------- */
@@ -1952,6 +2395,8 @@ async function drawLinePoster(){
   if (times) stats.push(['평균 고민', secS(mean(times))]);
   if (preds) stats.push(['예측 적중', hitsOf(ans, preds) + ' / 10']);
   if (fr) stats.push(['친구와 같은 선택', sameCount(ans, fr) + ' / 10']);
+  const cr = state.crowd.filter((x) => typeof x === 'number');
+  if (!fr && cr.length >= 3) stats.push(['다수와 같은 선택', cr.filter((x) => x >= 50).length + ' / ' + cr.length]);
   const colW = (W - 144) / stats.length;
   stats.forEach((st, i) => {
     const x = 72 + i * colW;
@@ -2083,6 +2528,23 @@ function route(){
   let h = (location.hash || '').slice(1);
   try { h = decodeURIComponent(h); } catch (e) {}
   h = h.trim().toLowerCase();
+  if (h === 'stats' || h === 'express' || h.indexOf('move-') === 0) {
+    clearTimeout(state.timer);
+    state.revealing = false;
+    if (h === 'stats') { state.view = 'stats'; return; }
+    if (h === 'express') {
+      if (store.express) { state.view = 'xresult'; return; }
+      state.xa = []; state.xcrowd = []; state.xtok = [];
+      state.view = 'xpress';
+      track('xstart');
+      return;
+    }
+    const list = parseMove(h.slice(5));
+    state.view = 'hub';
+    setHash(null);
+    if (list.length) setTimeout(() => offerMove(list), 0);
+    return;
+  }
   const m = /^([a-z]+)([1-6])?(?:-([0-9a-f]{3}))?$/.exec(h);
   if (!m || !BY_ID[m[1]]) {
     clearTimeout(state.timer);
@@ -2126,16 +2588,39 @@ el.doors.addEventListener('click', (e) => {
 el.shareBtn.addEventListener('click', () => {
   const line = state.line, r = state.round;
   const prev = tally(line, r), v = tierOf(line, prev.l + leftCount(state.answers), prev.total + N)[0];
+  const ti = tierIdx(Math.round(((prev.l + leftCount(state.answers)) / (prev.total + N)) * 10));
+  track('share');
   const text = '갈래 밸런스 게임 · ' + line.no + '호선 ' + line.name + ' ' + r + '라운드\n' + line.name + ' 주제에서 나는 ‘' + v + '’' + (jong(v) ? '이었어.' : '였어.') +
-    ' 똑같은 10문제로 나랑 몇 번이나 같은 걸 고르는지 해 볼래?\n' + shareLink(codeOf(line, r, state.answers));
+    ' 똑같은 10문제로 나랑 몇 번이나 같은 걸 고르는지 해 볼래?\n' + resultLink(line, ti, codeOf(line, r, state.answers));
   shareOrCopy(text, '링크를 복사했어요. 친구에게 붙여 넣어 보내 보세요.');
 });
 el.mmShare.addEventListener('click', () => {
   const text = '둘 중 하나만 고르는 밸런스 게임 ‘갈래’. 9개 주제, ' + ALL_Q + '문제로 나만의 노선도를 그려 봐.\n나는 벌써 ' + solvedCount() + '문제를 풀었어.\n' + shareLink('');
   shareOrCopy(text, '링크를 복사했어요.');
 });
-el.posterBtn.addEventListener('click', () => openImage('노선도 이미지', 'galae-' + state.line.id + state.round + '.png', drawLinePoster));
+el.posterBtn.addEventListener('click', () => track('poster') || openImage('노선도 이미지', 'galae-' + state.line.id + state.round + '.png', drawLinePoster));
 el.mmImage.addEventListener('click', () => openImage('전체 노선도 이미지', 'galae-map.png', drawMapPoster));
+el.xStartBtn.addEventListener('click', openExpress);
+el.xDoors.addEventListener('click', (e) => {
+  if (state.revealing) { advanceExpress(); return; }
+  const b = e.target.closest('.door');
+  if (b) pickExpress(b === el.xR ? 1 : 0);
+});
+el.xUndo.addEventListener('click', undoExpress);
+el.xBack.addEventListener('click', goHub);
+el.xrBack.addEventListener('click', goHub);
+el.stBack.addEventListener('click', goHub);
+el.xAgain.addEventListener('click', startExpress);
+el.xShare.addEventListener('click', () => {
+  const t = expressTitle(expressLeans(store.express ? store.express.answers : state.xa));
+  track('xshare');
+  shareOrCopy('갈래 급행 18문제를 타 봤어. 나는 ‘' + t + '’. 3분이면 끝나니까 너도 해 봐.\n' + shareLink('express'), '링크를 복사했어요. 친구에게 붙여 넣어 보내 보세요.');
+});
+el.mmMove.addEventListener('click', () => {
+  track('move');
+  shareOrCopy('갈래 기록 옮기기 링크예요. 다른 기기에서 열면 지금까지 푼 라운드를 가져와요.\n' + moveLink(), '옮기기 링크를 복사했어요. 다른 기기에서 열어 주세요.');
+});
+el.moveYes.addEventListener('click', acceptMove);
 el.copyRetry.addEventListener('click', () => {
   const text = el.copyArea.value;
   let done = false;
@@ -2181,22 +2666,24 @@ document.addEventListener('keydown', (e) => {
     else if (e.key === 'Tab') trapFocus(e);
     return;
   }
-  if (state.view !== 'play' || e.altKey || e.ctrlKey || e.metaKey) return;
+  const xp = state.view === 'xpress';
+  if ((state.view !== 'play' && !xp) || e.altKey || e.ctrlKey || e.metaKey) return;
   const tag = (e.target && e.target.tagName) || '';
   if (tag === 'TEXTAREA' || tag === 'INPUT') return;
   const k = e.key;
   if (state.revealing) {
-    if (k === 'Enter' || k === ' ' || k === 'ArrowLeft' || k === 'ArrowRight') { e.preventDefault(); advance(); }
+    if (k === 'Enter' || k === ' ' || k === 'ArrowLeft' || k === 'ArrowRight') { e.preventDefault(); if (xp) advanceExpress(); else advance(); }
     return;
   }
-  if (k === 'ArrowLeft' || k === 'a' || k === 'A') { e.preventDefault(); pick(0); }
-  else if (k === 'ArrowRight' || k === 'b' || k === 'B') { e.preventDefault(); pick(1); }
-  else if (k === 'Backspace') { e.preventDefault(); undo(); }
+  if (k === 'ArrowLeft' || k === 'a' || k === 'A') { e.preventDefault(); if (xp) pickExpress(0); else pick(0); }
+  else if (k === 'ArrowRight' || k === 'b' || k === 'B') { e.preventDefault(); if (xp) pickExpress(1); else pick(1); }
+  else if (k === 'Backspace') { e.preventDefault(); if (xp) undoExpress(); else undo(); }
 });
 document.addEventListener('pointerdown', () => { usingKeyboard = false; }, true);
 window.addEventListener('hashchange', () => { route(); render(); scrollTop(); });
 
 /* ---------- capabilities & boot ---------- */
+trackVisit();
 function start(data){
   if (data && data.line && BY_ID[data.line] && Array.isArray(data.answers) && data.answers.length <= N && data.answers.every((x) => x === 0 || x === 1)) {
     state.line = BY_ID[data.line];
